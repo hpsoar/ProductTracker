@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "TodayProductListViewController.h"
+#import "ProductStreamViewController.h"
 
 @interface AppDelegate ()
 
@@ -16,7 +18,13 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    UINavigationController *todayTab = [[UINavigationController alloc] initWithRootViewController:[TodayProductListViewController new]];
+    UINavigationController *streamTab = [[UINavigationController alloc] initWithRootViewController:[ProductStreamViewController new]];
+    UITabBarController *tabBarController = [UITabBarController new];
+    tabBarController.viewControllers = @[ todayTab, streamTab ];
+    self.window.rootViewController = tabBarController;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 
