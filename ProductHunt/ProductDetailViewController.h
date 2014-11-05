@@ -9,10 +9,15 @@
 #import <UIKit/UIKit.h>
 
 #import "ProductHuntSession.h"
+#import "PHTableViewController.h"
 
-@interface ProductDetailViewController : UIViewController
+@interface ProductDetailViewController : PHTableViewController
 
 - (id)initWithPost:(ProductHuntPost *)post;
 
 @property (nonatomic, readonly) ProductHuntPost *post;
+@end
+
+@interface CommentItemCell : UITableViewCell <NICell>
+
 @end

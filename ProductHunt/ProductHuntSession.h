@@ -10,6 +10,7 @@
 
 @interface ProductHuntPost : NSObject
 
+@property NSInteger postId;
 @property NSString *productLink;
 @property NSString *title;
 @property NSString *subtitle;
@@ -22,6 +23,20 @@
 
 @end
 
+@interface ProductHuntComment : NSObject
+
+- (id)initWithData:(NSDictionary *)data;
+
+@property NSInteger commentId;
+@property NSString *body;
+@property NSDate *date;
+@property NSArray *childComments;
+
+@property NSInteger userId;
+@property NSInteger postId;
+@property NSInteger parentId;
+@end
+
 #define kProductHuntKey @"e9af2cf386088f8348d8b4b1077d437ff3b72eaa4133ae55a81f6ca9e4f02829"
 #define kProductHuntSecret @"96d1a541080f78260044b228693e98d105fa9c3edd5150742ad6c31ae8baa0be"
 #define kProductHuntSessionException @"Product Hunt Session Exception"
@@ -29,8 +44,13 @@
 @class ProductHuntSession;
 @protocol ProductHuntSessionDelegate <NSObject>
 
+@optional
 - (void)session:(ProductHuntSession *)session didFinishLoadWithPosts:(NSArray *)post onDate:(NSDate *)date;
 - (void)session:(ProductHuntSession *)session didFailLoadWithError:(NSError *)error;
+
+- (void)session:(ProductHuntSession *)session didFinishLoadComments:(NSArray *)comments forPost:(NSInteger)postId;
+
+- (void)session:(ProductHuntSession *)session didFailLoadCommentsForPost:(NSInteger)postId withError:(NSError *)error;
 
 @end
 
@@ -42,6 +62,8 @@
 - (void)fetchPostsDaysAgo:(NSInteger)days delegate:(id<ProductHuntSessionDelegate>)delegate;
 
 - (NSArray *)queryCacheForPostsDaysAgo:(NSInteger)days;
+
+- (void)commentsForPost:(NSInteger)postId lastCommentId:(NSInteger)lastCommentId count:(NSInteger)count delegate:(id<ProductHuntSessionDelegate>)delegate;
 
 @property (nonatomic, readonly) BOOL sessionIsValid;
 

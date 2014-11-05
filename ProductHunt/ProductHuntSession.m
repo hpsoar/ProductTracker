@@ -21,6 +21,7 @@
 - (id)initWithData:(NSDictionary *)data {
     self = [super init];
     if (self) {
+        self.postId = [data[@"id"] integerValue];
         self.productLink = data[@"redirect_url"];
         self.title = data[@"name"];
         self.subtitle = data[@"tagline"];
@@ -53,6 +54,64 @@
 
 - (NSString *)description {
     return [[self.title stringByAppendingString:@": "] stringByAppendingString:self.productLink];
+}
+
+@end
+
+@implementation ProductHuntComment
+
+/*
+ * "id": 7,
+ "body": "This is like the 103th best comment ever",
+ "created_at": "2014-10-26T04:07:18.537-07:00",
+ "post_id": 1,
+ "parent_comment_id": null,
+ "user_id": 8,
+ "child_comments_count": 2,
+ "maker": false,
+ "user": {
+ "id": 8,
+ "name": "Karl User the 321th",
+ "headline": "Product Hunter",
+ "created_at": "2014-10-26T04:07:18.531-07:00",
+ "username": "producthunter319",
+ "image_url": {
+ "48px": "/assets/ph-logo.png",
+ "73px": "/assets/ph-logo.png",
+ "original": "/assets/ph-logo.png"
+ },
+ "profile_url": "http://www.producthunt.com/producthunter319"
+ },
+ "child_comments":
+ */
+- (id)initWithData:(NSDictionary *)data {
+    self = [super init];
+    if (self) {
+        self.commentId = [data[@"id"] integerValue];
+        self.body = data[@"body"];
+        // date
+        self.userId = [data[@"user_id"] integerValue];
+        self.postId = [data[@"post_id"] integerValue];
+        
+        // parent id
+        id parentCommentId = data[@"parent_comment_id"];
+        if ([parentCommentId isKindOfClass:[NSNumber class]]) {
+            self.parentId = [parentCommentId integerValue];
+        }
+        else {
+            self.parentId = -1;
+        }
+        
+        // child
+        NSArray *json = data[@"child_comments"];
+        NSMutableArray *childComments = [[NSMutableArray alloc] initWithCapacity:json.count];
+        for (id obj in data[@"child_comments"]) {
+            ProductHuntComment *comment = [[ProductHuntComment alloc] initWithData:obj];
+            [childComments addObject:comment];
+        }
+        self.childComments = childComments;
+    }
+    return self;
 }
 
 @end
@@ -121,7 +180,7 @@
     NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-days * 24 * 3600];
     NSString *filepath = [self cacheFileForDate:date];
     NSData *data = [NSData dataWithContentsOfFile:filepath];
-    return [self processPosts:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
+    return [self parsePosts:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
 }
 
 - (void)cachePosts:(NSArray *)posts forDate:(NSDate *)date {
@@ -157,27 +216,48 @@
         NIDPRINT(@"%@", responseObject);
         [self cacheFileForDate:responseObject[@"posts"]];
         
-        NSArray *postObjects = [_self processPosts:responseObject[@"posts"]];
+        NSArray *postObjects = [_self parsePosts:responseObject[@"posts"]];
         
-        [delegate session:self didFinishLoadWithPosts:postObjects onDate:[NSDate dateWithTimeIntervalSinceNow:-days * 24 * 3600]];
+        [delegate session:_self didFinishLoadWithPosts:postObjects onDate:[NSDate dateWithTimeIntervalSinceNow:-days * 24 * 3600]];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NIDPRINT(@"%@", error);
         [delegate session:_self didFailLoadWithError:error];
     }];
 }
 
-- (NSArray *)processPosts:(NSArray *)posts {
-    if ([posts isKindOfClass:[NSArray class]]) {
-        NSMutableArray *postObjects = [[NSMutableArray alloc] initWithCapacity:posts.count];
-        for (NSDictionary *post in posts) {
-            ProductHuntPost *postObject = [[ProductHuntPost alloc] initWithData:post];
-            [postObjects addObject:postObject];
-        }
-        return postObjects;
+- (NSArray *)parsePosts:(NSArray *)json {
+    NSMutableArray *posts = [[NSMutableArray alloc] initWithCapacity:json.count];
+    for (NSDictionary *obj in json) {
+        ProductHuntPost *post = [[ProductHuntPost alloc] initWithData:obj];
+        [posts addObject:post];
     }
-    else {
-        return nil;
-    }
+    return posts;
+}
+
+- (void)commentsForPost:(NSInteger)postId lastCommentId:(NSInteger)lastCommentId count:(NSInteger)count delegate:(id<ProductHuntSessionDelegate>)delegate {
+    NSString *url = DefStr(@"/v1/posts/%d/comments", postId);
+    NSDictionary *params = nil ;//@{ @"older:": @(lastCommentId),
+                             // @"per_page": @(count),
+                              //@"order": @"desc"};
+    WEAK_VAR(self);
+    [self GET:url parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
+        NIDPRINT(@"%@", responseObject);
+        
+        NSArray *comments = [_self parseComments:responseObject[@"comments"]];
+        [delegate session:_self didFinishLoadComments:comments forPost:postId];
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        NIDPRINT(@"%@", error);
+        [delegate session:_self didFailLoadCommentsForPost:postId withError:error];
+    }];
+}
+
+- (NSArray *)parseComments:(NSArray *)json {
+    NSMutableArray *comments = [[NSMutableArray alloc] initWithCapacity:json.count];
+    for (id obj in json) {
+        ProductHuntComment *comment = [[ProductHuntComment alloc] initWithData:obj];
+        [comments addObject:comment];
+    };
+    return comments;
 }
 
 @end

@@ -18,12 +18,13 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    UINavigationController *todayTab = [[UINavigationController alloc] initWithRootViewController:[TodayProductListViewController new]];
-    UINavigationController *streamTab = [[UINavigationController alloc] initWithRootViewController:[ProductStreamViewController new]];
-    UITabBarController *tabBarController = [UITabBarController new];
-    tabBarController.viewControllers = @[ todayTab, streamTab ];
-    self.window.rootViewController = tabBarController;
+    
+    [self setupAppearance];
+    
+    UINavigationController *rootViewController = [[UINavigationController alloc] initWithRootViewController:[ProductListViewController new]];
+    self.window.rootViewController = rootViewController;
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -50,4 +51,8 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (void)setupAppearance {
+    self.window.tintColor = [UIColor orangeColor];
+//    [[UINavigationBar appearance] setBarTintColor:[UIColor orangeColor]];
+}
 @end

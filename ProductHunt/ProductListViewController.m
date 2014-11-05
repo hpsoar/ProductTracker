@@ -43,14 +43,9 @@
 
 + (CGFloat)heightForObject:(id)object atIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
     PostCellObject *cellObject = object;
-    return 30 + [self heightForText:cellObject.post.title fontSize:20] + [self heightForText:cellObject.post.subtitle fontSize:16];
-    return 100;
-}
-
-+ (CGFloat)heightForText:(NSString *)text fontSize:(CGFloat)fontSize {
-    NSDictionary *attrs = @{ NSFontAttributeName: [UIFont systemFontOfSize:fontSize] };
-    CGRect rect = [text boundingRectWithSize:CGSizeMake(280, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:attrs context:nil];
-    return rect.size.height;
+    CGFloat titleHeight = [Utility heightForText:cellObject.post.title fontSize:20 width:280];
+    CGFloat subtitleHeight = [Utility heightForText:cellObject.post.subtitle fontSize:16 width:280];
+    return 30 + titleHeight + subtitleHeight;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -92,33 +87,22 @@
 
 
 @interface ProductListViewController () 
-@property (nonatomic, strong) NIMutableTableViewModel *model;
-@property (nonatomic, strong) NITableViewActions *actions;
-@property (nonatomic, strong) NICellFactory *cellFactory;
 @property (nonatomic) NSInteger daysAgo;
 
 @end
 
 @implementation ProductListViewController
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        self.allowLoadMore = YES;
+    }
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.headerView = [[ActivityView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
-    
-    self.footerView = [[ActivityView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
-    
-    self.footerView.backgroundColor = [UIColor greenColor];
-    
-    self.cellFactory = [NICellFactory new];
-    
-    self.model = [[NIMutableTableViewModel alloc] initWithDelegate:self.cellFactory];
-    
-    self.tableView.dataSource = self.model;
-    
-    self.actions = [[NITableViewActions alloc] initWithTarget:self];
-    [self.actions forwardingTo:self];
-    self.tableView.delegate = self.actions;
     
     WEAK_VAR(self);
     [self.actions attachToClass:[PostCellObject class] navigationBlock:^BOOL(id object, id target, NSIndexPath *indexPath) {
@@ -130,18 +114,13 @@
     
     [ProductHuntSession registerWithAppKey:kProductHuntKey appSecret:kProductHuntSecret];
     
-    [self refresh];
-    
     UISegmentedControl *statFilter = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"All", @"Unread", @"Read", nil]];
-    [statFilter sizeToFit];
     [statFilter addTarget:self action:@selector(filterPost) forControlEvents:UIControlEventValueChanged];
     self.navigationItem.titleView = statFilter;
     
     statFilter.selectedSegmentIndex = 0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [self.cellFactory tableView:tableView heightForRowAtIndexPath:indexPath model:self.model];
+    
+    [self refresh];
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -154,15 +133,8 @@
     return v;
 }
 
-- (void)refresh {
-    [super refresh];
+- (void)resetModelState {
     self.daysAgo = 0;
-    [self loadModel];
-}
-
-- (void)loadMore {
-    [super loadMore];
-    [self loadModel];
 }
 
 - (void)loadModel {
@@ -175,26 +147,15 @@
 
 - (void)session:(ProductHuntSession *)session didFinishLoadWithPosts:(NSArray *)posts onDate:(NSDate *)date {
     if (self.daysAgo == 0) {
-        self.model = [[NIMutableTableViewModel alloc] initWithDelegate:self.cellFactory];
-        self.tableView.dataSource = self.model;
+        [self resetModel];
     }
     
-    NSIndexSet *indexSet = [self.model addSectionWithTitle:DefStr(@"%@", date)];
-    //NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:posts.count];
+    NSIndexSet *indexSet = [self.model addSectionWithTitle:[date formatWith:@"yyyy/MM/dd"]];
     [posts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-   //     [items addObject:[[PostCellObject alloc] initWithPost:obj]];
         [self.model addObject:[[PostCellObject alloc] initWithPost:obj] toSection:indexSet.firstIndex];
     }];
     
-    [self.tableView reloadData];
-    
-    if (self.isRefreshing) {
-        [self refreshCompleted];
-    }
-    
-    if (self.isLoadingMore) {
-        [self loadMoreCompleted];
-    }
+    [self reloadTableView];
     
     self.daysAgo++;
 }

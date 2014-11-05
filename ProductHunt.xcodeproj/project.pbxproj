@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12608E941A0906BE000A43A6 /* PHTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12608E931A0906BE000A43A6 /* PHTableViewController.m */; };
 		128185221A052CD300E941FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 128185211A052CD300E941FA /* main.m */; };
 		128185251A052CD300E941FA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 128185241A052CD300E941FA /* AppDelegate.m */; };
 		1281852D1A052CD300E941FA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1281852C1A052CD300E941FA /* Images.xcassets */; };
@@ -88,6 +89,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		12608E921A0906BE000A43A6 /* PHTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHTableViewController.h; sourceTree = "<group>"; };
+		12608E931A0906BE000A43A6 /* PHTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHTableViewController.m; sourceTree = "<group>"; };
 		1281851C1A052CD300E941FA /* ProductHunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProductHunt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		128185201A052CD300E941FA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		128185211A052CD300E941FA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -291,6 +294,8 @@
 				128187D31A061DFC00E941FA /* TodayProductListViewController.m */,
 				128187D51A061EDE00E941FA /* ProductStreamViewController.h */,
 				128187D61A061EDE00E941FA /* ProductStreamViewController.m */,
+				12608E921A0906BE000A43A6 /* PHTableViewController.h */,
+				12608E931A0906BE000A43A6 /* PHTableViewController.m */,
 			);
 			path = ProductHunt;
 			sourceTree = "<group>";
@@ -713,6 +718,7 @@
 				128187501A05345E00E941FA /* NIActions.m in Sources */,
 				1281882F1A06586400E941FA /* RefreshTableViewController.m in Sources */,
 				128187851A05345F00E941FA /* NIImageProcessing.m in Sources */,
+				12608E941A0906BE000A43A6 /* PHTableViewController.m in Sources */,
 				128187B61A0536B200E941FA /* AFURLRequestSerialization.m in Sources */,
 				128187B31A0536B200E941FA /* AFNetworkReachabilityManager.m in Sources */,
 				128187D71A061EDE00E941FA /* ProductStreamViewController.m in Sources */,

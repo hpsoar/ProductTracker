@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "NICellFactory.h"
 #import "ProductHuntSession.h"
-#import "RefreshTableViewController.h"
+#import "PHTableViewController.h"
 
-@interface ProductListViewController : RefreshTableViewController <ProductHuntSessionDelegate>
+@interface ProductListViewController : PHTableViewController  <ProductHuntSessionDelegate>
 
 @end
 
