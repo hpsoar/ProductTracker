@@ -182,15 +182,6 @@
     [self.tableView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-}
-
 - (void)loadView {
     [super loadView];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
