@@ -15,6 +15,24 @@
 
 @end
 
+@class PostCell;
+@protocol PostCellObjectDelegate <NSObject>
+
+- (void)showShareOptionsForCell:(PostCell *)cell;
+
+@end
+
+@interface PostCellObject : NICellObject
+@property (nonatomic, readonly) ProductHuntPost *post;
+
+- (id)initWithPost:(ProductHuntPost *)post;
+
+@property (nonatomic, weak) id<PostCellObjectDelegate> delegate;
+
+@end
+
 @interface  PostCell: UITableViewCell <NICell>
+
+@property (nonatomic, readonly) ProductHuntPost *post;
 
 @end

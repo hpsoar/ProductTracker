@@ -17,6 +17,7 @@
 #define kCommentLink @"commentLink"
 
 @implementation ProductHuntPost
+@synthesize image = _image;
 
 - (id)initWithData:(NSDictionary *)data {
     self = [super init];
@@ -31,6 +32,26 @@
         self.voteCount = [data[@"votes_count"] integerValue];
     }
     return self;
+}
+
+- (UIImage *)image {
+    if (_image == nil) {
+        NSString *filename = [Utility md5:self.imageLink];
+        NSString *filepath = [Utility filepath:filename];
+        NSData *data = [NSData dataWithContentsOfFile:filepath];
+        if (data) {
+            _image = [UIImage imageWithData:data];
+        }
+        else {
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.imageLink]];
+                if (data) {
+                    [data writeToFile:filepath atomically:YES];
+                }
+            });
+        }
+    }
+    return _image;
 }
 
 -(void) encodeWithCoder:(NSCoder *)coder {
@@ -172,15 +193,37 @@
 }
 
 - (NSString *)cacheFileForDate:(NSDate *)date {
-    NSString *filename = DefStr(@"product_hunts_%@.cache", date);
+    NSString *dateStr = [date formatWith:@"yyyyMMdd"];
+    NSString *filename = DefStr(@"hunts.%@.cache", dateStr);
     return [Utility filepath:filename];
 }
 
 - (NSArray *)queryCacheForPostsDaysAgo:(NSInteger)days {
     NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-days * 24 * 3600];
     NSString *filepath = [self cacheFileForDate:date];
+    return [self postsFromFile:filepath];
+}
+
+- (NSArray *)postsFromFile:(NSString *)filepath {
     NSData *data = [NSData dataWithContentsOfFile:filepath];
     return [self parsePosts:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
+}
+
+- (NSDictionary *)queryLatestCachedPosts {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSArray *dirContents = [fm contentsOfDirectoryAtPath:[Utility documentPath] error:nil];
+    NSPredicate *fltr = [NSPredicate predicateWithFormat:@"self ENDSWITH '.cache'"];
+    NSArray *files = [dirContents filteredArrayUsingPredicate:fltr];
+    NSMutableDictionary *result = [NSMutableDictionary new];
+    for (NSString *filename in files) {
+        NSArray *comps = [filename componentsSeparatedByString:@"."];
+        NSDate *date = [NSDate dateWithFormatter:@"yyyyMMdd" dateStr:comps[1]];
+        NSString *filepath = [Utility filepath:filename];
+        NSArray *posts = [self postsFromFile:filepath];
+        
+        result[date] = posts;
+    }
+    return result;
 }
 
 - (void)cachePosts:(NSArray *)posts forDate:(NSDate *)date {
@@ -214,11 +257,14 @@
     WEAK_VAR(self);
     [self GET:url parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NIDPRINT(@"%@", responseObject);
-        [self cacheFileForDate:responseObject[@"posts"]];
+        NSArray *posts = responseObject[@"posts"];
+        NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-days * 24 * 3600];
         
-        NSArray *postObjects = [_self parsePosts:responseObject[@"posts"]];
+        [self cachePosts:responseObject[@"posts"] forDate:date];
         
-        [delegate session:_self didFinishLoadWithPosts:postObjects onDate:[NSDate dateWithTimeIntervalSinceNow:-days * 24 * 3600]];
+        NSArray *postObjects = [_self parsePosts:posts];
+        
+        [delegate session:_self didFinishLoadWithPosts:postObjects onDate:date];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NIDPRINT(@"%@", error);
         [delegate session:_self didFailLoadWithError:error];

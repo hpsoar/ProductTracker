@@ -12,13 +12,7 @@
 #import "NINetworkImageView.h"
 #import "Utility.h"
 #import "ProductDetailViewController.h"
-
-@interface PostCellObject : NICellObject
-@property (nonatomic, readonly) ProductHuntPost *post;
-
-- (id)initWithPost:(ProductHuntPost *)post;
-
-@end
+#import "AppDelegate.h"
 
 @implementation PostCellObject
 
@@ -39,13 +33,17 @@
 @implementation PostCell {
     UILabel *_titleLabel;
     UILabel *_subtitleLabel;
+    NINetworkImageView *_thumbnailView;
+    PostCellObject *_object;
+    
+    UILabel *_popularityLabel;
 }
 
 + (CGFloat)heightForObject:(id)object atIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
     PostCellObject *cellObject = object;
     CGFloat titleHeight = [Utility heightForText:cellObject.post.title fontSize:20 width:280];
     CGFloat subtitleHeight = [Utility heightForText:cellObject.post.subtitle fontSize:16 width:280];
-    return 30 + titleHeight + subtitleHeight;
+    return 30 + titleHeight + subtitleHeight + 210 + 20;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -64,29 +62,76 @@
         _subtitleLabel.numberOfLines = 0;
         _subtitleLabel.textColor = RGBCOLOR_HEX(0x7d7d7d);
         [self.contentView addSubview:_subtitleLabel];
+        
+        _popularityLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _popularityLabel.font = [UIFont systemFontOfSize:12];
+        _popularityLabel.left = _titleLabel.left;
+        _popularityLabel.textColor = [UIColor orangeColor];
+        [self.contentView addSubview:_popularityLabel];
+        
+        _thumbnailView = [[NINetworkImageView alloc] initWithFrame:CGRectMake(10, 0, self.width - 20, 210)];
+        self.contentView.layer.cornerRadius = 3;
+        self.contentView.layer.borderColor = RGBCOLOR_HEX(0xd7d7d7).CGColor;
+        self.contentView.layer.borderWidth = 0.5;
+        _thumbnailView.clipsToBounds = YES;
+        _thumbnailView.contentMode = UIViewContentModeScaleAspectFit;
+        [self.contentView addSubview:_thumbnailView];
+        
+        UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showShareView)];
+        swipe.direction = UISwipeGestureRecognizerDirectionLeft;
+        self.contentView.userInteractionEnabled = YES;
+        [self.contentView addGestureRecognizer:swipe];
+        
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(self.width - 50, 5, 44, 44)];
+        [btn setImage:[UIImage imageNamed:@"share-icon.png"] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(showShareView) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:btn];
     }
     return self;
 }
 
+- (ProductHuntPost *)post {
+    return _object.post;
+}
+
 - (BOOL)shouldUpdateCellWithObject:(id)object {
-    PostCellObject *postObject = object;
+    _object = object;
     
-    _titleLabel.text = postObject.post.title;
+    _titleLabel.text = self.post.title;
     [_titleLabel sizeToFit];
     
-    _subtitleLabel.text = postObject.post.subtitle;
+    _subtitleLabel.text = self.post.subtitle;
     _subtitleLabel.width = self.width - 2 * _subtitleLabel.left - 10;
     [_subtitleLabel sizeToFit];
     
     _subtitleLabel.top = _titleLabel.bottom + 5;
     
+    _popularityLabel.text = DefStr(@"%d votes  %d comments", self.post.voteCount, self.post.commentCount);
+    [_popularityLabel sizeToFit];
+    _popularityLabel.top = _subtitleLabel.bottom + 2;
+    
+    if (self.post.image) {
+        _thumbnailView.image = self.post.image;
+    }
+    else {
+        _thumbnailView.image = [UIImage imageNamed:@"default-image.png"];
+    }
+    [_thumbnailView setPathToNetworkImage:self.post.imageLink];
+    _thumbnailView.top = _popularityLabel.bottom + 5;
+    
+    NIDPRINT(@"%@", self.post.imageLink);
+    
     return YES;
+}
+
+- (void)showShareView {
+    [_object.delegate showShareOptionsForCell:self];
 }
 
 @end
 
 
-@interface ProductListViewController () 
+@interface ProductListViewController () <PostCellObjectDelegate, UMSocialUIDelegate>
 @property (nonatomic) NSInteger daysAgo;
 
 @end
@@ -104,8 +149,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    titleLabel.text = @"Products";
+    [titleLabel sizeToFit];
+    titleLabel.textColor = [UIColor orangeColor];
+    self.navigationItem.titleView = titleLabel;
+    
+   // self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(search)];
+    
     WEAK_VAR(self);
-    [self.actions attachToClass:[PostCellObject class] navigationBlock:^BOOL(id object, id target, NSIndexPath *indexPath) {
+    [self.actions attachToClass:[PostCellObject class] tapBlock:^BOOL(id object, id target, NSIndexPath *indexPath) {
         PostCellObject *postObject = object;
         ProductDetailViewController *controller = [[ProductDetailViewController alloc] initWithPost:postObject.post];
         [_self.navigationController pushViewController:controller animated:YES];
@@ -114,13 +167,33 @@
     
     [ProductHuntSession registerWithAppKey:kProductHuntKey appSecret:kProductHuntSecret];
     
-    UISegmentedControl *statFilter = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"All", @"Unread", @"Read", nil]];
-    [statFilter addTarget:self action:@selector(filterPost) forControlEvents:UIControlEventValueChanged];
-    self.navigationItem.titleView = statFilter;
+    NSDictionary *posts = [[ProductHuntSession sharedSession] queryLatestCachedPosts];
     
-    statFilter.selectedSegmentIndex = 0;
+    NSArray *dates = [posts.allKeys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [obj1 compare:obj2];
+    }];
+    
+    for (NSDate *date in dates) {
+        [self addPosts:posts[date] forDate:date];
+    }
     
     [self refresh];
+    
+    [self.tableView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+}
+
+- (void)loadView {
+    [super loadView];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -150,18 +223,38 @@
         [self resetModel];
     }
     
-    NSIndexSet *indexSet = [self.model addSectionWithTitle:[date formatWith:@"yyyy/MM/dd"]];
-    [posts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [self.model addObject:[[PostCellObject alloc] initWithPost:obj] toSection:indexSet.firstIndex];
-    }];
+    [self addPosts:posts forDate:date];
     
     [self reloadTableView];
     
     self.daysAgo++;
 }
 
+- (void)addPosts:(NSArray *)posts forDate:(NSDate *)date {
+    NSIndexSet *indexSet = [self.model addSectionWithTitle:[date formatWith:@"yyyy-MM-dd"]];
+    [posts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        PostCellObject *object = [[PostCellObject alloc] initWithPost:obj];
+        object.delegate = self;
+        [self.model addObject:object toSection:indexSet.firstIndex];
+    }];
+}
+
 - (void)filterPost {
     NIDPRINTMETHODNAME();
+}
+
+- (void)search {
+    
+}
+
+- (void)showShareOptionsForCell:(PostCell *)cell {
+    NSIndexPath *indexPath =  [self.tableView indexPathForCell:cell];
+    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+    
+    ProductHuntPost *post = cell.post;
+    NSArray *snsNames = @[ UMShareToSina, UMShareToTencent, UMShareToWechatSession, UMShareToWechatTimeline, UMShareToWechatFavorite, UMShareToQQ, UMShareToQzone, UMShareToEmail, UMShareToSms];
+    NSString *text = DefStr(@"%@: %@\n %@", post.title, post.subtitle, post.productLink);
+    [UMSocialSnsService presentSnsIconSheetView:self appKey:UmengAppkey shareText:text shareImage:post.image shareToSnsNames:snsNames delegate:self];
 }
 
 @end

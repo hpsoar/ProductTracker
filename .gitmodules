@@ -1,3 +1,6 @@
 [submodule "OCKit"]
 	path = OCKit
 	url = https://github.com/hpsoar/OCKit.git
+[submodule "Thirdparty"]
+	path = Thirdparty
+	url = https://github.com/evernote/evernote-cloud-sdk-ios.git

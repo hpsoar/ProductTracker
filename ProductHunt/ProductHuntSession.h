@@ -18,6 +18,7 @@
 @property NSString *commentLink;
 @property NSInteger commentCount;
 @property NSInteger voteCount;
+@property (nonatomic, readonly) UIImage *image;
 
 - (id)initWithData:(NSDictionary *)data;
 
@@ -62,6 +63,8 @@
 - (void)fetchPostsDaysAgo:(NSInteger)days delegate:(id<ProductHuntSessionDelegate>)delegate;
 
 - (NSArray *)queryCacheForPostsDaysAgo:(NSInteger)days;
+
+- (NSDictionary *)queryLatestCachedPosts;
 
 - (void)commentsForPost:(NSInteger)postId lastCommentId:(NSInteger)lastCommentId count:(NSInteger)count delegate:(id<ProductHuntSessionDelegate>)delegate;
 
