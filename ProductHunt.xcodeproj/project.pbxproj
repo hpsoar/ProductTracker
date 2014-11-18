@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		121052D91A1B67A200E62BCC /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 121052D81A1B67A200E62BCC /* libxml2.dylib */; };
+		121053F11A1B6F6800E62BCC /* icon-favor-evernote.png in Resources */ = {isa = PBXBuildFile; fileRef = 121053ED1A1B6F6800E62BCC /* icon-favor-evernote.png */; };
+		121053F21A1B6F6800E62BCC /* icon-favor-evernote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 121053EE1A1B6F6800E62BCC /* icon-favor-evernote@2x.png */; };
+		121053F31A1B6F6800E62BCC /* icon-favored-evernote.png in Resources */ = {isa = PBXBuildFile; fileRef = 121053EF1A1B6F6800E62BCC /* icon-favored-evernote.png */; };
+		121053F41A1B6F6800E62BCC /* icon-favored-evernote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 121053F01A1B6F6800E62BCC /* icon-favored-evernote@2x.png */; };
+		121053F81A1BA60B00E62BCC /* PostCellObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 121053F71A1BA60B00E62BCC /* PostCellObject.m */; };
+		121053FB1A1BA65400E62BCC /* ProductHuntPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 121053FA1A1BA65400E62BCC /* ProductHuntPost.m */; };
 		12608E941A0906BE000A43A6 /* PHTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12608E931A0906BE000A43A6 /* PHTableViewController.m */; };
 		128185221A052CD300E941FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 128185211A052CD300E941FA /* main.m */; };
 		128185251A052CD300E941FA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 128185241A052CD300E941FA /* AppDelegate.m */; };
@@ -135,6 +142,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		121052D81A1B67A200E62BCC /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		121052DA1A1B691100E62BCC /* ProductHunt-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ProductHunt-Prefix.pch"; sourceTree = "<group>"; };
+		121053ED1A1B6F6800E62BCC /* icon-favor-evernote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-favor-evernote.png"; sourceTree = "<group>"; };
+		121053EE1A1B6F6800E62BCC /* icon-favor-evernote@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-favor-evernote@2x.png"; sourceTree = "<group>"; };
+		121053EF1A1B6F6800E62BCC /* icon-favored-evernote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-favored-evernote.png"; sourceTree = "<group>"; };
+		121053F01A1B6F6800E62BCC /* icon-favored-evernote@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-favored-evernote@2x.png"; sourceTree = "<group>"; };
+		121053F61A1BA60B00E62BCC /* PostCellObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCellObject.h; sourceTree = "<group>"; };
+		121053F71A1BA60B00E62BCC /* PostCellObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCellObject.m; sourceTree = "<group>"; };
+		121053F91A1BA65400E62BCC /* ProductHuntPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductHuntPost.h; sourceTree = "<group>"; };
+		121053FA1A1BA65400E62BCC /* ProductHuntPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductHuntPost.m; sourceTree = "<group>"; };
 		12608E921A0906BE000A43A6 /* PHTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHTableViewController.h; sourceTree = "<group>"; };
 		12608E931A0906BE000A43A6 /* PHTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHTableViewController.m; sourceTree = "<group>"; };
 		1281851C1A052CD300E941FA /* ProductHunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProductHunt.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -362,6 +379,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				121052D91A1B67A200E62BCC /* libxml2.dylib in Frameworks */,
 				12A040561A0A9151005E8F1E /* libc++.dylib in Frameworks */,
 				12A040541A0A8FEB005E8F1E /* libz.1.2.5.dylib in Frameworks */,
 				12A040521A0A8FBA005E8F1E /* CoreTelephony.framework in Frameworks */,
@@ -396,10 +414,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		121053F51A1BA5E900E62BCC /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				121053F61A1BA60B00E62BCC /* PostCellObject.h */,
+				121053F71A1BA60B00E62BCC /* PostCellObject.m */,
+				121053F91A1BA65400E62BCC /* ProductHuntPost.h */,
+				121053FA1A1BA65400E62BCC /* ProductHuntPost.m */,
+			);
+			name = Items;
+			sourceTree = "<group>";
+		};
 		128185131A052CD300E941FA = {
 			isa = PBXGroup;
 			children = (
 				12A040551A0A9151005E8F1E /* libc++.dylib */,
+				121052D81A1B67A200E62BCC /* libxml2.dylib */,
 				12A040531A0A8FEB005E8F1E /* libz.1.2.5.dylib */,
 				12A040511A0A8FBA005E8F1E /* CoreTelephony.framework */,
 				12A0404F1A0A8FA7005E8F1E /* libsqlite3.0.dylib */,
@@ -425,6 +455,7 @@
 		1281851E1A052CD300E941FA /* ProductHunt */ = {
 			isa = PBXGroup;
 			children = (
+				121053F51A1BA5E900E62BCC /* Items */,
 				12EF9D5D1A1782330074460C /* Resources */,
 				128185231A052CD300E941FA /* AppDelegate.h */,
 				128185241A052CD300E941FA /* AppDelegate.m */,
@@ -454,6 +485,7 @@
 		1281851F1A052CD300E941FA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				121052DA1A1B691100E62BCC /* ProductHunt-Prefix.pch */,
 				128185201A052CD300E941FA /* Info.plist */,
 				128185211A052CD300E941FA /* main.m */,
 			);
@@ -901,6 +933,10 @@
 		12EF9D5D1A1782330074460C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				121053ED1A1B6F6800E62BCC /* icon-favor-evernote.png */,
+				121053EE1A1B6F6800E62BCC /* icon-favor-evernote@2x.png */,
+				121053EF1A1B6F6800E62BCC /* icon-favored-evernote.png */,
+				121053F01A1B6F6800E62BCC /* icon-favored-evernote@2x.png */,
 				1286DB861A179C5F00F41C07 /* share-icon.png */,
 				1286DB871A179C5F00F41C07 /* share-icon@2x.png */,
 				12EF9D701A17852B0074460C /* icon60.png */,
@@ -998,12 +1034,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				12A040071A0A8DA9005E8F1E /* UMSCommentInputControlleriPad.xib in Resources */,
+				121053F21A1B6F6800E62BCC /* icon-favor-evernote@2x.png in Resources */,
 				12A0400B1A0A8DA9005E8F1E /* UMSnsAccountViewController.xib in Resources */,
 				128185301A052CD300E941FA /* LaunchScreen.xib in Resources */,
 				128187841A05345F00E941FA /* deps in Resources */,
 				128187741A05345E00E941FA /* deps in Resources */,
 				1281852D1A052CD300E941FA /* Images.xcassets in Resources */,
 				1281878A1A05345F00E941FA /* deps in Resources */,
+				121053F41A1B6F6800E62BCC /* icon-favored-evernote@2x.png in Resources */,
 				12A040091A0A8DA9005E8F1E /* UMShareEditViewControlleriPad.xib in Resources */,
 				1286DB881A179C5F00F41C07 /* share-icon.png in Resources */,
 				12A0400C1A0A8DA9005E8F1E /* UMSShareListController.xib in Resources */,
@@ -1017,6 +1055,7 @@
 				12EF9D691A17841F0074460C /* icon29@2x.png in Resources */,
 				12A0400D1A0A8DA9005E8F1E /* UMSocialSDKResourcesNew.bundle in Resources */,
 				1281878B1A05345F00E941FA /* NimbusWebController.bundle in Resources */,
+				121053F31A1B6F6800E62BCC /* icon-favored-evernote.png in Resources */,
 				128187981A05347400E941FA /* deps in Resources */,
 				12EF9D631A1782330074460C /* default-image@2x.png in Resources */,
 				12A040081A0A8DA9005E8F1E /* UMShareEditViewController.xib in Resources */,
@@ -1027,6 +1066,7 @@
 				12A0400A1A0A8DA9005E8F1E /* UMSLoginViewController.xib in Resources */,
 				12A040461A0A8F75005E8F1E /* ios-social-sdk-shake.html in Resources */,
 				12EF9D651A1782330074460C /* icon@2x.png in Resources */,
+				121053F11A1B6F6800E62BCC /* icon-favor-evernote.png in Resources */,
 				12EF9D681A17841F0074460C /* icon29.png in Resources */,
 				12EF9D6D1A1784C90074460C /* icon80@2x.png in Resources */,
 			);
@@ -1068,6 +1108,7 @@
 				12CB2A001A0CFD5D002C1C45 /* PHShareKit.m in Sources */,
 				128187B51A0536B200E941FA /* AFURLConnectionOperation.m in Sources */,
 				128187871A05345F00E941FA /* NINetworkImageView.m in Sources */,
+				121053F81A1BA60B00E62BCC /* PostCellObject.m in Sources */,
 				128185221A052CD300E941FA /* main.m in Sources */,
 				1281875A1A05345E00E941FA /* NINavigationAppearance.m in Sources */,
 				128187C71A053DE000E941FA /* Macros.m in Sources */,
@@ -1095,6 +1136,7 @@
 				128187771A05345E00E941FA /* NICellCatalog.m in Sources */,
 				128187501A05345E00E941FA /* NIActions.m in Sources */,
 				1281882F1A06586400E941FA /* RefreshTableViewController.m in Sources */,
+				121053FB1A1BA65400E62BCC /* ProductHuntPost.m in Sources */,
 				128187851A05345F00E941FA /* NIImageProcessing.m in Sources */,
 				12608E941A0906BE000A43A6 /* PHTableViewController.m in Sources */,
 				128187B61A0536B200E941FA /* AFURLRequestSerialization.m in Sources */,
@@ -1233,6 +1275,15 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
+					"$(PROJECT_DIR)/evernote-cloud-sdk-ios/Products",
+				);
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ProductHunt/ProductHunt-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"${SDKROOT}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = ProductHunt/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
@@ -1265,6 +1316,15 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
+					"$(PROJECT_DIR)/evernote-cloud-sdk-ios/Products",
+				);
+				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ProductHunt/ProductHunt-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"${SDKROOT}/usr/include/libxml2",
 				);
 				INFOPLIST_FILE = ProductHunt/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;

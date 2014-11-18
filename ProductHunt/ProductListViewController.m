@@ -9,131 +9,16 @@
 #import "ProductListViewController.h"
 #import "NIMutableTableViewModel.h"
 #import "NITableViewActions.h"
-#import "NINetworkImageView.h"
 #import "Utility.h"
 #import "ProductDetailViewController.h"
 #import "AppDelegate.h"
-
-@implementation PostCellObject
-
-- (id)initWithPost:(ProductHuntPost *)post {
-    self = [super init];
-    if (self) {
-        _post = post;
-    }
-    return self;
-}
-
-- (Class)cellClass {
-    return [PostCell class];
-}
-
-@end
-
-@implementation PostCell {
-    UILabel *_titleLabel;
-    UILabel *_subtitleLabel;
-    NINetworkImageView *_thumbnailView;
-    PostCellObject *_object;
-    
-    UILabel *_popularityLabel;
-}
-
-+ (CGFloat)heightForObject:(id)object atIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
-    PostCellObject *cellObject = object;
-    CGFloat titleHeight = [Utility heightForText:cellObject.post.title fontSize:20 width:280];
-    CGFloat subtitleHeight = [Utility heightForText:cellObject.post.subtitle fontSize:16 width:280];
-    return 30 + titleHeight + subtitleHeight + 210 + 20;
-}
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _titleLabel.left = 10;
-        _titleLabel.top = 10;
-        _titleLabel.font = [UIFont systemFontOfSize:20];
-        _titleLabel.textColor = RGBCOLOR_HEX(0xda552f);
-        [self.contentView addSubview:_titleLabel];
-        
-        _subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _subtitleLabel.font = [UIFont systemFontOfSize:16];
-        _subtitleLabel.left = _titleLabel.left;
-        _subtitleLabel.numberOfLines = 0;
-        _subtitleLabel.textColor = RGBCOLOR_HEX(0x7d7d7d);
-        [self.contentView addSubview:_subtitleLabel];
-        
-        _popularityLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _popularityLabel.font = [UIFont systemFontOfSize:12];
-        _popularityLabel.left = _titleLabel.left;
-        _popularityLabel.textColor = [UIColor orangeColor];
-        [self.contentView addSubview:_popularityLabel];
-        
-        _thumbnailView = [[NINetworkImageView alloc] initWithFrame:CGRectMake(10, 0, self.width - 20, 210)];
-        self.contentView.layer.cornerRadius = 3;
-        self.contentView.layer.borderColor = RGBCOLOR_HEX(0xd7d7d7).CGColor;
-        self.contentView.layer.borderWidth = 0.5;
-        _thumbnailView.clipsToBounds = YES;
-        _thumbnailView.contentMode = UIViewContentModeScaleAspectFit;
-        [self.contentView addSubview:_thumbnailView];
-        
-        UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showShareView)];
-        swipe.direction = UISwipeGestureRecognizerDirectionLeft;
-        self.contentView.userInteractionEnabled = YES;
-        [self.contentView addGestureRecognizer:swipe];
-        
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(self.width - 50, 5, 44, 44)];
-        [btn setImage:[UIImage imageNamed:@"share-icon.png"] forState:UIControlStateNormal];
-        [btn addTarget:self action:@selector(showShareView) forControlEvents:UIControlEventTouchUpInside];
-        [self.contentView addSubview:btn];
-    }
-    return self;
-}
-
-- (ProductHuntPost *)post {
-    return _object.post;
-}
-
-- (BOOL)shouldUpdateCellWithObject:(id)object {
-    _object = object;
-    
-    _titleLabel.text = self.post.title;
-    [_titleLabel sizeToFit];
-    
-    _subtitleLabel.text = self.post.subtitle;
-    _subtitleLabel.width = self.width - 2 * _subtitleLabel.left - 10;
-    [_subtitleLabel sizeToFit];
-    
-    _subtitleLabel.top = _titleLabel.bottom + 5;
-    
-    _popularityLabel.text = DefStr(@"%d votes  %d comments", self.post.voteCount, self.post.commentCount);
-    [_popularityLabel sizeToFit];
-    _popularityLabel.top = _subtitleLabel.bottom + 2;
-    
-    if (self.post.image) {
-        _thumbnailView.image = self.post.image;
-    }
-    else {
-        _thumbnailView.image = [UIImage imageNamed:@"default-image.png"];
-    }
-    [_thumbnailView setPathToNetworkImage:self.post.imageLink];
-    _thumbnailView.top = _popularityLabel.bottom + 5;
-    
-    NIDPRINT(@"%@", self.post.imageLink);
-    
-    return YES;
-}
-
-- (void)showShareView {
-    [_object.delegate showShareOptionsForCell:self];
-}
-
-@end
-
+#import <ENSDK/ENSDK.h>
+#import <ENSDK/Advanced/ENSDKAdvanced.h>
+#import "PostCellObject.h"
 
 @interface ProductListViewController () <PostCellObjectDelegate, UMSocialUIDelegate>
 @property (nonatomic) NSInteger daysAgo;
-
+@property (nonatomic) ENNotebook *notebook;
 @end
 
 @implementation ProductListViewController
@@ -155,7 +40,7 @@
     titleLabel.textColor = [UIColor orangeColor];
     self.navigationItem.titleView = titleLabel;
     
-   // self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(search)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(showMarkedPosts)];
     
     WEAK_VAR(self);
     [self.actions attachToClass:[PostCellObject class] tapBlock:^BOOL(id object, id target, NSIndexPath *indexPath) {
@@ -167,15 +52,7 @@
     
     [ProductHuntSession registerWithAppKey:kProductHuntKey appSecret:kProductHuntSecret];
     
-    NSDictionary *posts = [[ProductHuntSession sharedSession] queryLatestCachedPosts];
-    
-    NSArray *dates = [posts.allKeys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        return [obj1 compare:obj2];
-    }];
-    
-    for (NSDate *date in dates) {
-        [self addPosts:posts[date] forDate:date];
-    }
+    [self addPosts:[[ProductHuntSession sharedSession] cachedPostsForDate:[NSDate date]]  forDate:[NSDate date]];
     
     [self refresh];
     
@@ -238,14 +115,126 @@
     
 }
 
+- (void)showMarkedPosts {
+    
+}
+
 - (void)showShareOptionsForCell:(PostCell *)cell {
-    NSIndexPath *indexPath =  [self.tableView indexPathForCell:cell];
-    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+    [self selectCell:cell];
     
     ProductHuntPost *post = cell.post;
     NSArray *snsNames = @[ UMShareToSina, UMShareToTencent, UMShareToWechatSession, UMShareToWechatTimeline, UMShareToWechatFavorite, UMShareToQQ, UMShareToQzone, UMShareToEmail, UMShareToSms];
     NSString *text = DefStr(@"%@: %@\n %@", post.title, post.subtitle, post.productLink);
     [UMSocialSnsService presentSnsIconSheetView:self appKey:UmengAppkey shareText:text shareImage:post.image shareToSnsNames:snsNames delegate:self];
+}
+
+- (void)selectCell:(PostCell *)cell {
+    NSIndexPath *indexPath =  [self.tableView indexPathForCell:cell];
+    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+}
+
+- (void)savePostToEvernoteForCell:(PostCell *)cell {
+    [self selectCell:cell];
+    
+    if ([[ENSession sharedSession] isAuthenticated]) {
+        [self savePostToEverNote:cell.post];
+    }
+    else {
+        [[ENSession sharedSession] authenticateWithViewController:self
+                                               preferRegistration:NO
+                                                       completion:^(NSError *authenticateError) {
+                                                           if (!authenticateError) {
+                                                               [self savePostToEverNote:cell.post];
+                                                           } else if (authenticateError.code != ENErrorCodeCancelled) {
+                                                               NIDPRINT(@"%@", authenticateError);
+                                                           }
+                                                       }];
+    }
+}
+
+- (void)savePostToEverNote:(ProductHuntPost *)post {
+    NSString *notebookName = @"ProductsTracker";
+  
+    
+    if (self.notebook) {
+        [self savePost:post toNoteBook:self.notebook];
+    }
+    else {
+        [self findNotebookWithName:notebookName success:^(ENNotebook *notebook) {
+            if (notebook) {
+                [self savePost:post toNoteBook:notebook];
+            }
+            else {
+                [self createNotebookWithName:notebookName success:^(EDAMNotebook *notebook) {
+                    [self findNotebookWithName:notebookName success:^(ENNotebook *notebook) {
+                        if (notebook) {
+                            [self savePost:post toNoteBook:notebook];
+                        }
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                } failure:^(NSError *error) {
+                    
+                }];
+            }
+        } failure:^(NSError *error) {
+            
+        }];
+    }
+}
+
+- (void)createNotebookWithName:(NSString *)notebookName success:(void(^)(EDAMNotebook *notebook))success failure:(void(^)(NSError *error))failure {
+    EDAMNotebook *notebook = [EDAMNotebook new];
+    notebook.name = notebookName;
+    
+    [[ENSession sharedSession].primaryNoteStore createNotebook:notebook success:^(EDAMNotebook *notebook) {
+        success(notebook);
+    } failure:^(NSError *error) {
+        NIDPRINT(@"%@", error);
+        failure(error);
+    }];
+}
+
+- (void)findNotebookWithName:(NSString *)notebookName success:(void(^)(ENNotebook *notebook))success failure:(void(^)(NSError *error))failure {
+    [[ENSession sharedSession] listNotebooksWithCompletion:^(NSArray *notebooks, NSError *listNotebooksError) {
+        if (listNotebooksError) {
+            NIDPRINT(@"%@", listNotebooksError);
+            failure(listNotebooksError);
+        }
+        else {
+            ENNotebook *notebook;
+            for (ENNotebook *nb in notebooks) {
+                if ([nb.name isEqualToString:notebookName]) {
+                    notebook = nb;
+                    break;
+                }
+            }
+            success(notebook);
+        }
+    }];
+}
+
+- (void)savePost:(ProductHuntPost *)post toNoteBook:(ENNotebook *)notebook {
+    self.notebook = notebook;
+    
+    // Build note with resource.
+    ENNote * note = [[ENNote alloc] init];
+    note.title = post.title;
+    note.content = [[ENNoteContent alloc] initWithENML:post.subtitle];
+    if (post.image) {
+        ENResource * resource = [[ENResource alloc] initWithImage:post.image];
+        [note addResource:resource];
+    }
+
+    [[ENSession sharedSession] uploadNote:note notebook:notebook completion:^(ENNoteRef *noteRef, NSError *uploadNoteError) {
+        NSString * message = nil;
+        if (noteRef) {
+            message = @"Photo note created.";
+        } else {
+            message = @"Failed to create photo note.";
+        }
+        NIDPRINT(@"%@", message);
+    }];
 }
 
 @end

@@ -15,6 +15,7 @@
 #import "UMSocialSinaHandler.h"
 #import "UMSocialYiXinHandler.h"
 #import "UMSocialFacebookHandler.h"
+#import <ENSDK/ENSDK.h>
 
 @interface AppDelegate ()
 
@@ -100,6 +101,11 @@
     
     ////    设置facebook应用ID，和分享纯文字用到的url地址
     [UMSocialFacebookHandler setFacebookAppID:@"91136964205" shareFacebookWithURL:@"http://www.umeng.com/social"];
+    
+    // Set shared session key information.
+    [ENSession setSharedSessionConsumerKey:@"hpsoar-2086"
+                            consumerSecret:@"cf5a8abac6c4d18d"
+                              optionalHost:ENSessionHostSandbox];
 }
 
 @end

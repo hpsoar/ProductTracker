@@ -1,6 +1,9 @@
 [submodule "OCKit"]
 	path = OCKit
 	url = https://github.com/hpsoar/OCKit.git
-[submodule "Thirdparty"]
-	path = Thirdparty
-	url = https://github.com/evernote/evernote-cloud-sdk-ios.git
+[submodule "thirdparties/fmdb"]
+	path = thirdparties/fmdb
+	url = https://github.com/ccgus/fmdb.git
+[submodule "thirdparties/evernote"]
+	path = thirdparties/evernote
+	url = https://github.com/evernote/evernote-cloud-sdk-ios

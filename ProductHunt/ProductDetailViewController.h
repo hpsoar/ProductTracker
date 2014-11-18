@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "ProductHuntSession.h"
+#import "ProductHuntPost.h"
 #import "PHTableViewController.h"
 
 @interface ProductDetailViewController : PHTableViewController
