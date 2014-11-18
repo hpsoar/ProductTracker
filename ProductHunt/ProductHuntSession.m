@@ -7,9 +7,6 @@
 //
 
 #import "ProductHuntSession.h"
-#import "NIDebuggingTools.h"
-#import "Utility.h"
-
 #import "ProductHuntPost.h"
 
 #define kProductHuntRootPath @"https://api.producthunt.com"

@@ -9,7 +9,6 @@
 #import "ProductListViewController.h"
 #import "NIMutableTableViewModel.h"
 #import "NITableViewActions.h"
-#import "Utility.h"
 #import "ProductDetailViewController.h"
 #import "AppDelegate.h"
 #import <ENSDK/ENSDK.h>

@@ -8,7 +8,6 @@
 
 #import "ProductStreamViewController.h"
 #import "ProductHuntSession.h"
-#import "Utility.h"
 
 @interface ProductStreamViewController ()
 @end

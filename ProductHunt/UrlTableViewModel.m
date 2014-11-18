@@ -7,7 +7,6 @@
 //
 
 #import "UrlTableViewModel.h"
-#import "Utility.h"
 #import "AFHTTPSessionManager.h"
 
 @implementation UrlTableViewModel

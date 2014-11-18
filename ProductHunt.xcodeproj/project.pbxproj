@@ -14,6 +14,14 @@
 		121053F41A1B6F6800E62BCC /* icon-favored-evernote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 121053F01A1B6F6800E62BCC /* icon-favored-evernote@2x.png */; };
 		121053F81A1BA60B00E62BCC /* PostCellObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 121053F71A1BA60B00E62BCC /* PostCellObject.m */; };
 		121053FB1A1BA65400E62BCC /* ProductHuntPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 121053FA1A1BA65400E62BCC /* ProductHuntPost.m */; };
+		121054191A1BAA3C00E62BCC /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 1210540F1A1BAA3C00E62BCC /* FMDatabase.m */; };
+		1210541A1A1BAA3C00E62BCC /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 121054111A1BAA3C00E62BCC /* FMDatabaseAdditions.m */; };
+		1210541B1A1BAA3C00E62BCC /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 121054131A1BAA3C00E62BCC /* FMDatabasePool.m */; };
+		1210541C1A1BAA3C00E62BCC /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 121054151A1BAA3C00E62BCC /* FMDatabaseQueue.m */; };
+		1210541D1A1BAA3C00E62BCC /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 121054181A1BAA3C00E62BCC /* FMResultSet.m */; };
+		121054201A1BAA5E00E62BCC /* ENSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1210541E1A1BAA5E00E62BCC /* ENSDK.framework */; };
+		121054211A1BAA5E00E62BCC /* ENSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1210541F1A1BAA5E00E62BCC /* ENSDKResources.bundle */; };
+		121054241A1BABB400E62BCC /* FavorDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 121054231A1BABB400E62BCC /* FavorDB.m */; };
 		12608E941A0906BE000A43A6 /* PHTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12608E931A0906BE000A43A6 /* PHTableViewController.m */; };
 		128185221A052CD300E941FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 128185211A052CD300E941FA /* main.m */; };
 		128185251A052CD300E941FA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 128185241A052CD300E941FA /* AppDelegate.m */; };
@@ -152,6 +160,21 @@
 		121053F71A1BA60B00E62BCC /* PostCellObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCellObject.m; sourceTree = "<group>"; };
 		121053F91A1BA65400E62BCC /* ProductHuntPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductHuntPost.h; sourceTree = "<group>"; };
 		121053FA1A1BA65400E62BCC /* ProductHuntPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductHuntPost.m; sourceTree = "<group>"; };
+		1210540E1A1BAA3C00E62BCC /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		1210540F1A1BAA3C00E62BCC /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		121054101A1BAA3C00E62BCC /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		121054111A1BAA3C00E62BCC /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		121054121A1BAA3C00E62BCC /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		121054131A1BAA3C00E62BCC /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		121054141A1BAA3C00E62BCC /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		121054151A1BAA3C00E62BCC /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		121054161A1BAA3C00E62BCC /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
+		121054171A1BAA3C00E62BCC /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		121054181A1BAA3C00E62BCC /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		1210541E1A1BAA5E00E62BCC /* ENSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ENSDK.framework; path = thirdparties/evernote/Products/ENSDK.framework; sourceTree = "<group>"; };
+		1210541F1A1BAA5E00E62BCC /* ENSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ENSDKResources.bundle; path = thirdparties/evernote/Products/ENSDKResources.bundle; sourceTree = "<group>"; };
+		121054221A1BABB400E62BCC /* FavorDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavorDB.h; sourceTree = "<group>"; };
+		121054231A1BABB400E62BCC /* FavorDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavorDB.m; sourceTree = "<group>"; };
 		12608E921A0906BE000A43A6 /* PHTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHTableViewController.h; sourceTree = "<group>"; };
 		12608E931A0906BE000A43A6 /* PHTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHTableViewController.m; sourceTree = "<group>"; };
 		1281851C1A052CD300E941FA /* ProductHunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProductHunt.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -395,6 +418,7 @@
 				12A0403D1A0A8F75005E8F1E /* libSocialFacebook.a in Frameworks */,
 				12A040451A0A8F75005E8F1E /* libSocialTwitter.a in Frameworks */,
 				12A040031A0A8DA9005E8F1E /* libUMSocial_Sdk_4.2.a in Frameworks */,
+				121054201A1BAA5E00E62BCC /* ENSDK.framework in Frameworks */,
 				12A0404C1A0A8F75005E8F1E /* libSocialWhatsapp.a in Frameworks */,
 				12A0403E1A0A8F75005E8F1E /* libSocialInstagram.a in Frameworks */,
 				12A0404E1A0A8F75005E8F1E /* libYixinSDK_V2.2.a in Frameworks */,
@@ -425,9 +449,31 @@
 			name = Items;
 			sourceTree = "<group>";
 		};
+		1210540D1A1BAA3C00E62BCC /* fmdb */ = {
+			isa = PBXGroup;
+			children = (
+				1210540E1A1BAA3C00E62BCC /* FMDatabase.h */,
+				1210540F1A1BAA3C00E62BCC /* FMDatabase.m */,
+				121054101A1BAA3C00E62BCC /* FMDatabaseAdditions.h */,
+				121054111A1BAA3C00E62BCC /* FMDatabaseAdditions.m */,
+				121054121A1BAA3C00E62BCC /* FMDatabasePool.h */,
+				121054131A1BAA3C00E62BCC /* FMDatabasePool.m */,
+				121054141A1BAA3C00E62BCC /* FMDatabaseQueue.h */,
+				121054151A1BAA3C00E62BCC /* FMDatabaseQueue.m */,
+				121054161A1BAA3C00E62BCC /* FMDB.h */,
+				121054171A1BAA3C00E62BCC /* FMResultSet.h */,
+				121054181A1BAA3C00E62BCC /* FMResultSet.m */,
+			);
+			name = fmdb;
+			path = thirdparties/fmdb/src/fmdb;
+			sourceTree = "<group>";
+		};
 		128185131A052CD300E941FA = {
 			isa = PBXGroup;
 			children = (
+				1210541E1A1BAA5E00E62BCC /* ENSDK.framework */,
+				1210541F1A1BAA5E00E62BCC /* ENSDKResources.bundle */,
+				1210540D1A1BAA3C00E62BCC /* fmdb */,
 				12A040551A0A9151005E8F1E /* libc++.dylib */,
 				121052D81A1B67A200E62BCC /* libxml2.dylib */,
 				12A040531A0A8FEB005E8F1E /* libz.1.2.5.dylib */,
@@ -478,6 +524,8 @@
 				12608E931A0906BE000A43A6 /* PHTableViewController.m */,
 				12CB29FE1A0CFD5D002C1C45 /* PHShareKit.h */,
 				12CB29FF1A0CFD5D002C1C45 /* PHShareKit.m */,
+				121054221A1BABB400E62BCC /* FavorDB.h */,
+				121054231A1BABB400E62BCC /* FavorDB.m */,
 			);
 			path = ProductHunt;
 			sourceTree = "<group>";
@@ -1048,6 +1096,7 @@
 				12A040481A0A8F75005E8F1E /* ios-social-sdk-shake.html in Resources */,
 				12A040021A0A8DA9005E8F1E /* UMSocialLocalizable.strings in Resources */,
 				12EF9D6F1A1785240074460C /* icon120@2x.png in Resources */,
+				121054211A1BAA5E00E62BCC /* ENSDKResources.bundle in Resources */,
 				12A040431A0A8F75005E8F1E /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				12A040051A0A8DA9005E8F1E /* UMSCommentDetailController.xib in Resources */,
 				12EF9D6C1A1784C90074460C /* icon40.png in Resources */,
@@ -1099,8 +1148,10 @@
 				128187561A05345E00E941FA /* NIError.m in Sources */,
 				128187CE1A0617EE00E941FA /* ProductDetailViewController.m in Sources */,
 				1281877E1A05345F00E941FA /* NITableViewModel.m in Sources */,
+				121054241A1BABB400E62BCC /* FavorDB.m in Sources */,
 				128187D41A061DFC00E941FA /* TodayProductListViewController.m in Sources */,
 				128185251A052CD300E941FA /* AppDelegate.m in Sources */,
+				121054191A1BAA3C00E62BCC /* FMDatabase.m in Sources */,
 				128187C81A053DE000E941FA /* UIImage+BlurredFrame.m in Sources */,
 				128186081A052F7300E941FA /* ProductListViewController.m in Sources */,
 				1281875D1A05345E00E941FA /* NINonRetainingCollections.m in Sources */,
@@ -1115,10 +1166,12 @@
 				128187571A05345E00E941FA /* NIFoundationMethods.m in Sources */,
 				1281878C1A05345F00E941FA /* NIWebController.m in Sources */,
 				1281877D1A05345F00E941FA /* NITableViewActions.m in Sources */,
+				1210541D1A1BAA3C00E62BCC /* FMResultSet.m in Sources */,
 				128187551A05345E00E941FA /* NIDeviceOrientation.m in Sources */,
 				128187621A05345E00E941FA /* NISnapshotRotation.m in Sources */,
 				128187B81A0536B200E941FA /* AFURLSessionManager.m in Sources */,
 				1281875F1A05345E00E941FA /* NIPaths.m in Sources */,
+				1210541A1A1BAA3C00E62BCC /* FMDatabaseAdditions.m in Sources */,
 				128187511A05345E00E941FA /* NIButtonUtilities.m in Sources */,
 				128187601A05345E00E941FA /* NIRuntimeClassModifications.m in Sources */,
 				128187CB1A053DE000E941FA /* Utility.m in Sources */,
@@ -1133,12 +1186,14 @@
 				1281875B1A05345E00E941FA /* NINetworkActivity.m in Sources */,
 				1281860B1A05304D00E941FA /* UrlTableViewModel.m in Sources */,
 				128187991A05347400E941FA /* NINetworkTableViewController.m in Sources */,
+				1210541B1A1BAA3C00E62BCC /* FMDatabasePool.m in Sources */,
 				128187771A05345E00E941FA /* NICellCatalog.m in Sources */,
 				128187501A05345E00E941FA /* NIActions.m in Sources */,
 				1281882F1A06586400E941FA /* RefreshTableViewController.m in Sources */,
 				121053FB1A1BA65400E62BCC /* ProductHuntPost.m in Sources */,
 				128187851A05345F00E941FA /* NIImageProcessing.m in Sources */,
 				12608E941A0906BE000A43A6 /* PHTableViewController.m in Sources */,
+				1210541C1A1BAA3C00E62BCC /* FMDatabaseQueue.m in Sources */,
 				128187B61A0536B200E941FA /* AFURLRequestSerialization.m in Sources */,
 				128187B31A0536B200E941FA /* AFNetworkReachabilityManager.m in Sources */,
 				128187D71A061EDE00E941FA /* ProductStreamViewController.m in Sources */,
@@ -1276,6 +1331,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
 					"$(PROJECT_DIR)/evernote-cloud-sdk-ios/Products",
+					"$(PROJECT_DIR)/thirdparties/evernote/Products",
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1317,6 +1373,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
 					"$(PROJECT_DIR)/evernote-cloud-sdk-ios/Products",
+					"$(PROJECT_DIR)/thirdparties/evernote/Products",
 				);
 				GCC_INCREASE_PRECOMPILED_HEADER_SHARING = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

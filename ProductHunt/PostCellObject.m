@@ -8,7 +8,6 @@
 
 #import "PostCellObject.h"
 #import "NINetworkImageView.h"
-#import "Utility.h"
 
 @implementation PostCellObject
 

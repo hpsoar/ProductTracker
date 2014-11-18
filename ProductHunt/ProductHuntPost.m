@@ -7,7 +7,6 @@
 //
 
 #import "ProductHuntPost.h"
-#import "Utility.h"
 
 #define kProductLink @"productLink"
 #define kTitle @"title"

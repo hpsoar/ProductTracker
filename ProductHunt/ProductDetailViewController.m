@@ -8,8 +8,8 @@
 
 #import "ProductDetailViewController.h"
 #import "NINetworkImageView.h"
-#import "Utility.h"
 #import "AppDelegate.h"
+#import "ProductHuntSession.h"
 
 @interface CommentItem : NICellObject
 @property (nonatomic, readonly) ProductHuntComment *comment;
