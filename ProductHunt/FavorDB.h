@@ -16,5 +16,6 @@
 - (void)favorPost:(ProductHuntPost *)post;
 - (void)unfavorPostWithId:(NSInteger)postId;
 - (NSArray *)favoredPosts;
+- (BOOL)isPostFavored:(NSInteger)postId;
 
 @end

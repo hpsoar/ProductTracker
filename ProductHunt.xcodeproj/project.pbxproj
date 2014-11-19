@@ -22,6 +22,13 @@
 		121054201A1BAA5E00E62BCC /* ENSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1210541E1A1BAA5E00E62BCC /* ENSDK.framework */; };
 		121054211A1BAA5E00E62BCC /* ENSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1210541F1A1BAA5E00E62BCC /* ENSDKResources.bundle */; };
 		121054241A1BABB400E62BCC /* FavorDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 121054231A1BABB400E62BCC /* FavorDB.m */; };
+		1210547B1A1CB97500E62BCC /* FavoredPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1210547A1A1CB97500E62BCC /* FavoredPostsViewController.m */; };
+		121054801A1CC4A900E62BCC /* icon-favored.png in Resources */ = {isa = PBXBuildFile; fileRef = 1210547C1A1CC4A900E62BCC /* icon-favored.png */; };
+		121054811A1CC4A900E62BCC /* icon-favored@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1210547D1A1CC4A900E62BCC /* icon-favored@2x.png */; };
+		121054821A1CC4A900E62BCC /* icon-share.png in Resources */ = {isa = PBXBuildFile; fileRef = 1210547E1A1CC4A900E62BCC /* icon-share.png */; };
+		121054831A1CC4A900E62BCC /* icon-share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1210547F1A1CC4A900E62BCC /* icon-share@2x.png */; };
+		121054861A1CC4B100E62BCC /* icon-favor.png in Resources */ = {isa = PBXBuildFile; fileRef = 121054841A1CC4B100E62BCC /* icon-favor.png */; };
+		121054871A1CC4B100E62BCC /* icon-favor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 121054851A1CC4B100E62BCC /* icon-favor@2x.png */; };
 		12608E941A0906BE000A43A6 /* PHTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12608E931A0906BE000A43A6 /* PHTableViewController.m */; };
 		128185221A052CD300E941FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 128185211A052CD300E941FA /* main.m */; };
 		128185251A052CD300E941FA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 128185241A052CD300E941FA /* AppDelegate.m */; };
@@ -91,8 +98,6 @@
 		128187D41A061DFC00E941FA /* TodayProductListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128187D31A061DFC00E941FA /* TodayProductListViewController.m */; };
 		128187D71A061EDE00E941FA /* ProductStreamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 128187D61A061EDE00E941FA /* ProductStreamViewController.m */; };
 		1281882F1A06586400E941FA /* RefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1281882E1A06586400E941FA /* RefreshTableViewController.m */; };
-		1286DB881A179C5F00F41C07 /* share-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 1286DB861A179C5F00F41C07 /* share-icon.png */; };
-		1286DB891A179C5F00F41C07 /* share-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1286DB871A179C5F00F41C07 /* share-icon@2x.png */; };
 		12A040021A0A8DA9005E8F1E /* UMSocialLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A03FE71A0A8DA9005E8F1E /* UMSocialLocalizable.strings */; };
 		12A040031A0A8DA9005E8F1E /* libUMSocial_Sdk_4.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A03FF51A0A8DA9005E8F1E /* libUMSocial_Sdk_4.2.a */; };
 		12A040041A0A8DA9005E8F1E /* libUMSocial_Sdk_Comment_4.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A03FF61A0A8DA9005E8F1E /* libUMSocial_Sdk_Comment_4.2.a */; };
@@ -175,6 +180,14 @@
 		1210541F1A1BAA5E00E62BCC /* ENSDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ENSDKResources.bundle; path = thirdparties/evernote/Products/ENSDKResources.bundle; sourceTree = "<group>"; };
 		121054221A1BABB400E62BCC /* FavorDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavorDB.h; sourceTree = "<group>"; };
 		121054231A1BABB400E62BCC /* FavorDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavorDB.m; sourceTree = "<group>"; };
+		121054791A1CB97500E62BCC /* FavoredPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoredPostsViewController.h; sourceTree = "<group>"; };
+		1210547A1A1CB97500E62BCC /* FavoredPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoredPostsViewController.m; sourceTree = "<group>"; };
+		1210547C1A1CC4A900E62BCC /* icon-favored.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-favored.png"; sourceTree = "<group>"; };
+		1210547D1A1CC4A900E62BCC /* icon-favored@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-favored@2x.png"; sourceTree = "<group>"; };
+		1210547E1A1CC4A900E62BCC /* icon-share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-share.png"; sourceTree = "<group>"; };
+		1210547F1A1CC4A900E62BCC /* icon-share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-share@2x.png"; sourceTree = "<group>"; };
+		121054841A1CC4B100E62BCC /* icon-favor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-favor.png"; sourceTree = "<group>"; };
+		121054851A1CC4B100E62BCC /* icon-favor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-favor@2x.png"; sourceTree = "<group>"; };
 		12608E921A0906BE000A43A6 /* PHTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHTableViewController.h; sourceTree = "<group>"; };
 		12608E931A0906BE000A43A6 /* PHTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHTableViewController.m; sourceTree = "<group>"; };
 		1281851C1A052CD300E941FA /* ProductHunt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProductHunt.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -320,8 +333,6 @@
 		128187D61A061EDE00E941FA /* ProductStreamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductStreamViewController.m; sourceTree = "<group>"; };
 		1281882D1A06586400E941FA /* RefreshTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefreshTableViewController.h; sourceTree = "<group>"; };
 		1281882E1A06586400E941FA /* RefreshTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RefreshTableViewController.m; sourceTree = "<group>"; };
-		1286DB861A179C5F00F41C07 /* share-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share-icon.png"; sourceTree = "<group>"; };
-		1286DB871A179C5F00F41C07 /* share-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "share-icon@2x.png"; sourceTree = "<group>"; };
 		12A03FE81A0A8DA9005E8F1E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UMSocialLocalizable.strings; sourceTree = "<group>"; };
 		12A03FEA1A0A8DA9005E8F1E /* UMSocial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMSocial.h; sourceTree = "<group>"; };
 		12A03FEB1A0A8DA9005E8F1E /* UMSocialAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMSocialAccountManager.h; sourceTree = "<group>"; };
@@ -526,6 +537,8 @@
 				12CB29FF1A0CFD5D002C1C45 /* PHShareKit.m */,
 				121054221A1BABB400E62BCC /* FavorDB.h */,
 				121054231A1BABB400E62BCC /* FavorDB.m */,
+				121054791A1CB97500E62BCC /* FavoredPostsViewController.h */,
+				1210547A1A1CB97500E62BCC /* FavoredPostsViewController.m */,
 			);
 			path = ProductHunt;
 			sourceTree = "<group>";
@@ -981,12 +994,16 @@
 		12EF9D5D1A1782330074460C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				121054841A1CC4B100E62BCC /* icon-favor.png */,
+				121054851A1CC4B100E62BCC /* icon-favor@2x.png */,
+				1210547C1A1CC4A900E62BCC /* icon-favored.png */,
+				1210547D1A1CC4A900E62BCC /* icon-favored@2x.png */,
+				1210547E1A1CC4A900E62BCC /* icon-share.png */,
+				1210547F1A1CC4A900E62BCC /* icon-share@2x.png */,
 				121053ED1A1B6F6800E62BCC /* icon-favor-evernote.png */,
 				121053EE1A1B6F6800E62BCC /* icon-favor-evernote@2x.png */,
 				121053EF1A1B6F6800E62BCC /* icon-favored-evernote.png */,
 				121053F01A1B6F6800E62BCC /* icon-favored-evernote@2x.png */,
-				1286DB861A179C5F00F41C07 /* share-icon.png */,
-				1286DB871A179C5F00F41C07 /* share-icon@2x.png */,
 				12EF9D701A17852B0074460C /* icon60.png */,
 				12EF9D6E1A1785240074460C /* icon120@2x.png */,
 				12EF9D6A1A1784C90074460C /* icon40.png */,
@@ -1049,6 +1066,7 @@
 				TargetAttributes = {
 					1281851B1A052CD300E941FA = {
 						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = 2Q6A52H492;
 					};
 					128185341A052CD300E941FA = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -1086,12 +1104,13 @@
 				12A0400B1A0A8DA9005E8F1E /* UMSnsAccountViewController.xib in Resources */,
 				128185301A052CD300E941FA /* LaunchScreen.xib in Resources */,
 				128187841A05345F00E941FA /* deps in Resources */,
+				121054861A1CC4B100E62BCC /* icon-favor.png in Resources */,
+				121054831A1CC4A900E62BCC /* icon-share@2x.png in Resources */,
 				128187741A05345E00E941FA /* deps in Resources */,
 				1281852D1A052CD300E941FA /* Images.xcassets in Resources */,
 				1281878A1A05345F00E941FA /* deps in Resources */,
 				121053F41A1B6F6800E62BCC /* icon-favored-evernote@2x.png in Resources */,
 				12A040091A0A8DA9005E8F1E /* UMShareEditViewControlleriPad.xib in Resources */,
-				1286DB881A179C5F00F41C07 /* share-icon.png in Resources */,
 				12A0400C1A0A8DA9005E8F1E /* UMSShareListController.xib in Resources */,
 				12A040481A0A8F75005E8F1E /* ios-social-sdk-shake.html in Resources */,
 				12A040021A0A8DA9005E8F1E /* UMSocialLocalizable.strings in Resources */,
@@ -1102,13 +1121,15 @@
 				12EF9D6C1A1784C90074460C /* icon40.png in Resources */,
 				12A040061A0A8DA9005E8F1E /* UMSCommentInputController.xib in Resources */,
 				12EF9D691A17841F0074460C /* icon29@2x.png in Resources */,
+				121054801A1CC4A900E62BCC /* icon-favored.png in Resources */,
 				12A0400D1A0A8DA9005E8F1E /* UMSocialSDKResourcesNew.bundle in Resources */,
+				121054821A1CC4A900E62BCC /* icon-share.png in Resources */,
 				1281878B1A05345F00E941FA /* NimbusWebController.bundle in Resources */,
 				121053F31A1B6F6800E62BCC /* icon-favored-evernote.png in Resources */,
 				128187981A05347400E941FA /* deps in Resources */,
+				121054871A1CC4B100E62BCC /* icon-favor@2x.png in Resources */,
 				12EF9D631A1782330074460C /* default-image@2x.png in Resources */,
 				12A040081A0A8DA9005E8F1E /* UMShareEditViewController.xib in Resources */,
-				1286DB891A179C5F00F41C07 /* share-icon@2x.png in Resources */,
 				1281874E1A05345E00E941FA /* deps in Resources */,
 				12EF9D621A1782330074460C /* default-image.png in Resources */,
 				12EF9D711A17852B0074460C /* icon60.png in Resources */,
@@ -1118,6 +1139,7 @@
 				121053F11A1B6F6800E62BCC /* icon-favor-evernote.png in Resources */,
 				12EF9D681A17841F0074460C /* icon29.png in Resources */,
 				12EF9D6D1A1784C90074460C /* icon80@2x.png in Resources */,
+				121054811A1CC4A900E62BCC /* icon-favored@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1151,6 +1173,7 @@
 				121054241A1BABB400E62BCC /* FavorDB.m in Sources */,
 				128187D41A061DFC00E941FA /* TodayProductListViewController.m in Sources */,
 				128185251A052CD300E941FA /* AppDelegate.m in Sources */,
+				1210547B1A1CB97500E62BCC /* FavoredPostsViewController.m in Sources */,
 				121054191A1BAA3C00E62BCC /* FMDatabase.m in Sources */,
 				128187C81A053DE000E941FA /* UIImage+BlurredFrame.m in Sources */,
 				128186081A052F7300E941FA /* ProductListViewController.m in Sources */,
@@ -1263,7 +1286,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1304,7 +1326,6 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1327,6 +1348,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
@@ -1361,6 +1384,7 @@
 					"$(PROJECT_DIR)/UMSocial_Sdk_Extra_Frameworks/YiXin",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -1369,6 +1393,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LIBRARY = "compiler-default";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
@@ -1403,6 +1429,7 @@
 					"$(PROJECT_DIR)/UMSocial_Sdk_Extra_Frameworks/YiXin",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -1410,6 +1437,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -1429,6 +1457,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

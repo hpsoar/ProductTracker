@@ -19,7 +19,9 @@
     
     self.navigationController.navigationBar.topItem.title = @"";
     
-    self.headerView = [[ActivityView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
+    if (self.allowDragRefresh) {
+        self.headerView = [[ActivityView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];
+    }
     
     if (self.allowLoadMore) {
         self.footerView = [[ActivityView alloc] initWithFrame:CGRectMake(0, 0, 320, 60)];

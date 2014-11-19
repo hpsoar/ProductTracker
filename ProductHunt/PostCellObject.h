@@ -17,12 +17,15 @@
 
 - (void)savePostToEvernoteForCell:(PostCell *)cell;
 
+- (void)didFavorPostForCell:(PostCell *)cell favor:(BOOL)favor;
+
 @end
 
 @interface PostCellObject : NICellObject
-@property (nonatomic, readonly) ProductHuntPost *post;
-
 - (id)initWithPost:(ProductHuntPost *)post;
+
+@property (nonatomic, readonly) ProductHuntPost *post;
+@property (nonatomic, readonly) BOOL favored;
 
 @property (nonatomic, weak) id<PostCellObjectDelegate> delegate;
 

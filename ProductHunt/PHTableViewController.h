@@ -17,6 +17,7 @@
 @property (nonatomic, readonly) NICellFactory *cellFactory;
 
 @property (nonatomic) BOOL allowLoadMore;
+@property (nonatomic) BOOL allowDragRefresh;
 
 - (void)resetModel;
 

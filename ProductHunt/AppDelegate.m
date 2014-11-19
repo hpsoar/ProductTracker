@@ -77,7 +77,7 @@
     [UMSocialConfig setSupportedInterfaceOrientations:UIInterfaceOrientationMaskAll];
     
     //设置微信AppId，设置分享url，默认使用友盟的网址
-    [UMSocialWechatHandler setWXAppId:@"wxd930ea5d5a258f4f" appSecret:@"db426a9829e4b49a0dcac7b4162da6b6" url:@"http://www.umeng.com/social"];
+    [UMSocialWechatHandler setWXAppId:@"wx43eba1b077be9025" appSecret:@"d2187a7780f671e9cad5c1d974b9bf23" url:@"http://www.umeng.com/social"];
     
     //打开新浪微博的SSO开关
     [UMSocialSinaHandler openSSOWithRedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
@@ -92,12 +92,6 @@
     [UMSocialQQHandler setQQWithAppId:@"1103448760" appKey:@"fLO8GyO0n6AQtjor" url:@"http://www.umeng.com/social"];
     //    //设置支持没有客户端情况下使用SSO授权
     [UMSocialQQHandler setSupportWebView:YES];
-    
-    //    //设置易信Appkey和分享url地址
-    [UMSocialYixinHandler setYixinAppKey:@"yx35664bdff4db42c2b7be1e29390c1a06" url:@"http://www.umeng.com/social"];
-    
-    //    //设置来往AppId，appscret，显示来源名称和url地址，只支持32位
-    //    [UMSocialLaiwangHandler setLaiwangAppId:@"8112117817424282305" appSecret:@"9996ed5039e641658de7b83345fee6c9" appDescription:@"友盟社会化组件" urlStirng:@"http://www.umeng.com/social"];
     
     ////    设置facebook应用ID，和分享纯文字用到的url地址
     [UMSocialFacebookHandler setFacebookAppID:@"91136964205" shareFacebookWithURL:@"http://www.umeng.com/social"];

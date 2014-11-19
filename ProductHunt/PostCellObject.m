@@ -8,6 +8,7 @@
 
 #import "PostCellObject.h"
 #import "NINetworkImageView.h"
+#import "FavorDB.h"
 
 @implementation PostCellObject
 
@@ -23,6 +24,10 @@
     return [PostCell class];
 }
 
+- (BOOL)favored {
+    return [[FavorDB sharedDB] isPostFavored:self.post.postId];
+}
+
 @end
 
 @implementation PostCell {
@@ -32,6 +37,8 @@
     PostCellObject *_object;
     
     UILabel *_popularityLabel;
+    
+    UIButton *_favorBtn;
 }
 
 + (CGFloat)heightForObject:(id)object atIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
@@ -77,16 +84,20 @@
         self.contentView.userInteractionEnabled = YES;
         [self.contentView addGestureRecognizer:swipe];
         
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(self.width - 50, 5, 44, 44)];
-        [btn setImage:[UIImage imageNamed:@"share-icon.png"] forState:UIControlStateNormal];
+        UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(saveToEvernote)];
+        swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+        [self.contentView addGestureRecognizer:swipeRight];
+        
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(self.width - 40, 5, 32, 32)];
+        [btn setImage:[UIImage imageNamed:@"icon-share.png"] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(showShareView) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:btn];
         
-        UIButton *evernoteBtn = [[UIButton alloc] initWithFrame:CGRectMake(btn.left - 54, 5, 44, 44)];
-        [evernoteBtn setImage:[UIImage imageNamed:@"icon-favor-evernote.png"] forState:UIControlStateNormal];
-        [evernoteBtn setImage:[UIImage imageNamed:@"icon-favored-evernote.png"] forState:UIControlStateSelected];
-        [evernoteBtn addTarget:self action:@selector(saveToEvernote) forControlEvents:UIControlEventTouchUpInside];
-        [self.contentView addSubview:evernoteBtn];
+        _favorBtn = [[UIButton alloc] initWithFrame:CGRectMake(btn.left - 32, 5, 32, 32)];
+        [_favorBtn setImage:[UIImage imageNamed:@"icon-favor.png"] forState:UIControlStateNormal];
+        [_favorBtn setImage:[UIImage imageNamed:@"icon-favored.png"] forState:UIControlStateSelected];
+        [_favorBtn addTarget:self action:@selector(saveToEvernote) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:_favorBtn];
     }
     return self;
 }
@@ -120,6 +131,8 @@
     [_thumbnailView setPathToNetworkImage:self.post.imageLink];
     _thumbnailView.top = _popularityLabel.bottom + 5;
     
+    _favorBtn.selected = _object.favored;
+    
     NIDPRINT(@"%@", self.post.imageLink);
     
     return YES;
@@ -130,7 +143,14 @@
 }
 
 - (void)saveToEvernote {
-    [_object.delegate savePostToEvernoteForCell:self];
+    if (_object.favored) {
+        [[FavorDB sharedDB] unfavorPostWithId:_object.post.postId];
+        [_object.delegate didFavorPostForCell:self favor:NO];
+    }
+    else {
+        [[FavorDB sharedDB] favorPost:_object.post];
+        [_object.delegate didFavorPostForCell:self favor:YES];
+    }
 }
 
 @end

@@ -14,6 +14,8 @@
 #import <ENSDK/ENSDK.h>
 #import <ENSDK/Advanced/ENSDKAdvanced.h>
 #import "PostCellObject.h"
+#import "FavorDB.h"
+#import "FavoredPostsViewController.h"
 
 @interface ProductListViewController () <PostCellObjectDelegate, UMSocialUIDelegate>
 @property (nonatomic) NSInteger daysAgo;
@@ -26,6 +28,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.allowLoadMore = YES;
+        self.allowDragRefresh = YES;
     }
     return self;
 }
@@ -54,6 +57,10 @@
     [self addPosts:[[ProductHuntSession sharedSession] cachedPostsForDate:[NSDate date]]  forDate:[NSDate date]];
     
     [self refresh];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     [self.tableView reloadData];
 }
@@ -115,7 +122,8 @@
 }
 
 - (void)showMarkedPosts {
-    
+    FavoredPostsViewController *controller = [FavoredPostsViewController new];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showShareOptionsForCell:(PostCell *)cell {
@@ -132,9 +140,12 @@
     [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
 }
 
+- (void)didFavorPostForCell:(PostCell *)cell favor:(BOOL)favor {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
 - (void)savePostToEvernoteForCell:(PostCell *)cell {
-    [self selectCell:cell];
-    
     if ([[ENSession sharedSession] isAuthenticated]) {
         [self savePostToEverNote:cell.post];
     }

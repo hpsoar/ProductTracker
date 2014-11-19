@@ -28,10 +28,15 @@
         NSString *name = @"hunt_posts.db";
         NSString *filepath = [Utility filepath:name];
         _fmDB = [FMDatabase databaseWithPath:filepath];
+        [_fmDB open];
         [_fmDB executeStatements:@"CREATE TABLE IF NOT EXISTS favored_posts "
-         @"(id integer primary key autoincrement, post_id integer, title text, subtitle text, image_url text, url text"];
+         @"(post_id integer primary key, title text, subtitle text, image_url text, url text);"];
     }
     return self;
+}
+
+- (void)dealloc {
+    [_fmDB close];
 }
 
 - (void)favorPost:(ProductHuntPost *)post {
@@ -66,6 +71,11 @@
         [result addObject:post];
     }
     return result;
+}
+
+- (BOOL)isPostFavored:(NSInteger)postId {
+    FMResultSet *s = [_fmDB executeQueryWithFormat:@"SELECT * from favored_posts where post_id=%d", postId];
+    return [s next];
 }
 
 @end
