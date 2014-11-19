@@ -39,7 +39,7 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     titleLabel.text = @"Products";
     [titleLabel sizeToFit];
-    titleLabel.textColor = [UIColor orangeColor];
+    titleLabel.textColor = [UIColor whiteColor];
     self.navigationItem.titleView = titleLabel;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(showMarkedPosts)];
@@ -74,7 +74,7 @@
     UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
     v.backgroundColor = RGBCOLOR_HEX(0xdedede);
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 320, 28)];
-    label.textColor = RGBCOLOR_HEX(0x5d5d5d);
+    label.textColor = [UIColor blackColor];
     label.text = [self.model tableView:tableView titleForHeaderInSection:section];
     [v addSubview:label];
     return v;

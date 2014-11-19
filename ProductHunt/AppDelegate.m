@@ -62,8 +62,8 @@
 }
 
 - (void)setupAppearance {
-    self.window.tintColor = [UIColor orangeColor];
-    [[UINavigationBar appearance] setBarTintColor:RGBCOLOR(230, 230, 230)];
+    self.window.tintColor = [UIColor whiteColor];
+    [[UINavigationBar appearance] setBarTintColor:RGBCOLOR_HEX(0x65d08d)];
 }
 
 - (void)setupSNS {

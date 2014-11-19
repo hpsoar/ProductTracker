@@ -221,7 +221,7 @@
     
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, self.screenshotView.bottom + 5, self.view.width - 20, 30)];
     self.titleLabel.text = self.post.title;
-    self.titleLabel.textColor = [UIColor orangeColor];
+    self.titleLabel.textColor = RGBCOLOR_HEX(0xda552f);
     self.titleLabel.numberOfLines = 0;
     [self.titleLabel sizeToFit];
     [headerView addSubview:self.titleLabel];

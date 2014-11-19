@@ -25,7 +25,7 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     titleLabel.text = @"Favored Posts";
     [titleLabel sizeToFit];
-    titleLabel.textColor = [UIColor orangeColor];
+    titleLabel.textColor = [UIColor whiteColor];
     self.navigationItem.titleView = titleLabel;
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
