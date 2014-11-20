@@ -18,4 +18,6 @@
 - (NSArray *)favoredPosts;
 - (BOOL)isPostFavored:(NSInteger)postId;
 
+- (void)syncWithiCloud;
+
 @end

@@ -32,9 +32,29 @@
     return self;
 }
 
+- (BOOL)createCacheFolderIfNotExists {
+    NSString *imageCacheFolder = @"image_cache";
+    NSString *filepath = [Utility filepath:imageCacheFolder];
+    BOOL isDir = NO;
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filepath isDirectory:&isDir]) {
+        NIDASSERT(isDir);
+        return YES;
+    }
+    else {
+        NSError *error;
+        if ([[NSFileManager defaultManager] createDirectoryAtPath:filepath withIntermediateDirectories:NO attributes:nil error:&error]) {
+            return YES;
+        }
+        else {
+            NIDPRINT(@"%@", error);
+            return NO;
+        }
+    }
+}
+
 - (UIImage *)image {
-    if (_image == nil) {
-        NSString *filename = [Utility md5:self.imageLink];
+    if (_image == nil && [self createCacheFolderIfNotExists]) {
+        NSString *filename = DefStr(@"%@/%@", @"image_cache", [Utility md5:self.imageLink]);
         NSString *filepath = [Utility filepath:filename];
         NSData *data = [NSData dataWithContentsOfFile:filepath];
         if (data) {

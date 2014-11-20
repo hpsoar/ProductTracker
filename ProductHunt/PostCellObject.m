@@ -30,6 +30,10 @@
 
 @end
 
+@interface PostCell () <UIAlertViewDelegate>
+
+@end
+
 @implementation PostCell {
     UILabel *_titleLabel;
     UILabel *_subtitleLabel;
@@ -144,12 +148,28 @@
 
 - (void)saveToEvernote {
     if (_object.favored) {
-        [[FavorDB sharedDB] unfavorPostWithId:_object.post.postId];
-        [_object.delegate didFavorPostForCell:self favor:NO];
+        if (_object.confirmOnUnfavor) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Caution" message:@"Do you want to unfavor this post?" delegate:self cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+            [alertView show];
+        }
+        else {
+            [self unfavorPost];
+        }
     }
     else {
         [[FavorDB sharedDB] favorPost:_object.post];
         [_object.delegate didFavorPostForCell:self favor:YES];
+    }
+}
+
+- (void)unfavorPost {
+    [[FavorDB sharedDB] unfavorPostWithId:_object.post.postId];
+    [_object.delegate didFavorPostForCell:self favor:NO];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == alertView.firstOtherButtonIndex) {
+        [self unfavorPost];
     }
 }
 

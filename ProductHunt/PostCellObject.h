@@ -26,6 +26,7 @@
 
 @property (nonatomic, readonly) ProductHuntPost *post;
 @property (nonatomic, readonly) BOOL favored;
+@property (nonatomic) BOOL confirmOnUnfavor;
 
 @property (nonatomic, weak) id<PostCellObjectDelegate> delegate;
 

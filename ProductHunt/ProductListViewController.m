@@ -76,6 +76,8 @@
     [super viewWillAppear:animated];
     
     [self.tableView reloadData];
+    
+    [[FavorDB sharedDB] syncWithiCloud];
 }
 
 - (void)loadView {
