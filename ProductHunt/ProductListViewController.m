@@ -20,6 +20,7 @@
 @interface ProductListViewController () <PostCellObjectDelegate, UMSocialUIDelegate>
 @property (nonatomic) NSInteger daysAgo;
 @property (nonatomic) ENNotebook *notebook;
+@property (nonatomic) NSMutableArray *indexTitles;
 @end
 
 @implementation ProductListViewController
@@ -44,6 +45,8 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"favor-bar-icon.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showMarkedPosts)];
     
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(gotoNextSection)];
+    
     WEAK_VAR(self);
     [self.actions attachToClass:[PostCellObject class] tapBlock:^BOOL(id object, id target, NSIndexPath *indexPath) {
         PostCellObject *postObject = object;
@@ -54,7 +57,17 @@
     
     [ProductHuntSession registerWithAppKey:kProductHuntKey appSecret:kProductHuntSecret];
     
-    [self addPosts:[[ProductHuntSession sharedSession] cachedPostsForDate:[NSDate date]]  forDate:[NSDate date]];
+    self.indexTitles = [NSMutableArray new];
+    
+    NSDate *date = [NSDate date];
+    for (int i = 0; i < 7; ++i) {
+        date = [NSDate dateWithTimeInterval:-24 * 3600 sinceDate:date];
+        NSArray *posts = [[ProductHuntSession sharedSession] cachedPostsForDate:date];
+        if (posts.count > 0) {
+            [self addPosts:posts forDate:date];
+            break;
+        }
+    }
     
     [self refresh];
 }
@@ -74,7 +87,7 @@
     UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
     v.backgroundColor = RGBCOLOR_HEX(0xdedede);
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 320, 28)];
-    label.textColor = [UIColor blackColor];
+    label.textColor = [UIColor whiteColor];
     label.text = [self.model tableView:tableView titleForHeaderInSection:section];
     [v addSubview:label];
     return v;
@@ -95,6 +108,7 @@
 - (void)session:(ProductHuntSession *)session didFinishLoadWithPosts:(NSArray *)posts onDate:(NSDate *)date {
     if (self.daysAgo == 0) {
         [self resetModel];
+        self.indexTitles = [NSMutableArray new];
     }
     
     [self addPosts:posts forDate:date];
@@ -105,12 +119,15 @@
 }
 
 - (void)addPosts:(NSArray *)posts forDate:(NSDate *)date {
-    NSIndexSet *indexSet = [self.model addSectionWithTitle:[date formatWith:@"yyyy-MM-dd"]];
-    [posts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        PostCellObject *object = [[PostCellObject alloc] initWithPost:obj];
-        object.delegate = self;
-        [self.model addObject:object toSection:indexSet.firstIndex];
-    }];
+    if (posts.count > 0) {
+        NSIndexSet *indexSet = [self.model addSectionWithTitle:[date formatWith:@"yyyy-MM-dd"]];
+        [self.indexTitles addObject:@"A"];
+        [posts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            PostCellObject *object = [[PostCellObject alloc] initWithPost:obj];
+            object.delegate = self;
+            [self.model addObject:object toSection:indexSet.firstIndex];
+        }];
+    }
 }
 
 - (void)filterPost {
@@ -124,6 +141,25 @@
 - (void)showMarkedPosts {
     FavoredPostsViewController *controller = [FavoredPostsViewController new];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)gotoNextSection {
+    NSArray *visibleRows = [self.tableView indexPathsForVisibleRows];
+    NSIndexPath *indexPath = visibleRows.lastObject;
+    if (indexPath.section + 1 < self.tableView.numberOfSections) {
+        NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section + 1];
+        [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+    else {
+        NSInteger rows = [self.model tableView:self.tableView numberOfRowsInSection:indexPath.section];
+        if (rows > 0) {
+            NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:rows - 1 inSection:indexPath.section];
+            [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            if (!self.isRefreshing) {
+                [self loadMore];
+            }
+        }
+    }
 }
 
 - (void)showShareOptionsForCell:(PostCell *)cell {

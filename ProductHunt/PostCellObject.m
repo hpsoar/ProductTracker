@@ -79,12 +79,12 @@
         _thumbnailView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:_thumbnailView];
         
-        UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showShareView)];
+        UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(saveToEvernote)];
         swipe.direction = UISwipeGestureRecognizerDirectionLeft;
         self.contentView.userInteractionEnabled = YES;
         [self.contentView addGestureRecognizer:swipe];
         
-        UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(saveToEvernote)];
+        UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(showShareView)];
         swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
         [self.contentView addGestureRecognizer:swipeRight];
         

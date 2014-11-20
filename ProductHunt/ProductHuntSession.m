@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *apiKey;
 @property (nonatomic, strong) NSString *apiSecret;
 @property (nonatomic, strong) NSString *accessToken;
+@property (nonatomic, strong) NSDate *refrenceToday;
 @end
 
 @implementation ProductHuntSession {
@@ -104,9 +105,11 @@
 }
 
 - (void)cachePosts:(NSArray *)posts forDate:(NSDate *)date {
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:posts];
-    NSString *filepath = [self cacheFileForDate:date];
-    [data writeToFile:filepath atomically:YES];
+    if (posts.count > 0) {
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:posts];
+        NSString *filepath = [self cacheFileForDate:date];
+        [data writeToFile:filepath atomically:YES];
+    }
 }
 
 - (void)fetchPostsDaysAgo:(NSInteger)days delegate:(id<ProductHuntSessionDelegate>)delegate {
@@ -122,8 +125,8 @@
 }
 
 - (void)_fetchPostsDaysAgo:(NSInteger)days delegate:(id<ProductHuntSessionDelegate>)delegate {
-    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-days * 24 * 3600];
-    if (![date isToday]) {
+    if (days > 0 && self.refrenceToday) {
+        NSDate *date = [NSDate dateWithTimeInterval:-days * 24 * 3600 sinceDate:self.refrenceToday];
         NSArray *result = [self cachedPostsForDate:date];
         if (result.count > 0) {
             [delegate session:self didFinishLoadWithPosts:result onDate:date];
@@ -148,7 +151,11 @@
     [self GET:url parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NIDPRINT(@"%@", responseObject);
         NSArray *posts = responseObject[@"posts"];
-        NSDate *date = [NSDate dateWithTimeIntervalSinceNow:-days * 24 * 3600];
+        NSDate *date;
+        if (posts.count > 0) {
+            date = [NSDate dateWithFormatter:@"yyyy-MM-dd" dateStr:posts[0][@"day"]];
+            self.refrenceToday = [NSDate dateWithTimeInterval:days * 24 * 3600 sinceDate:date];
+        }
         
         [self cachePosts:responseObject[@"posts"] forDate:date];
         

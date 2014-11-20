@@ -104,6 +104,7 @@
 @property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) UIView *tableHeader;
 @property (nonatomic, strong) LoadingView *loadingView;
+@property (nonatomic, strong) UISegmentedControl *segControl;
 @end
 
 @implementation ProductDetailViewController
@@ -126,16 +127,26 @@
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
-    UISegmentedControl *segControl = [[UISegmentedControl alloc] initWithItems:@[ @"Comments", @"HomePage"]];
-    [segControl addTarget:self action:@selector(segValueChanged) forControlEvents:UIControlEventValueChanged];
+    self.segControl = [[UISegmentedControl alloc] initWithItems:@[ @"Comments", @"HomePage"]];
+    [self.segControl addTarget:self action:@selector(segValueChanged) forControlEvents:UIControlEventValueChanged];
     
-    self.navigationItem.titleView = segControl;
+    self.navigationItem.titleView = self.segControl;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(share)];
     
     [self showComments];
     
-    segControl.selectedSegmentIndex = 0;
+    self.segControl.selectedSegmentIndex = 0;
+    
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft)];
+    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+    self.tableView.userInteractionEnabled = YES;
+    [self.tableView addGestureRecognizer:swipeLeft];
+    
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight)];
+    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+    self.webView.userInteractionEnabled = YES;
+    [self.webView addGestureRecognizer:swipeRight];
 }
 
 - (UIWebView *)webView {
@@ -151,10 +162,11 @@
 }
 
 - (void)showHomePage {
-//    NSString *urlString = @"https://api.url2png.com/v6/P5329C1FA0ECB6/f9f8c3e96a48799e0705667360a75444/png/?thumbnail_max_width=300&url=http%3A%2F%2Fnibbler.silktide.com%2F";
-    NSString *urlString = self.post.productLink;
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-    [self.webView loadRequest:request];
+    if (self.webView.request == nil) {
+        NSString *urlString = self.post.productLink;
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+        [self.webView loadRequest:request];
+    }
     
     self.tableView.hidden = YES;
     self.webView.hidden = NO;
@@ -174,6 +186,20 @@
     }
     else {
         [self showHomePage];
+    }
+}
+
+- (void)swipeRight {
+    if (self.segControl.selectedSegmentIndex == 0) {
+        self.segControl.selectedSegmentIndex = 1;
+        [self segValueChanged];
+    }
+}
+
+- (void)swipeLeft {
+    if (self.segControl.selectedSegmentIndex == 1) {
+        self.segControl.selectedSegmentIndex = 0;
+        [self segValueChanged];
     }
 }
 
