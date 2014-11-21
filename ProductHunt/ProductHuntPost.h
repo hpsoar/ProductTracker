@@ -18,6 +18,7 @@
 @property NSString *commentLink;
 @property NSInteger commentCount;
 @property NSInteger voteCount;
+@property NSString *date;
 @property (nonatomic, readonly) UIImage *image;
 
 - (id)initWithData:(NSDictionary *)data;

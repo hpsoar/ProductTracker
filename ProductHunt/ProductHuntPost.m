@@ -28,6 +28,7 @@
         self.imageLink = data[@"screenshot_url"][@"300px"];
         self.commentCount = [data[@"comments_count"] integerValue];
         self.voteCount = [data[@"votes_count"] integerValue];
+        self.date = data[@"day"];
     }
     return self;
 }

@@ -42,6 +42,7 @@
     NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:posts.count];
     [posts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         PostCellObject *item = [[PostCellObject alloc] initWithPost:obj];
+        item.confirmOnUnfavor = YES;
         item.delegate = self;
         [items addObject:item];
     }];
@@ -55,6 +56,9 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     [self.model removeObjectAtIndexPath:indexPath];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    if ([self.model tableView:self.tableView numberOfRowsInSection:0] == 0) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)showShareOptionsForCell:(PostCell *)cell {

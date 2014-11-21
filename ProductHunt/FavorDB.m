@@ -10,6 +10,9 @@
 #import "FMDB.h"
 #import <iCloud/iCloud.h>
 
+#define kFavorChangeTimeKey @"kFavorChangeTimeKey"
+#define kUploadTimeKey @"kUploadTimeKey"
+
 @interface FavorDB () <iCloudDelegate>
 
 @end
@@ -40,9 +43,9 @@
         _fmDB = [FMDatabase databaseWithPath:dbPath];
         [_fmDB open];
         [_fmDB executeStatements:@"CREATE TABLE IF NOT EXISTS favored_posts "
-         @"(post_id integer primary key, title text, subtitle text, image_url text, url text, date integer);"];
+         @"(post_id integer primary key, date text, title text, subtitle text, image_url text, url text, timestamp integer);"];
         
-        [_fmDB executeStatements:@"create table if not exists unfavored_posts (post_id integer primary key, date integer);"];
+        [_fmDB executeStatements:@"create table if not exists unfavored_posts (post_id integer primary key, timestamp integer);"];
     }
     return self;
 }
@@ -78,11 +81,14 @@
                             @"subtitle": post.subtitle,
                             @"image_url": post.imageLink,
                             @"url": post.productLink,
-                            @"date": @([[NSDate date] timeIntervalSince1970]) };
+                            @"date": post.date,
+                            @"timestamp": @([[NSDate date] timeIntervalSince1970]) };
     [self favorRawPost:dict];
+    
+    [Utility setUserDefaultObjects:@{ kFavorChangeTimeKey: [NSDate date] }];
 }
 
-- (void)favorRawPost:(NSDictionary *)post {
+- (BOOL)favorRawPost:(NSDictionary *)post {
     NSMutableArray *questions = [[NSMutableArray alloc] initWithCapacity:post.allKeys.count];
     while (questions.count < post.allKeys.count) {
         [questions addObject:@"?"];
@@ -91,12 +97,14 @@
     NSString *format = @"INSERT OR REPLACE INTO favored_posts (%@) VALUES (%@);";
     NSString *sql = DefStr(format, [post.allKeys componentsJoinedByString:@","], [questions componentsJoinedByString:@","]);
     
-    [_fmDB executeUpdate:sql withArgumentsInArray:post.allValues];
+    return [_fmDB executeUpdate:sql withArgumentsInArray:post.allValues];
 }
 
 - (void)unfavorPostWithId:(NSInteger)postId timestamp:(NSTimeInterval)timestamp {
     [_fmDB executeStatements:DefStr(@"INSERT OR Replace into unfavored_posts values(%d, %.0f);", postId, timestamp)];
     [_fmDB executeStatements:DefStr(@"DELETE from favored_posts where post_id=%d;", postId)];
+    
+    [Utility setUserDefaultObjects:@{ kFavorChangeTimeKey: [NSDate date] }];
 }
 
 - (void)unfavorPostWithId:(NSInteger)postId {
@@ -113,6 +121,7 @@
         post.subtitle = dict[@"subtitle"];
         post.imageLink = dict[@"image_url"];
         post.productLink = dict[@"url"];
+        post.date = dict[@"date"];
         [result addObject:post];
     }
     return result;
@@ -129,15 +138,29 @@
     
     if (![[iCloud sharedCloud] checkCloudAvailability]) {
         NIDPRINT(@"iCloud not availabe");
+        return;
     }
     
-    [[iCloud sharedCloud] updateFiles];
+    NSDate *uploadTime = [Utility userDefaultObjectForKey:kUploadTimeKey];
+    NSDate *changeTime = [Utility userDefaultObjectForKey:kFavorChangeTimeKey];
     
-    [[iCloud sharedCloud] uploadLocalDocumentToCloudWithName:[self dbFilename] completion:^(NSError *error) {
-        if (error) {
-            NIDPRINT(@"%@", error);
-        }
-    }];
+    NSDate *now = [NSDate date];
+    if (uploadTime == nil || [changeTime compare:uploadTime] == NSOrderedDescending) {
+        NSData *data = [NSData dataWithContentsOfFile:[Utility filepath:[self dbFilename]]];
+        [[iCloud sharedCloud] saveAndCloseDocumentWithName:[self dbFilename] withContent:data completion:^(UIDocument *cloudDocument, NSData *documentData, NSError *error) {
+            if (error) {
+                NIDPRINT(@"%@", error);
+            }
+            else {
+                [Utility setUserDefaultObjects:@{ kUploadTimeKey: now }];
+                
+                [[iCloud sharedCloud] updateFiles];
+            }
+        }];
+    }
+    else {
+        [[iCloud sharedCloud] updateFiles];
+    }
 }
 
 - (NSArray *)deletionMarks {
@@ -184,9 +207,9 @@
     NSArray *deletionMarks = [favorDB deletionMarks];
     for (NSDictionary *obj in deletionMarks) {
         NSInteger postId = [[obj objectForKey:@"post_id"] integerValue];
-        NSInteger deletionTimestamp = [[obj objectForKey:@"date"] doubleValue];
+        NSInteger deletionTimestamp = [[obj objectForKey:@"timestamp"] doubleValue];
         NSDictionary  *post = [self rawFavoredPostWithId:postId];
-        NSTimeInterval timestamp = [post[@"date"] doubleValue];
+        NSTimeInterval timestamp = [post[@"timestamp"] doubleValue];
         
         if (timestamp > 0 && timestamp < deletionTimestamp) {
             [self unfavorPostWithId:postId timestamp:deletionTimestamp];
@@ -195,7 +218,7 @@
 }
 
 - (NSArray *)rawFavoredPosts {
-    FMResultSet *s = [_fmDB executeQueryWithFormat:@"select * from favored_posts;"];
+    FMResultSet *s = [_fmDB executeQueryWithFormat:@"select * from favored_posts order by date DESC;"];
     NSMutableArray *result = [NSMutableArray new];
     while ([s next]) {
         [result addObject:[self rawRecord:s]];
@@ -208,11 +231,17 @@
     for (NSDictionary *post in posts) {
         NSInteger postId = [post[@"post_id"] integerValue];
         NSDictionary *deletion = [self deletionMarkWithId:postId];
+        BOOL shouldAdd = YES;
         if (deletion) {
-            NSTimeInterval deletionTimestamp = [deletion[@"date"] doubleValue];
-            NSTimeInterval timestamp = [post[@"date"] doubleValue];
+            NSTimeInterval deletionTimestamp = [deletion[@"timestamp"] doubleValue];
+            NSTimeInterval timestamp = [post[@"timestamp"] doubleValue];
             if (timestamp < deletionTimestamp) {
-                [self favorRawPost:post];
+                shouldAdd = NO;
+            }
+        }
+        if (shouldAdd) {
+            if (![self favorRawPost:post]) {
+                NIDPRINT(@"%@", _fmDB.lastErrorMessage);
             }
         }
     }
@@ -243,19 +272,39 @@
     }
 }
 
+- (void)deleteiCloudFiles:(NSArray *)filenames {
+    for (NSString *filename in filenames) {
+        [[iCloud sharedCloud] deleteDocumentWithName:filename completion:^(NSError *error) {
+            if (error) NIDPRINT(@"%@", error);
+        }];
+    }
+}
+
 - (void)iCloudFilesDidChange:(NSMutableArray *)files withNewFileNames:(NSMutableArray *)fileNames {
     // Get the query results
     NIDPRINT(@"Files: %@", fileNames);
-    for (NSString *filename in fileNames) {
-        if (![filename isEqualToString:[self dbFilename]]) {
-            if (![[NSFileManager defaultManager] fileExistsAtPath:[Utility filepath:filename]]) {
-                [[iCloud sharedCloud] retrieveCloudDocumentWithName:filename completion:^(UIDocument *cloudDocument, NSData *documentData, NSError *error) {
-                    [documentData writeToFile:[Utility filepath:filename] atomically:YES];
-                    
-                    FavorDB *favorDB = [[FavorDB alloc] initWithDBPath:[Utility filepath:filename]];
-                    [self syncFromFavorDB:favorDB];
-                }];
-            }
+    NIDPRINT(@"%@", files);
+    
+    for (int i = 0; i < files.count; ++i) {
+        NSString *filename = fileNames[i];
+        
+        if ([filename isEqualToString:[self dbFilename]]) continue;
+        
+        NSMetadataItem *metaItem = files[i];
+        NIDPRINT(@"%@", metaItem.attributes);
+        NSDate *updateTime = [metaItem valueForKey:@"kMDItemFSContentChangeDate"];
+        NIDPRINT(@"%@", updateTime);
+        NSString *syncTimeKey = DefStr(@"favordb_sync_time_%@", filename);
+        NSDate *syncTime = [Utility userDefaultObjectForKey:syncTimeKey];
+        if (syncTime == nil || [syncTime compare:updateTime] == NSOrderedAscending) {
+            [[iCloud sharedCloud] retrieveCloudDocumentWithName:filename completion:^(UIDocument *cloudDocument, NSData *documentData, NSError *error) {
+                [documentData writeToFile:[Utility filepath:filename] atomically:YES];
+                
+                FavorDB *favorDB = [[FavorDB alloc] initWithDBPath:[Utility filepath:filename]];
+                [self syncFromFavorDB:favorDB];
+                
+                [Utility setUserDefaultObjects:@{ syncTimeKey: updateTime }];
+            }];
         }
     }
 }
