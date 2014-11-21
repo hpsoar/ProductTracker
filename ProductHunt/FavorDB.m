@@ -73,35 +73,46 @@
 }
 
 - (void)favorPost:(ProductHuntPost *)post {
-    NSArray *keys = @[ @"post_id", @"title", @"subtitle", @"image_url", @"url", @"date" ];
-    NSMutableArray *questions = [[NSMutableArray alloc] initWithCapacity:keys.count];
-    while (questions.count < keys.count) {
+    NSDictionary *dict = @{ @"post_id": @(post.postId),
+                            @"title": post.title,
+                            @"subtitle": post.subtitle,
+                            @"image_url": post.imageLink,
+                            @"url": post.productLink,
+                            @"date": @([[NSDate date] timeIntervalSince1970]) };
+    [self favorRawPost:dict];
+}
+
+- (void)favorRawPost:(NSDictionary *)post {
+    NSMutableArray *questions = [[NSMutableArray alloc] initWithCapacity:post.allKeys.count];
+    while (questions.count < post.allKeys.count) {
         [questions addObject:@"?"];
     }
     
-    NSArray *params = @[ @(post.postId), post.title, post.subtitle, post.imageLink, post.productLink , @([[NSDate date] timeIntervalSince1970])];
-    
     NSString *format = @"INSERT OR REPLACE INTO favored_posts (%@) VALUES (%@);";
-    NSString *sql = DefStr(format, [keys componentsJoinedByString:@","], [questions componentsJoinedByString:@","]);
+    NSString *sql = DefStr(format, [post.allKeys componentsJoinedByString:@","], [questions componentsJoinedByString:@","]);
     
-    [_fmDB executeUpdate:sql withArgumentsInArray:params];
+    [_fmDB executeUpdate:sql withArgumentsInArray:post.allValues];
 }
 
-- (void)unfavorPostWithId:(NSInteger)postId {
-    [_fmDB executeStatements:DefStr(@"INSERT OR Replace into unfavored_posts values(%d, %.0f);", postId, [[NSDate date] timeIntervalSince1970])];
+- (void)unfavorPostWithId:(NSInteger)postId timestamp:(NSTimeInterval)timestamp {
+    [_fmDB executeStatements:DefStr(@"INSERT OR Replace into unfavored_posts values(%d, %.0f);", postId, timestamp)];
     [_fmDB executeStatements:DefStr(@"DELETE from favored_posts where post_id=%d;", postId)];
 }
 
+- (void)unfavorPostWithId:(NSInteger)postId {
+    [self unfavorPostWithId:postId timestamp:[[NSDate date] timeIntervalSince1970]];
+}
+
 - (NSArray *)favoredPosts {
-    FMResultSet *s = [_fmDB executeQueryWithFormat:@"SELECT * from favored_posts;"];
-    NSMutableArray *result = [NSMutableArray new];
-    while ([s next]) {
+    NSArray *rawPosts = [self rawFavoredPosts];
+    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:rawPosts.count];
+    for (NSDictionary *dict in rawPosts) {
         ProductHuntPost *post = [ProductHuntPost new];
-        post.postId = [s intForColumn:@"post_id"];
-        post.title = [s stringForColumn:@"title"];
-        post.subtitle = [s stringForColumn:@"subtitle"];
-        post.imageLink = [s stringForColumn:@"image_url"];
-        post.productLink = [s stringForColumn:@"url"];
+        post.postId = [dict[@"post_id"] integerValue];
+        post.title = dict[@"title"];
+        post.subtitle = dict[@"subtitle"];
+        post.imageLink = dict[@"image_url"];
+        post.productLink = dict[@"url"];
         [result addObject:post];
     }
     return result;
@@ -129,8 +140,98 @@
     }];
 }
 
+- (NSArray *)deletionMarks {
+    FMResultSet *s = [_fmDB executeQueryWithFormat:@"select * from unfavored_posts;"];
+    NSMutableArray *result = [NSMutableArray new];
+    while ([s next]) {
+        [result addObject:[self rawRecord:s]];
+    }
+    return result;
+}
+
+- (NSDictionary *)rawRecord:(FMResultSet *)s {
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:[s columnCount]];
+    for (int i = 0; i < s.columnCount; ++i) {
+        dict[[s columnNameForIndex:i]] = [s objectForColumnIndex:i];
+    }
+    return dict;
+}
+
+- (NSDictionary *)deletionMarkWithId:(NSInteger)postId {
+    FMResultSet *s = [_fmDB executeQueryWithFormat:@"select * from unfavored_posts where post_id=%d;", postId];
+    if ([s next]) {
+        return [self rawRecord:s];
+    }
+    return nil;
+}
+
+- (void)cleanDeletionMarks {
+    /*
+     * for each deletion mark, if there's a favorite (failed to delete after mark deletion), delete the deletion mark
+     */
+//    NSArray *deletionMarks = [self deletionMarks];
+}
+
+- (NSDictionary *)rawFavoredPostWithId:(NSInteger)postId {
+    FMResultSet *s = [_fmDB executeQueryWithFormat:@"select * from favored_posts where post_id=%d", postId];
+    if ([s next]) {
+        return [self rawRecord:s];
+    }
+    return nil;
+}
+
+- (void)syncDeletionsFromFavorDB:(FavorDB *)favorDB {
+    NSArray *deletionMarks = [favorDB deletionMarks];
+    for (NSDictionary *obj in deletionMarks) {
+        NSInteger postId = [[obj objectForKey:@"post_id"] integerValue];
+        NSInteger deletionTimestamp = [[obj objectForKey:@"date"] doubleValue];
+        NSDictionary  *post = [self rawFavoredPostWithId:postId];
+        NSTimeInterval timestamp = [post[@"date"] doubleValue];
+        
+        if (timestamp > 0 && timestamp < deletionTimestamp) {
+            [self unfavorPostWithId:postId timestamp:deletionTimestamp];
+        }
+    }
+}
+
+- (NSArray *)rawFavoredPosts {
+    FMResultSet *s = [_fmDB executeQueryWithFormat:@"select * from favored_posts;"];
+    NSMutableArray *result = [NSMutableArray new];
+    while ([s next]) {
+        [result addObject:[self rawRecord:s]];
+    }
+    return result;
+}
+
+- (void)syncFavoredPostsFromFavorDb:(FavorDB *)favorDB {
+    NSArray *posts = [favorDB rawFavoredPosts];
+    for (NSDictionary *post in posts) {
+        NSInteger postId = [post[@"post_id"] integerValue];
+        NSDictionary *deletion = [self deletionMarkWithId:postId];
+        if (deletion) {
+            NSTimeInterval deletionTimestamp = [deletion[@"date"] doubleValue];
+            NSTimeInterval timestamp = [post[@"date"] doubleValue];
+            if (timestamp < deletionTimestamp) {
+                [self favorRawPost:post];
+            }
+        }
+    }
+}
+
 - (void)syncFromFavorDB:(FavorDB *)favorDB {
+    [favorDB cleanDeletionMarks];
     
+    /* sync B into A:
+     * 1. for each deletion B.deletion, check the corresponding favorite A.favorite:
+     *     a. if B.deletion.timestamp > A.favorite.timestamp delete A.favorite
+     *     b. otherwise, leave it along
+     * 2. for each favorite B.favorite, check the corresponding deletion mark A.deletion:
+     *     a. if B.timestamp < A.timestamp, discard B;
+     *     b. otherwise, add B to A;
+     */
+    [self syncDeletionsFromFavorDB:favorDB];
+    
+    [self syncFavoredPostsFromFavorDb:favorDB];
 }
 
 #pragma mark - iCloud Methods
