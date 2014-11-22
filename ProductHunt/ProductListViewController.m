@@ -39,13 +39,24 @@
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     titleLabel.text = @"Products";
+    titleLabel.font = [UIFont systemFontOfSize:20];
     [titleLabel sizeToFit];
     titleLabel.textColor = [UIColor whiteColor];
     self.navigationItem.titleView = titleLabel;
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"favor-bar-icon.png"] style:UIBarButtonItemStylePlain target:self action:@selector(showMarkedPosts)];
     
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(gotoNextSection)];
+    UIButton *downBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [downBtn setImage:[UIImage imageNamed:@"down-arrow.png"] forState:UIControlStateNormal];
+    [downBtn addTarget:self action:@selector(gotoNextSection) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *downItem = [[UIBarButtonItem alloc] initWithCustomView:downBtn];
+    
+    UIButton *upBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
+    [upBtn setImage:[UIImage imageNamed:@"up-arrow.png"] forState:UIControlStateNormal];
+    [upBtn addTarget:self action:@selector(gotoPreviousSection) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *upItem = [[UIBarButtonItem alloc] initWithCustomView:upBtn];
+
+    self.navigationItem.leftBarButtonItems = @[ downItem, upItem ];
     
     WEAK_VAR(self);
     [self.actions attachToClass:[PostCellObject class] tapBlock:^BOOL(id object, id target, NSIndexPath *indexPath) {
@@ -77,7 +88,7 @@
     
     [self.tableView reloadData];
     
-    [[FavorDB sharedDB] syncWithiCloud];
+   // [[FavorDB sharedDB] syncWithiCloud];
 }
 
 - (void)loadView {
@@ -108,7 +119,7 @@
 }
 
 - (void)session:(ProductHuntSession *)session didFinishLoadWithPosts:(NSArray *)posts onDate:(NSDate *)date {
-    if (self.daysAgo == 0) {
+    if (self.daysAgo == 0 && posts.count > 0) {
         [self resetModel];
         self.indexTitles = [NSMutableArray new];
     }
@@ -143,6 +154,18 @@
 - (void)showMarkedPosts {
     FavoredPostsViewController *controller = [FavoredPostsViewController new];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)gotoPreviousSection {
+    NSArray *visibleRows = [self.tableView indexPathsForVisibleRows];
+    NSIndexPath *indexPath = visibleRows.firstObject;
+    if (indexPath.section > 0) {
+        NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section - 1];
+        [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+    else {
+        [self.tableView scrollsToTop];
+    }
 }
 
 - (void)gotoNextSection {

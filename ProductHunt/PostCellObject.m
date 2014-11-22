@@ -126,13 +126,15 @@
     [_popularityLabel sizeToFit];
     _popularityLabel.top = _subtitleLabel.bottom + 2;
     
+    [_thumbnailView prepareForReuse];
     if (self.post.image) {
         _thumbnailView.image = self.post.image;
     }
     else {
         _thumbnailView.image = [UIImage imageNamed:@"default-image.png"];
+        [_thumbnailView setPathToNetworkImage:self.post.imageLink];
     }
-    [_thumbnailView setPathToNetworkImage:self.post.imageLink];
+  
     _thumbnailView.top = _popularityLabel.bottom + 5;
     
     _favorBtn.selected = _object.favored;

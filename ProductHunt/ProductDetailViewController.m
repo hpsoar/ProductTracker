@@ -10,6 +10,7 @@
 #import "NINetworkImageView.h"
 #import "AppDelegate.h"
 #import "ProductHuntSession.h"
+#import "FavorDB.h"
 
 @interface CommentItem : NICellObject
 @property (nonatomic, readonly) ProductHuntComment *comment;
@@ -120,6 +121,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    [self updateRightBarButtons];
+    
     self.tableHeader = [self createTopView];
     if (self.screenshotView.image) {
         self.tableView.tableHeaderView = self.tableHeader;
@@ -131,8 +134,6 @@
     [self.segControl addTarget:self action:@selector(segValueChanged) forControlEvents:UIControlEventValueChanged];
     
     self.navigationItem.titleView = self.segControl;
-    
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(share)];
     
     [self showComments];
     
@@ -147,6 +148,26 @@
     swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
     self.webView.userInteractionEnabled = YES;
     [self.webView addGestureRecognizer:swipeRight];
+}
+
+- (void)updateRightBarButtons {
+    NSString *favorIcon = [[FavorDB sharedDB] isPostFavored:self.post.postId] ? @"icon-favored.png": @"icon-favor.png";
+    UIButton *favorBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+    [favorBtn setImage:[UIImage imageNamed:favorIcon] forState:UIControlStateNormal];
+    [favorBtn addTarget:self action:@selector(favorPost) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *favorItem = [[UIBarButtonItem alloc] initWithCustomView:favorBtn];
+    
+    UIButton *shareBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
+    [shareBtn setImage:[UIImage imageNamed:@"icon-share.png"] forState:UIControlStateNormal];
+    [shareBtn addTarget:self action:@selector(sharePost) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *shareItem = [[UIBarButtonItem alloc] initWithCustomView:shareBtn];
+    
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc]
+                                       initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                       target:nil action:nil];
+    negativeSpacer.width = -8;
+    
+    self.navigationItem.rightBarButtonItems = @[ negativeSpacer, shareItem, favorItem ];
 }
 
 - (UIWebView *)webView {
@@ -201,13 +222,6 @@
         self.segControl.selectedSegmentIndex = 0;
         [self segValueChanged];
     }
-}
-
-- (void)share {
-    //如果得到分享完成回调，需要设置delegate为self
-    NSArray *snsNames = @[ UMShareToSina, UMShareToTencent, UMShareToWechatSession, UMShareToWechatTimeline, UMShareToWechatFavorite, UMShareToQQ, UMShareToQzone, UMShareToEmail, UMShareToSms];
-    NSString *text = DefStr(@"%@: %@\n %@", self.post.title, self.post.subtitle, self.post.productLink);
-    [UMSocialSnsService presentSnsIconSheetView:self appKey:UmengAppkey shareText:text shareImage:self.post.image shareToSnsNames:snsNames delegate:self];
 }
 
 - (void)didSelectSocialPlatform:(NSString *)platformName withSocialData:(UMSocialData *)socialData {
@@ -309,5 +323,22 @@
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     [self.loadingView show];
+}
+
+- (void)favorPost {
+    if ([[FavorDB sharedDB] isPostFavored:self.post.postId]) {
+        [[FavorDB sharedDB] unfavorPostWithId:self.post.postId];
+    }
+    else {
+        [[FavorDB sharedDB] favorPost:self.post];
+    }
+    [self updateRightBarButtons];
+}
+
+- (void)sharePost {
+    ProductHuntPost *post = self.post;
+    NSArray *snsNames = @[ UMShareToSina, UMShareToTencent, UMShareToWechatSession, UMShareToWechatTimeline, UMShareToWechatFavorite, UMShareToQQ, UMShareToQzone, UMShareToEmail, UMShareToSms];
+    NSString *text = DefStr(@"%@: %@\n %@", post.title, post.subtitle, post.productLink);
+    [UMSocialSnsService presentSnsIconSheetView:self appKey:UmengAppkey shareText:text shareImage:post.image shareToSnsNames:snsNames delegate:self];
 }
 @end
