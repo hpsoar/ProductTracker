@@ -21,6 +21,7 @@
 @property (nonatomic) NSInteger daysAgo;
 @property (nonatomic) ENNotebook *notebook;
 @property (nonatomic) NSMutableArray *indexTitles;
+@property (nonatomic) NSInteger loadedPostCount;
 @end
 
 @implementation ProductListViewController
@@ -71,12 +72,13 @@
     self.indexTitles = [NSMutableArray new];
     
     NSDate *date = [NSDate date];
+    self.loadedPostCount = 0;
     for (int i = 0; i < 7; ++i) {
         date = [NSDate dateWithTimeInterval:-24 * 3600 sinceDate:date];
         NSArray *posts = [[ProductHuntSession sharedSession] cachedPostsForDate:date];
         if (posts.count > 0) {
             [self addPosts:posts forDate:date];
-            break;
+            if (self.loadedPostCount > 2) break;
         }
     }
     
@@ -122,6 +124,7 @@
     if (self.daysAgo == 0 && posts.count > 0) {
         [self resetModel];
         self.indexTitles = [NSMutableArray new];
+        self.loadedPostCount = 0;
     }
     
     [self addPosts:posts forDate:date];
@@ -129,6 +132,10 @@
     [self reloadTableView];
     
     self.daysAgo++;
+    
+    if (self.loadedPostCount < 2 && !self.isRefreshing) {
+        [self loadMore];
+    }
 }
 
 - (void)addPosts:(NSArray *)posts forDate:(NSDate *)date {
@@ -140,6 +147,7 @@
             object.delegate = self;
             [self.model addObject:object toSection:indexSet.firstIndex];
         }];
+        self.loadedPostCount += posts.count;
     }
 }
 
