@@ -49,8 +49,45 @@
     [self.model addObjectsFromArray:items];
     
     [self.tableView reloadData];
+    
+    [self updateRightBarButton];
 }
 
+- (void)updateRightBarButton {
+    
+    NSInteger count = [self.model tableView:self.tableView numberOfRowsInSection:0];
+    
+    if (count > 1) {
+        static NSInteger lastIndex = 0;
+        static NSInteger lastCount = 0;
+        NSArray *visibleIndexPathes = [self.tableView indexPathsForVisibleRows];
+        
+        NSIndexPath *indexPath = visibleIndexPathes.firstObject;
+        if (visibleIndexPathes.count > 1) {
+            CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:indexPath];
+            CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
+            
+            if (rectInSuperview.origin.y < -50) {
+                indexPath = visibleIndexPathes[1];
+            }
+        }
+        
+        if (lastIndex != indexPath.row || lastCount != count) {
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+            label.textColor = [UIColor whiteColor];
+            label.text = DefStr(@"%d/%d", indexPath.row + 1, count);
+            [label sizeToFit];
+            UIBarButtonItem *favorCountItem = [[UIBarButtonItem alloc] initWithCustomView:label];
+            self.navigationItem.rightBarButtonItem = favorCountItem;
+            
+            lastCount = count;
+            lastIndex = indexPath.row;
+        }
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+}
 
 - (void)didFavorPostForCell:(PostCell *)cell favor:(BOOL)favor {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
@@ -59,13 +96,14 @@
     if ([self.model tableView:self.tableView numberOfRowsInSection:0] == 0) {
         [self.navigationController popViewControllerAnimated:YES];
     }
+    [self updateRightBarButton];
 }
 
 - (void)showShareOptionsForCell:(PostCell *)cell {
     [self selectCell:cell];
     
     ProductHuntPost *post = cell.post;
-    NSArray *snsNames = @[ UMShareToSina, UMShareToTencent, UMShareToWechatSession, UMShareToWechatTimeline, UMShareToWechatFavorite, UMShareToQQ, UMShareToQzone, UMShareToEmail, UMShareToSms];
+    NSArray *snsNames = @[ UMShareToSina, UMShareToTencent, UMShareToWechatSession, UMShareToWechatTimeline, UMShareToWechatFavorite, UMShareToQQ, UMShareToQzone, UMShareToEmail ];
     NSString *text = DefStr(@"%@: %@\n %@", post.title, post.subtitle, post.productLink);
     [UMSocialSnsService presentSnsIconSheetView:self appKey:UmengAppkey shareText:text shareImage:post.image shareToSnsNames:snsNames delegate:self];
 }
@@ -73,6 +111,15 @@
 - (void)selectCell:(PostCell *)cell {
     NSIndexPath *indexPath =  [self.tableView indexPathForCell:cell];
     [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self updateRightBarButton];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [self.tableView reloadData];
+    [self updateRightBarButton];
 }
 
 @end

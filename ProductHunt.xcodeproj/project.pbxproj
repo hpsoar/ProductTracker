@@ -111,6 +111,11 @@
 		1294BA1F1A204CA9004DAA31 /* down-arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1294BA1B1A204CA9004DAA31 /* down-arrow@2x.png */; };
 		1294BA201A204CA9004DAA31 /* up-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 1294BA1C1A204CA9004DAA31 /* up-arrow.png */; };
 		1294BA211A204CA9004DAA31 /* up-arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1294BA1D1A204CA9004DAA31 /* up-arrow@2x.png */; };
+		1294BA271A21282D004DAA31 /* icon58.png in Resources */ = {isa = PBXBuildFile; fileRef = 1294BA221A21282D004DAA31 /* icon58.png */; };
+		1294BA281A21282D004DAA31 /* icon80.png in Resources */ = {isa = PBXBuildFile; fileRef = 1294BA231A21282D004DAA31 /* icon80.png */; };
+		1294BA291A21282D004DAA31 /* icon87.png in Resources */ = {isa = PBXBuildFile; fileRef = 1294BA241A21282D004DAA31 /* icon87.png */; };
+		1294BA2A1A21282D004DAA31 /* icon120.png in Resources */ = {isa = PBXBuildFile; fileRef = 1294BA251A21282D004DAA31 /* icon120.png */; };
+		1294BA2B1A21282D004DAA31 /* icon180.png in Resources */ = {isa = PBXBuildFile; fileRef = 1294BA261A21282D004DAA31 /* icon180.png */; };
 		12A040021A0A8DA9005E8F1E /* UMSocialLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 12A03FE71A0A8DA9005E8F1E /* UMSocialLocalizable.strings */; };
 		12A040031A0A8DA9005E8F1E /* libUMSocial_Sdk_4.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A03FF51A0A8DA9005E8F1E /* libUMSocial_Sdk_4.2.a */; };
 		12A040041A0A8DA9005E8F1E /* libUMSocial_Sdk_Comment_4.2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A03FF61A0A8DA9005E8F1E /* libUMSocial_Sdk_Comment_4.2.a */; };
@@ -148,13 +153,6 @@
 		12CB2A001A0CFD5D002C1C45 /* PHShareKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CB29FF1A0CFD5D002C1C45 /* PHShareKit.m */; };
 		12EF9D621A1782330074460C /* default-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D5E1A1782330074460C /* default-image.png */; };
 		12EF9D631A1782330074460C /* default-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D5F1A1782330074460C /* default-image@2x.png */; };
-		12EF9D651A1782330074460C /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D611A1782330074460C /* icon@2x.png */; };
-		12EF9D681A17841F0074460C /* icon29.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D661A17841F0074460C /* icon29.png */; };
-		12EF9D691A17841F0074460C /* icon29@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D671A17841F0074460C /* icon29@2x.png */; };
-		12EF9D6C1A1784C90074460C /* icon40.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D6A1A1784C90074460C /* icon40.png */; };
-		12EF9D6D1A1784C90074460C /* icon80@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D6B1A1784C90074460C /* icon80@2x.png */; };
-		12EF9D6F1A1785240074460C /* icon120@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D6E1A1785240074460C /* icon120@2x.png */; };
-		12EF9D711A17852B0074460C /* icon60.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D701A17852B0074460C /* icon60.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -360,6 +358,11 @@
 		1294BA1B1A204CA9004DAA31 /* down-arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "down-arrow@2x.png"; sourceTree = "<group>"; };
 		1294BA1C1A204CA9004DAA31 /* up-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "up-arrow.png"; sourceTree = "<group>"; };
 		1294BA1D1A204CA9004DAA31 /* up-arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "up-arrow@2x.png"; sourceTree = "<group>"; };
+		1294BA221A21282D004DAA31 /* icon58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon58.png; sourceTree = "<group>"; };
+		1294BA231A21282D004DAA31 /* icon80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon80.png; sourceTree = "<group>"; };
+		1294BA241A21282D004DAA31 /* icon87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon87.png; sourceTree = "<group>"; };
+		1294BA251A21282D004DAA31 /* icon120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon120.png; sourceTree = "<group>"; };
+		1294BA261A21282D004DAA31 /* icon180.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon180.png; sourceTree = "<group>"; };
 		12A03FE81A0A8DA9005E8F1E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/UMSocialLocalizable.strings; sourceTree = "<group>"; };
 		12A03FEA1A0A8DA9005E8F1E /* UMSocial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMSocial.h; sourceTree = "<group>"; };
 		12A03FEB1A0A8DA9005E8F1E /* UMSocialAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMSocialAccountManager.h; sourceTree = "<group>"; };
@@ -426,13 +429,6 @@
 		12CB29FF1A0CFD5D002C1C45 /* PHShareKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHShareKit.m; sourceTree = "<group>"; };
 		12EF9D5E1A1782330074460C /* default-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-image.png"; sourceTree = "<group>"; };
 		12EF9D5F1A1782330074460C /* default-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-image@2x.png"; sourceTree = "<group>"; };
-		12EF9D611A1782330074460C /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
-		12EF9D661A17841F0074460C /* icon29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon29.png; sourceTree = "<group>"; };
-		12EF9D671A17841F0074460C /* icon29@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon29@2x.png"; sourceTree = "<group>"; };
-		12EF9D6A1A1784C90074460C /* icon40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon40.png; sourceTree = "<group>"; };
-		12EF9D6B1A1784C90074460C /* icon80@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon80@2x.png"; sourceTree = "<group>"; };
-		12EF9D6E1A1785240074460C /* icon120@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon120@2x.png"; sourceTree = "<group>"; };
-		12EF9D701A17852B0074460C /* icon60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon60.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1024,6 +1020,11 @@
 		12EF9D5D1A1782330074460C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1294BA221A21282D004DAA31 /* icon58.png */,
+				1294BA231A21282D004DAA31 /* icon80.png */,
+				1294BA241A21282D004DAA31 /* icon87.png */,
+				1294BA251A21282D004DAA31 /* icon120.png */,
+				1294BA261A21282D004DAA31 /* icon180.png */,
 				1294BA1A1A204CA9004DAA31 /* down-arrow.png */,
 				1294BA1B1A204CA9004DAA31 /* down-arrow@2x.png */,
 				1294BA1C1A204CA9004DAA31 /* up-arrow.png */,
@@ -1044,15 +1045,8 @@
 				121053EE1A1B6F6800E62BCC /* icon-favor-evernote@2x.png */,
 				121053EF1A1B6F6800E62BCC /* icon-favored-evernote.png */,
 				121053F01A1B6F6800E62BCC /* icon-favored-evernote@2x.png */,
-				12EF9D701A17852B0074460C /* icon60.png */,
-				12EF9D6E1A1785240074460C /* icon120@2x.png */,
-				12EF9D6A1A1784C90074460C /* icon40.png */,
-				12EF9D6B1A1784C90074460C /* icon80@2x.png */,
-				12EF9D661A17841F0074460C /* icon29.png */,
-				12EF9D671A17841F0074460C /* icon29@2x.png */,
 				12EF9D5E1A1782330074460C /* default-image.png */,
 				12EF9D5F1A1782330074460C /* default-image@2x.png */,
-				12EF9D611A1782330074460C /* icon@2x.png */,
 				121054881A1CDBB800E62BCC /* favor-bar-icon.png */,
 				121054891A1CDBB800E62BCC /* favor-bar-icon@2x.png */,
 			);
@@ -1152,6 +1146,7 @@
 				1294BA1F1A204CA9004DAA31 /* down-arrow@2x.png in Resources */,
 				1294BA191A2047A4004DAA31 /* up@2x.png in Resources */,
 				1294BA201A204CA9004DAA31 /* up-arrow.png in Resources */,
+				1294BA2A1A21282D004DAA31 /* icon120.png in Resources */,
 				121053F21A1B6F6800E62BCC /* icon-favor-evernote@2x.png in Resources */,
 				12A0400B1A0A8DA9005E8F1E /* UMSnsAccountViewController.xib in Resources */,
 				128185301A052CD300E941FA /* LaunchScreen.xib in Resources */,
@@ -1160,24 +1155,24 @@
 				121054831A1CC4A900E62BCC /* icon-share@2x.png in Resources */,
 				128187741A05345E00E941FA /* deps in Resources */,
 				1281852D1A052CD300E941FA /* Images.xcassets in Resources */,
+				1294BA281A21282D004DAA31 /* icon80.png in Resources */,
 				1281878A1A05345F00E941FA /* deps in Resources */,
 				121053F41A1B6F6800E62BCC /* icon-favored-evernote@2x.png in Resources */,
 				1210548A1A1CDBB800E62BCC /* favor-bar-icon.png in Resources */,
+				1294BA271A21282D004DAA31 /* icon58.png in Resources */,
 				12A040091A0A8DA9005E8F1E /* UMShareEditViewControlleriPad.xib in Resources */,
 				1294BA1E1A204CA9004DAA31 /* down-arrow.png in Resources */,
 				12A0400C1A0A8DA9005E8F1E /* UMSShareListController.xib in Resources */,
 				12A040481A0A8F75005E8F1E /* ios-social-sdk-shake.html in Resources */,
 				1294BA101A203DC7004DAA31 /* bar-icon-share.png in Resources */,
 				12A040021A0A8DA9005E8F1E /* UMSocialLocalizable.strings in Resources */,
-				12EF9D6F1A1785240074460C /* icon120@2x.png in Resources */,
 				1294BA161A2047A4004DAA31 /* down.png in Resources */,
 				121054211A1BAA5E00E62BCC /* ENSDKResources.bundle in Resources */,
 				1294BA111A203DC7004DAA31 /* bar-icon-share@2x.png in Resources */,
+				1294BA2B1A21282D004DAA31 /* icon180.png in Resources */,
 				12A040431A0A8F75005E8F1E /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				12A040051A0A8DA9005E8F1E /* UMSCommentDetailController.xib in Resources */,
-				12EF9D6C1A1784C90074460C /* icon40.png in Resources */,
 				12A040061A0A8DA9005E8F1E /* UMSCommentInputController.xib in Resources */,
-				12EF9D691A17841F0074460C /* icon29@2x.png in Resources */,
 				1294BA171A2047A4004DAA31 /* down@2x.png in Resources */,
 				121054801A1CC4A900E62BCC /* icon-favored.png in Resources */,
 				12A0400D1A0A8DA9005E8F1E /* UMSocialSDKResourcesNew.bundle in Resources */,
@@ -1189,15 +1184,12 @@
 				121054871A1CC4B100E62BCC /* icon-favor@2x.png in Resources */,
 				12EF9D631A1782330074460C /* default-image@2x.png in Resources */,
 				12A040081A0A8DA9005E8F1E /* UMShareEditViewController.xib in Resources */,
+				1294BA291A21282D004DAA31 /* icon87.png in Resources */,
 				1281874E1A05345E00E941FA /* deps in Resources */,
 				12EF9D621A1782330074460C /* default-image.png in Resources */,
-				12EF9D711A17852B0074460C /* icon60.png in Resources */,
 				12A0400A1A0A8DA9005E8F1E /* UMSLoginViewController.xib in Resources */,
 				12A040461A0A8F75005E8F1E /* ios-social-sdk-shake.html in Resources */,
-				12EF9D651A1782330074460C /* icon@2x.png in Resources */,
 				121053F11A1B6F6800E62BCC /* icon-favor-evernote.png in Resources */,
-				12EF9D681A17841F0074460C /* icon29.png in Resources */,
-				12EF9D6D1A1784C90074460C /* icon80@2x.png in Resources */,
 				121054811A1CC4A900E62BCC /* icon-favored@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1405,6 +1397,7 @@
 		128185401A052CD300E941FA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_ENTITLEMENTS = ProductHunt/ProductHunt.entitlements;
@@ -1452,6 +1445,7 @@
 		128185411A052CD300E941FA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_ENTITLEMENTS = ProductHunt/ProductHunt.entitlements;

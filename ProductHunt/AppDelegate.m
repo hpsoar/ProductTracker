@@ -83,7 +83,7 @@
     [UMSocialSinaHandler openSSOWithRedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
     
     //打开腾讯微博SSO开关，设置回调地址，只支持32位
-    //    [UMSocialTencentWeiboHandler openSSOWithRedirectUrl:@"http://sns.whalecloud.com/tencent2/callback"];
+    //[UMSocialTencentWeiboHandler openSSOWithRedirectUrl:@"http://sns.whalecloud.com/tencent2/callback"];
     
     //打开人人网SSO开关，只支持32位
     //    [UMSocialRenrenHandler openSSO];

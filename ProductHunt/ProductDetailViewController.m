@@ -246,9 +246,9 @@
 }
 
 - (UIView *)createTopView {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.height, 0)];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
 
-    self.screenshotView = [[NINetworkImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 250)];
+    self.screenshotView = [[NINetworkImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 250)];
     self.screenshotView.contentMode = UIViewContentModeScaleAspectFill;
     if (self.post.image) {
         self.screenshotView.image = self.post.image;
@@ -257,6 +257,8 @@
         self.screenshotView.delegate = self;
         [self.screenshotView setPathToNetworkImage:self.post.imageLink];
     }
+    
+    self.screenshotView.centerX = self.view.width / 2;
     [headerView addSubview:self.screenshotView];
     
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, self.screenshotView.bottom + 5, self.view.width - 20, 30)];
@@ -337,8 +339,16 @@
 
 - (void)sharePost {
     ProductHuntPost *post = self.post;
-    NSArray *snsNames = @[ UMShareToSina, UMShareToTencent, UMShareToWechatSession, UMShareToWechatTimeline, UMShareToWechatFavorite, UMShareToQQ, UMShareToQzone, UMShareToEmail, UMShareToSms];
+    NSArray *snsNames = @[ UMShareToSina, UMShareToTencent, UMShareToWechatSession, UMShareToWechatTimeline, UMShareToWechatFavorite, UMShareToQQ, UMShareToQzone, UMShareToEmail];
     NSString *text = DefStr(@"%@: %@\n %@", post.title, post.subtitle, post.productLink);
     [UMSocialSnsService presentSnsIconSheetView:self appKey:UmengAppkey shareText:text shareImage:post.image shareToSnsNames:snsNames delegate:self];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    [self.tableView reloadData];
+    
+    self.screenshotView.centerX = self.view.height / 2;
 }
 @end

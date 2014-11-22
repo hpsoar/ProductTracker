@@ -43,6 +43,7 @@
     UILabel *_popularityLabel;
     
     UIButton *_favorBtn;
+    UIButton *_shareBtn;
 }
 
 + (CGFloat)heightForObject:(id)object atIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
@@ -92,12 +93,12 @@
         swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
         [self.contentView addGestureRecognizer:swipeRight];
         
-        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(self.width - 40, 5, 32, 32)];
-        [btn setImage:[UIImage imageNamed:@"icon-share.png"] forState:UIControlStateNormal];
-        [btn addTarget:self action:@selector(showShareView) forControlEvents:UIControlEventTouchUpInside];
-        [self.contentView addSubview:btn];
+        _shareBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.width - 40, 5, 32, 32)];
+        [_shareBtn setImage:[UIImage imageNamed:@"icon-share.png"] forState:UIControlStateNormal];
+        [_shareBtn addTarget:self action:@selector(showShareView) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:_shareBtn];
         
-        _favorBtn = [[UIButton alloc] initWithFrame:CGRectMake(btn.left - 32, 5, 32, 32)];
+        _favorBtn = [[UIButton alloc] initWithFrame:CGRectMake(_shareBtn.left - 32, 5, 32, 32)];
         [_favorBtn setImage:[UIImage imageNamed:@"icon-favor.png"] forState:UIControlStateNormal];
         [_favorBtn setImage:[UIImage imageNamed:@"icon-favored.png"] forState:UIControlStateSelected];
         [_favorBtn addTarget:self action:@selector(saveToEvernote) forControlEvents:UIControlEventTouchUpInside];
@@ -135,9 +136,13 @@
         [_thumbnailView setPathToNetworkImage:self.post.imageLink];
     }
   
+    _thumbnailView.centerX = self.width / 2;
     _thumbnailView.top = _popularityLabel.bottom + 5;
     
     _favorBtn.selected = _object.favored;
+    
+    _shareBtn.left = self.width - 40;
+    _favorBtn.left = _shareBtn.left - 32;
     
     NIDPRINT(@"%@", self.post.imageLink);
     
