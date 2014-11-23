@@ -57,7 +57,7 @@
     [upBtn addTarget:self action:@selector(gotoPreviousSection) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *upItem = [[UIBarButtonItem alloc] initWithCustomView:upBtn];
 
-    self.navigationItem.leftBarButtonItems = @[ downItem, upItem ];
+    self.navigationItem.leftBarButtonItems = @[ upItem, downItem ];
     
     WEAK_VAR(self);
     [self.actions attachToClass:[PostCellObject class] tapBlock:^BOOL(id object, id target, NSIndexPath *indexPath) {
@@ -90,7 +90,7 @@
     
     [self.tableView reloadData];
     
-   // [[FavorDB sharedDB] syncWithiCloud];
+    [[FavorDB sharedDB] syncWithiCloud];
 }
 
 - (void)loadView {

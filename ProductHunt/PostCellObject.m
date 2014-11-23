@@ -48,8 +48,9 @@
 
 + (CGFloat)heightForObject:(id)object atIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
     PostCellObject *cellObject = object;
-    CGFloat titleHeight = [Utility heightForText:cellObject.post.title fontSize:20 width:280];
-    CGFloat subtitleHeight = [Utility heightForText:cellObject.post.subtitle fontSize:16 width:280];
+    CGFloat width = tableView.width - 40;
+    CGFloat titleHeight = [Utility heightForText:cellObject.post.title fontSize:20 width:width - 80];
+    CGFloat subtitleHeight = [Utility heightForText:cellObject.post.subtitle fontSize:16 width:width];
     return 30 + titleHeight + subtitleHeight + 210 + 20;
 }
 
@@ -61,6 +62,7 @@
         _titleLabel.top = 10;
         _titleLabel.font = [UIFont systemFontOfSize:20];
         _titleLabel.textColor = RGBCOLOR_HEX(0xda552f);
+        _titleLabel.numberOfLines = 0;
         [self.contentView addSubview:_titleLabel];
         
         _subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -115,6 +117,7 @@
     _object = object;
     
     _titleLabel.text = self.post.title;
+    _titleLabel.width = self.width - 2 * _titleLabel.left - 80;
     [_titleLabel sizeToFit];
     
     _subtitleLabel.text = self.post.subtitle;
