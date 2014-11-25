@@ -48,7 +48,7 @@
 
 + (CGFloat)heightForObject:(id)object atIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
     PostCellObject *cellObject = object;
-    CGFloat width = tableView.width - 40;
+    CGFloat width = [UIView width] - 40;
     CGFloat titleHeight = [Utility heightForText:cellObject.post.title fontSize:20 width:width - 80];
     CGFloat subtitleHeight = [Utility heightForText:cellObject.post.subtitle fontSize:16 width:width];
     return 30 + titleHeight + subtitleHeight + 210 + 20;
@@ -139,12 +139,12 @@
         [_thumbnailView setPathToNetworkImage:self.post.imageLink];
     }
   
-    _thumbnailView.centerX = self.width / 2;
+    _thumbnailView.centerX = [UIView width] / 2;
     _thumbnailView.top = _popularityLabel.bottom + 5;
     
     _favorBtn.selected = _object.favored;
     
-    _shareBtn.left = self.width - 40;
+    _shareBtn.left = [UIView width] - 40;
     _favorBtn.left = _shareBtn.left - 32;
     
     NIDPRINT(@"%@", self.post.imageLink);

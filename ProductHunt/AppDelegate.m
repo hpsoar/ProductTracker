@@ -93,7 +93,7 @@
     //    //设置分享到QQ空间的应用Id，和分享url 链接
     [UMSocialQQHandler setQQWithAppId:@"1103448760" appKey:@"fLO8GyO0n6AQtjor" url:@"http://www.umeng.com/social"];
     //    //设置支持没有客户端情况下使用SSO授权
-    [UMSocialQQHandler setSupportWebView:YES];
+    [UMSocialQQHandler setSupportWebView:NO];
     
     ////    设置facebook应用ID，和分享纯文字用到的url地址
     [UMSocialFacebookHandler setFacebookAppID:@"91136964205" shareFacebookWithURL:@"http://www.umeng.com/social"];

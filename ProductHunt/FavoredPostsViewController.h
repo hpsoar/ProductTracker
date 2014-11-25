@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Beacon. All rights reserved.
 //
 
-#import "PHTableViewController.h"
+#import "OCTableViewController.h"
 
-@interface FavoredPostsViewController : PHTableViewController
+@interface FavoredPostsViewController : OCTableViewController
 
 @end

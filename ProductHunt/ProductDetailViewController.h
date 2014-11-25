@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 #import "ProductHuntPost.h"
-#import "PHTableViewController.h"
+#import "OCTableViewController.h"
 
-@interface ProductDetailViewController : PHTableViewController
+@interface ProductDetailViewController : OCTableViewController
 
 - (id)initWithPost:(ProductHuntPost *)post;
 

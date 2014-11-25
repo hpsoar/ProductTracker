@@ -338,10 +338,7 @@
 }
 
 - (void)sharePost {
-    ProductHuntPost *post = self.post;
-    NSArray *snsNames = @[ UMShareToSina, UMShareToTencent, UMShareToWechatSession, UMShareToWechatTimeline, UMShareToWechatFavorite, UMShareToQQ, UMShareToQzone, UMShareToEmail];
-    NSString *text = DefStr(@"%@: %@\n %@", post.title, post.subtitle, post.productLink);
-    [UMSocialSnsService presentSnsIconSheetView:self appKey:UmengAppkey shareText:text shareImage:post.image shareToSnsNames:snsNames delegate:self];
+    [[ShareKit kit] sharePost:self.post inController:self];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -349,6 +346,20 @@
     
     [self.tableView reloadData];
     
-    self.screenshotView.centerX = self.view.height / 2;
+    CGRect bounds = [[UIScreen mainScreen] bounds]; // portrait bounds
+    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+        bounds.size = CGSizeMake(bounds.size.height, bounds.size.width);
+    }
+    
+    CGFloat centerX;
+    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        centerX = bounds.size.height / 2;
+    }
+    else {
+        centerX = bounds.size.width / 2;
+    }
+    
+    self.screenshotView.centerX = centerX;
 }
+
 @end

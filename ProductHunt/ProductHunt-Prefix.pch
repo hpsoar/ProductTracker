@@ -11,3 +11,9 @@
 
 #import "Utility.h"
 #import "NIDebuggingTools.h"
+
+#define UmengAppkey @"545a53adfd98c5e43e003d5a"
+#import "UMSocial.h"
+
+#import "ShareKit.h"
+
