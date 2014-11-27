@@ -44,7 +44,7 @@
         if (dict) {
             self.accessToken = dict[@"access_token"];
             self.expireDate = dict[@"expiration_date"];
-            if ([self.expireDate compare:[NSDate date]] != NSOrderedAscending) {
+            if ([self.expireDate compare:[NSDate date]] != NSOrderedDescending) {
                 self.accessToken = nil;
                 self.expireDate = nil;
             }
