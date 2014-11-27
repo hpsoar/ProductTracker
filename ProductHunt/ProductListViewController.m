@@ -18,10 +18,9 @@
 #import "FavoredPostsViewController.h"
 
 @interface ProductListViewController () <PostCellObjectDelegate, UMSocialUIDelegate>
-@property (nonatomic) NSInteger daysAgo;
 @property (nonatomic) ENNotebook *notebook;
-@property (nonatomic) NSMutableArray *indexTitles;
 @property (nonatomic) NSInteger loadedPostCount;
+@property (nonatomic) NSInteger daysAgo;
 @end
 
 @implementation ProductListViewController
@@ -68,27 +67,14 @@
     }];
     
     [ProductHuntSession registerWithAppKey:kProductHuntKey appSecret:kProductHuntSecret];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    self.indexTitles = [NSMutableArray new];
-    
-    NSDate *date = [NSDate date];
-    self.loadedPostCount = 0;
-    for (int i = 0; i < 7; ++i) {
-        date = [NSDate dateWithTimeInterval:-24 * 3600 sinceDate:date];
-        NSArray *posts = [[ProductHuntSession sharedSession] cachedPostsForDate:date];
-        if (posts.count > 0) {
-            [self addPosts:posts forDate:date];
-            if (self.loadedPostCount > 2) break;
-        }
-    }
     
     [self refresh];
     
     [self.tableView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
     [[FavorDB sharedDB] syncWithiCloud];
 }
@@ -108,47 +94,93 @@
     return v;
 }
 
-- (void)resetModelState {
-    self.daysAgo = 0;
+- (void)resetModel {
+    [super resetModel];
+    
+    NSDate *date = [NSDate date];
+    self.loadedPostCount = 0;
+    for (int i = 0; i < 7; ++i) {
+        NSArray *posts = [[ProductHuntSession sharedSession] cachedPostsForDate:date];
+        if (posts.count > 0) {
+            [self addPosts:posts forDate:date];
+            if (self.loadedPostCount > 2) break;
+        }
+        date = [NSDate dateWithTimeInterval:-24 * 3600 sinceDate:date];
+    }
 }
 
-- (void)loadModel {
-    [[ProductHuntSession sharedSession] fetchPostsDaysAgo:self.daysAgo delegate:self];
+// after resetModel, page-->0,
+// then it will increase one by one
+- (void)loadModelAtPage:(NSInteger)page {
+    self.daysAgo = page;
+    [[ProductHuntSession sharedSession] fetchPostsDaysAgo:page delegate:self];
 }
 
 - (void)session:(ProductHuntSession *)session didFailLoadWithError:(NSError *)error {
-    
 }
 
-- (void)session:(ProductHuntSession *)session didFinishLoadWithPosts:(NSArray *)posts onDate:(NSDate *)date {
-    if (self.daysAgo == 0 && posts.count > 0) {
-        [self resetModel];
-        self.indexTitles = [NSMutableArray new];
-        self.loadedPostCount = 0;
+- (void)session:(ProductHuntSession *)session didFinishLoadWithPosts:(NSArray *)posts date:(NSDate *)date daysAgo:(NSInteger)daysAgo fromCache:(BOOL)fromCache {
+    
+    // use self.daysAgo to legacy(launched before resetMode) request
+    if (daysAgo <= self.daysAgo) {
+        NSIndexSet *indexSet = [self addPosts:posts forDate:date];
+        
+        if (indexSet) {
+            [self.tableView reloadData];
+            
+            if (indexSet.firstIndex + 1 == [self.model numberOfSectionsInTableView:self.tableView]) {
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:indexSet.firstIndex];
+                [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            }
+        }
+        
+        if (!fromCache) {
+            if (daysAgo == 0) {
+                [self refreshCompleted];
+            }
+            else {
+                [self loadMoreCompleted];
+            }
+        }
     }
-    
-    [self addPosts:posts forDate:date];
-    
-    [self reloadTableView];
-    
-    self.daysAgo++;
     
     if (self.loadedPostCount < 2 && !self.isRefreshing) {
         [self loadMore];
     }
 }
 
-- (void)addPosts:(NSArray *)posts forDate:(NSDate *)date {
-    if (posts.count > 0) {
-        NSIndexSet *indexSet = [self.model addSectionWithTitle:[date formatWith:@"yyyy-MM-dd"]];
-        [self.indexTitles addObject:@"A"];
-        [posts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            PostCellObject *object = [[PostCellObject alloc] initWithPost:obj];
-            object.delegate = self;
-            [self.model addObject:object toSection:indexSet.firstIndex];
-        }];
-        self.loadedPostCount += posts.count;
+- (NSIndexSet *)indexSetWithDate:(NSDate *)date {
+    NSString *sectionTitle = [date formatWith:@"yyyy-MM-dd"];
+    NSInteger count = [self.model numberOfSectionsInTableView:self.tableView];
+    NSInteger index = 0;
+    for (; index < count; ++index) {
+        NSString *currentTitle = [self.model tableView:self.tableView titleForHeaderInSection:index];
+        NSComparisonResult result = [sectionTitle compare:currentTitle];
+        if (result == NSOrderedSame) {
+            [self.model removeSectionAtIndex:index];
+            break;
+        }
+        else if (result == NSOrderedDescending) {
+            break;
+        }
     }
+    return [self.model insertSectionWithTitle:sectionTitle atIndex:index];
+}
+
+- (NSIndexSet *)addPosts:(NSArray *)posts forDate:(NSDate *)date {
+    if (posts.count > 0) {
+        @synchronized(self) {
+            NSIndexSet *indexSet = [self indexSetWithDate:date];
+            [posts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                PostCellObject *object = [[PostCellObject alloc] initWithPost:obj];
+                object.delegate = self;
+                [self.model addObject:object toSection:indexSet.firstIndex];
+            }];
+            self.loadedPostCount += posts.count;
+            return indexSet;
+        }
+    }
+    return nil;
 }
 
 - (void)filterPost {
@@ -167,13 +199,11 @@
 - (void)gotoPreviousSection {
     NSArray *visibleRows = [self.tableView indexPathsForVisibleRows];
     NSIndexPath *indexPath = visibleRows.firstObject;
-    if (indexPath.section > 0) {
-        NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section - 1];
-        [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:0 inSection:MAX(indexPath.section - 1, 0)];
+    if (indexPath.row > 0) {
+        toIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
     }
-    else {
-        [self.tableView scrollsToTop];
-    }
+    [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void)gotoNextSection {
@@ -188,9 +218,7 @@
         if (rows > 0) {
             NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:rows - 1 inSection:indexPath.section];
             [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            if (!self.isRefreshing) {
-                [self loadMore];
-            }
+            [self loadMore];
         }
     }
 }

@@ -84,6 +84,7 @@
         self.contentView.layer.borderWidth = 0.5;
         _thumbnailView.clipsToBounds = YES;
         _thumbnailView.contentMode = UIViewContentModeScaleAspectFit;
+        _thumbnailView.initialImage = [UIImage imageNamed:@"default-image.png"];
         [self.contentView addSubview:_thumbnailView];
         
         UISwipeGestureRecognizer *swipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(saveToEvernote)];
@@ -135,7 +136,6 @@
         _thumbnailView.image = self.post.image;
     }
     else {
-        _thumbnailView.image = [UIImage imageNamed:@"default-image.png"];
         [_thumbnailView setPathToNetworkImage:self.post.imageLink];
     }
   

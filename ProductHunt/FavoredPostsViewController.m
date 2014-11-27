@@ -22,12 +22,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    titleLabel.text = @"Favored Posts";
-    [titleLabel sizeToFit];
-    titleLabel.textColor = [UIColor whiteColor];
-    self.navigationItem.titleView = titleLabel;
-    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     WEAK_VAR(self);
@@ -50,11 +44,10 @@
     
     [self.tableView reloadData];
     
-    [self updateRightBarButton];
+    [self updateTitle];
 }
 
-- (void)updateRightBarButton {
-    
+- (void)updateTitle {
     NSInteger count = [self.model tableView:self.tableView numberOfRowsInSection:0];
     
     if (count > 1) {
@@ -73,20 +66,23 @@
         }
         
         if (lastIndex != indexPath.row || lastCount != count) {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-            label.textColor = [UIColor whiteColor];
-            label.text = DefStr(@"%d/%d", indexPath.row + 1, count);
-            [label sizeToFit];
-            UIBarButtonItem *favorCountItem = [[UIBarButtonItem alloc] initWithCustomView:label];
-            self.navigationItem.rightBarButtonItem = favorCountItem;
+            [self updateTitleViewWithTitle:DefStr(@"%d/%d", indexPath.row + 1, count)];
             
             lastCount = count;
             lastIndex = indexPath.row;
         }
     }
     else {
-        self.navigationItem.rightBarButtonItem = nil;
+        [self updateTitleViewWithTitle:@"Favored"];
     }
+}
+
+- (void)updateTitleViewWithTitle:(NSString *)title {
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    titleLabel.text = title;
+    [titleLabel sizeToFit];
+    titleLabel.textColor = [UIColor whiteColor];
+    self.navigationItem.titleView = titleLabel;
 }
 
 - (void)didFavorPostForCell:(PostCell *)cell favor:(BOOL)favor {
@@ -96,7 +92,7 @@
     if ([self.model tableView:self.tableView numberOfRowsInSection:0] == 0) {
         [self.navigationController popViewControllerAnimated:YES];
     }
-    [self updateRightBarButton];
+    [self updateTitle];
 }
 
 - (void)showShareOptionsForCell:(PostCell *)cell {
@@ -111,12 +107,12 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self updateRightBarButton];
+    [self updateTitle];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [self.tableView reloadData];
-    [self updateRightBarButton];
+    [self updateTitle];
 }
 
 @end

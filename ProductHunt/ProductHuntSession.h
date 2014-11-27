@@ -16,7 +16,7 @@
 @protocol ProductHuntSessionDelegate <NSObject>
 
 @optional
-- (void)session:(ProductHuntSession *)session didFinishLoadWithPosts:(NSArray *)post onDate:(NSDate *)date;
+- (void)session:(ProductHuntSession *)session didFinishLoadWithPosts:(NSArray *)post date:(NSDate *)date daysAgo:(NSInteger)daysAgo fromCache:(BOOL)fromCache;
 - (void)session:(ProductHuntSession *)session didFailLoadWithError:(NSError *)error;
 
 - (void)session:(ProductHuntSession *)session didFinishLoadComments:(NSArray *)comments forPost:(NSInteger)postId;
@@ -35,6 +35,8 @@
 - (void)commentsForPost:(NSInteger)postId lastCommentId:(NSInteger)lastCommentId count:(NSInteger)count delegate:(id<ProductHuntSessionDelegate>)delegate;
 
 - (NSArray *)cachedPostsForDate:(NSDate *)date;
+
+- (void)cancePostRequests;
 
 @property (nonatomic, readonly) BOOL sessionIsValid;
 

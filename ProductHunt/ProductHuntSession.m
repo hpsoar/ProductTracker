@@ -129,8 +129,7 @@
         NSDate *date = [NSDate dateWithTimeInterval:-days * 24 * 3600 sinceDate:self.refrenceToday];
         NSArray *result = [self cachedPostsForDate:date];
         if (result.count > 0) {
-            [delegate session:self didFinishLoadWithPosts:result onDate:date];
-            return;
+            [delegate session:self didFinishLoadWithPosts:result date:date daysAgo:days fromCache:YES];
         }
     }
     
@@ -161,7 +160,7 @@
         
         NSArray *postObjects = [_self parsePosts:posts];
         
-        [delegate session:_self didFinishLoadWithPosts:postObjects onDate:date];
+        [delegate session:_self didFinishLoadWithPosts:postObjects date:date daysAgo:days fromCache:NO];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NIDPRINT(@"%@", error);
         [delegate session:_self didFailLoadWithError:error];
