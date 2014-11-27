@@ -65,8 +65,8 @@
             }
         }
         
-        if (lastIndex != indexPath.row || lastCount != count) {
-            [self updateTitleViewWithTitle:DefStr(@"%d/%d", indexPath.row + 1, count)];
+        if (lastIndex != indexPath.row || lastCount != count || self.navigationItem.titleView == nil) {
+            [self updateTitleViewWithTitle:DefStr(@"Favored (%d/%d)", indexPath.row + 1, count)];
             
             lastCount = count;
             lastIndex = indexPath.row;
