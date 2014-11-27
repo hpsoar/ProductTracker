@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *apiKey;
 @property (nonatomic, strong) NSString *apiSecret;
 @property (nonatomic, strong) NSString *accessToken;
+@property (nonatomic, strong) NSDate *expireDate;
 @property (nonatomic, strong) NSDate *refrenceToday;
 @end
 
@@ -36,6 +37,26 @@
     [ProductHuntSession sharedSession].apiKey = appKey;
 }
 
+- (id)initWithBaseURL:(NSURL *)url {
+    self = [super initWithBaseURL:url];
+    if (self) {
+        NSDictionary *dict = [Utility userDefaultObjectForKey:@"hunt_authorization"];
+        if (dict) {
+            self.accessToken = dict[@"access_token"];
+            self.expireDate = dict[@"expiration_date"];
+            if ([self.expireDate compare:[NSDate date]] != NSOrderedAscending) {
+                self.accessToken = nil;
+                self.expireDate = nil;
+            }
+        }
+    }
+    return self;
+}
+
+- (BOOL)sessionIsValid {
+    return self.accessToken != nil;
+}
+
 - (void)authorize:(void(^)())success {
     if (self.apiSecret == nil || self.apiKey == nil) {
         [NSException raise:kProductHuntSessionException format:@"api key and api secret must be set before this session is used"];
@@ -49,20 +70,20 @@
     [self POST:path parameters:params success:^(NSURLSessionDataTask *task, id responseObject) {
         NIDPRINT(@"%@", responseObject);
         [_self processAuthorizationResponse:responseObject];
-        _self.sessionIsValid = YES;
         success();
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NIDPRINT(@"%@", error);
-        _self.sessionIsValid = NO;
     }];
 }
 
 - (void)processAuthorizationResponse:(NSDictionary *)json {
     self.accessToken = json[@"access_token"];
-}
-
-- (void)setSessionIsValid:(BOOL)sessionIsValid {
-    _sessionIsValid = sessionIsValid;
+    NSTimeInterval interval = MAX([json[@"expires_in"] doubleValue] - 60, 0);
+    self.expireDate = [NSDate dateWithTimeInterval:interval sinceDate:[NSDate date]];
+    [Utility setUserDefaultObjects:@{ @"hunt_authorization": @{
+                                              @"access_token": self.accessToken,
+                                              @"expiration_date": self.expireDate,
+                                              }}];
 }
 
 - (NSString *)cacheFileForDate:(NSDate *)date {

@@ -36,8 +36,6 @@
 
 - (NSArray *)cachedPostsForDate:(NSDate *)date;
 
-- (void)cancePostRequests;
-
 @property (nonatomic, readonly) BOOL sessionIsValid;
 
 @property (nonatomic, readonly) NSArray *posts;
