@@ -9,7 +9,7 @@
 #import "FavoredPostsViewController.h"
 #import "PostCellObject.h"
 #import "ProductDetailViewController.h"
-#import "FavorDB.h"
+#import "FavorDBiCloud.h"
 #import "UMSocial.h"
 #import "AppDelegate.h"
 
@@ -32,7 +32,7 @@
         return NO;
     }];
     
-    NSArray *posts = [[FavorDB sharedDB] favoredPosts];
+    NSArray *posts = [[FavorDBiCloud sharedDB] favoredPosts];
     NSMutableArray *items = [[NSMutableArray alloc] initWithCapacity:posts.count];
     [posts enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         PostCellObject *item = [[PostCellObject alloc] initWithPost:obj];

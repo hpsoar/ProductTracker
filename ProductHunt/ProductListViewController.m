@@ -76,7 +76,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [[FavorDB sharedDB] syncWithiCloud];
+    //[[FavorDB sharedDB] syncWithiCloud];
 }
 
 - (void)loadView {

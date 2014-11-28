@@ -151,6 +151,13 @@
 		12A040541A0A8FEB005E8F1E /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A040531A0A8FEB005E8F1E /* libz.1.2.5.dylib */; };
 		12A040561A0A9151005E8F1E /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A040551A0A9151005E8F1E /* libc++.dylib */; };
 		12C355761A24E63000B247DF /* OCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355751A24E63000B247DF /* OCTableViewController.m */; };
+		12C355AE1A279A0500B247DF /* UbiquityStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355AD1A279A0500B247DF /* UbiquityStoreManager.m */; };
+		12C355B11A279A1A00B247DF /* CoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355B01A279A1A00B247DF /* CoreData.m */; };
+		12C355B41A279AC000B247DF /* iCloudCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355B31A279AC000B247DF /* iCloudCoreData.m */; };
+		12C355B71A280CC400B247DF /* FavorDBiCloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355B61A280CC400B247DF /* FavorDBiCloud.m */; };
+		12C355BA1A280D9300B247DF /* FavoredPost.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12C355B81A280D9300B247DF /* FavoredPost.xcdatamodeld */; };
+		12C355C01A280F8900B247DF /* FavoredPost+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355BF1A280F8900B247DF /* FavoredPost+Utility.m */; };
+		12C355C31A281D0900B247DF /* FavoredPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355C21A281D0900B247DF /* FavoredPost.m */; };
 		12CB2A001A0CFD5D002C1C45 /* PHShareKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CB29FF1A0CFD5D002C1C45 /* PHShareKit.m */; };
 		12EF9D621A1782330074460C /* default-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D5E1A1782330074460C /* default-image.png */; };
 		12EF9D631A1782330074460C /* default-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D5F1A1782330074460C /* default-image@2x.png */; };
@@ -428,6 +435,19 @@
 		12A040551A0A9151005E8F1E /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		12C355741A24E63000B247DF /* OCTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCTableViewController.h; sourceTree = "<group>"; };
 		12C355751A24E63000B247DF /* OCTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCTableViewController.m; sourceTree = "<group>"; };
+		12C355AC1A279A0500B247DF /* UbiquityStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UbiquityStoreManager.h; sourceTree = "<group>"; };
+		12C355AD1A279A0500B247DF /* UbiquityStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UbiquityStoreManager.m; sourceTree = "<group>"; };
+		12C355AF1A279A1A00B247DF /* CoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreData.h; sourceTree = "<group>"; };
+		12C355B01A279A1A00B247DF /* CoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreData.m; sourceTree = "<group>"; };
+		12C355B21A279AC000B247DF /* iCloudCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCloudCoreData.h; sourceTree = "<group>"; };
+		12C355B31A279AC000B247DF /* iCloudCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCloudCoreData.m; sourceTree = "<group>"; };
+		12C355B51A280CC400B247DF /* FavorDBiCloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavorDBiCloud.h; sourceTree = "<group>"; };
+		12C355B61A280CC400B247DF /* FavorDBiCloud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavorDBiCloud.m; sourceTree = "<group>"; };
+		12C355B91A280D9300B247DF /* FavoredPost.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FavoredPost.xcdatamodel; sourceTree = "<group>"; };
+		12C355BE1A280F8900B247DF /* FavoredPost+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FavoredPost+Utility.h"; sourceTree = "<group>"; };
+		12C355BF1A280F8900B247DF /* FavoredPost+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FavoredPost+Utility.m"; sourceTree = "<group>"; };
+		12C355C11A281D0900B247DF /* FavoredPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoredPost.h; sourceTree = "<group>"; };
+		12C355C21A281D0900B247DF /* FavoredPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoredPost.m; sourceTree = "<group>"; };
 		12CB29FE1A0CFD5D002C1C45 /* PHShareKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHShareKit.h; sourceTree = "<group>"; };
 		12CB29FF1A0CFD5D002C1C45 /* PHShareKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHShareKit.m; sourceTree = "<group>"; };
 		12EF9D5E1A1782330074460C /* default-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-image.png"; sourceTree = "<group>"; };
@@ -509,6 +529,8 @@
 		128185131A052CD300E941FA = {
 			isa = PBXGroup;
 			children = (
+				12C355C11A281D0900B247DF /* FavoredPost.h */,
+				12C355C21A281D0900B247DF /* FavoredPost.m */,
 				121054A61A1E4A0300E62BCC /* iCloud.framework */,
 				1210541E1A1BAA5E00E62BCC /* ENSDK.framework */,
 				1210541F1A1BAA5E00E62BCC /* ENSDKResources.bundle */,
@@ -568,6 +590,11 @@
 				1210547A1A1CB97500E62BCC /* FavoredPostsViewController.m */,
 				1261A2F31A2368C400B222F5 /* ShareKit.h */,
 				1261A2F41A2368C400B222F5 /* ShareKit.m */,
+				12C355B51A280CC400B247DF /* FavorDBiCloud.h */,
+				12C355B61A280CC400B247DF /* FavorDBiCloud.m */,
+				12C355B81A280D9300B247DF /* FavoredPost.xcdatamodeld */,
+				12C355BE1A280F8900B247DF /* FavoredPost+Utility.h */,
+				12C355BF1A280F8900B247DF /* FavoredPost+Utility.m */,
 			);
 			path = ProductHunt;
 			sourceTree = "<group>";
@@ -820,6 +847,12 @@
 		128187BC1A053DE000E941FA /* OCKit */ = {
 			isa = PBXGroup;
 			children = (
+				12C355AF1A279A1A00B247DF /* CoreData.h */,
+				12C355B01A279A1A00B247DF /* CoreData.m */,
+				12C355AC1A279A0500B247DF /* UbiquityStoreManager.h */,
+				12C355AD1A279A0500B247DF /* UbiquityStoreManager.m */,
+				12C355B21A279AC000B247DF /* iCloudCoreData.h */,
+				12C355B31A279AC000B247DF /* iCloudCoreData.m */,
 				12C355741A24E63000B247DF /* OCTableViewController.h */,
 				12C355751A24E63000B247DF /* OCTableViewController.m */,
 				1281882D1A06586400E941FA /* RefreshTableViewController.h */,
@@ -1225,6 +1258,8 @@
 				128187B01A0536B200E941FA /* AFHTTPRequestOperation.m in Sources */,
 				128187561A05345E00E941FA /* NIError.m in Sources */,
 				128187CE1A0617EE00E941FA /* ProductDetailViewController.m in Sources */,
+				12C355B71A280CC400B247DF /* FavorDBiCloud.m in Sources */,
+				12C355B41A279AC000B247DF /* iCloudCoreData.m in Sources */,
 				1281877E1A05345F00E941FA /* NITableViewModel.m in Sources */,
 				121054241A1BABB400E62BCC /* FavorDB.m in Sources */,
 				128187D41A061DFC00E941FA /* TodayProductListViewController.m in Sources */,
@@ -1236,6 +1271,7 @@
 				1281875D1A05345E00E941FA /* NINonRetainingCollections.m in Sources */,
 				128187591A05345E00E941FA /* NIInMemoryCache.m in Sources */,
 				12CB2A001A0CFD5D002C1C45 /* PHShareKit.m in Sources */,
+				12C355BA1A280D9300B247DF /* FavoredPost.xcdatamodeld in Sources */,
 				128187B51A0536B200E941FA /* AFURLConnectionOperation.m in Sources */,
 				128187871A05345F00E941FA /* NINetworkImageView.m in Sources */,
 				12C355761A24E63000B247DF /* OCTableViewController.m in Sources */,
@@ -1263,6 +1299,7 @@
 				128187611A05345E00E941FA /* NISDKAvailability.m in Sources */,
 				1281875E1A05345E00E941FA /* NIOperations.m in Sources */,
 				128187B71A0536B200E941FA /* AFURLResponseSerialization.m in Sources */,
+				12C355B11A279A1A00B247DF /* CoreData.m in Sources */,
 				128187BB1A0538EA00E941FA /* ProductHuntSession.m in Sources */,
 				1281875B1A05345E00E941FA /* NINetworkActivity.m in Sources */,
 				1281860B1A05304D00E941FA /* UrlTableViewModel.m in Sources */,
@@ -1270,18 +1307,21 @@
 				1210541B1A1BAA3C00E62BCC /* FMDatabasePool.m in Sources */,
 				128187771A05345E00E941FA /* NICellCatalog.m in Sources */,
 				128187501A05345E00E941FA /* NIActions.m in Sources */,
+				12C355C31A281D0900B247DF /* FavoredPost.m in Sources */,
 				1281882F1A06586400E941FA /* RefreshTableViewController.m in Sources */,
 				121053FB1A1BA65400E62BCC /* ProductHuntPost.m in Sources */,
 				128187851A05345F00E941FA /* NIImageProcessing.m in Sources */,
 				1210541C1A1BAA3C00E62BCC /* FMDatabaseQueue.m in Sources */,
 				128187B61A0536B200E941FA /* AFURLRequestSerialization.m in Sources */,
 				128187B31A0536B200E941FA /* AFNetworkReachabilityManager.m in Sources */,
+				12C355C01A280F8900B247DF /* FavoredPost+Utility.m in Sources */,
 				128187D71A061EDE00E941FA /* ProductStreamViewController.m in Sources */,
 				128187651A05345E00E941FA /* UIResponder+NimbusCore.m in Sources */,
 				128187521A05345E00E941FA /* NICommonMetrics.m in Sources */,
 				128187761A05345E00E941FA /* NICellBackgrounds.m in Sources */,
 				128187641A05345E00E941FA /* NIViewRecycler.m in Sources */,
 				1281877B1A05345F00E941FA /* NIRadioGroup.m in Sources */,
+				12C355AE1A279A0500B247DF /* UbiquityStoreManager.m in Sources */,
 				128187861A05345F00E941FA /* NIImageResponseSerializer.m in Sources */,
 				128187781A05345E00E941FA /* NICellFactory.m in Sources */,
 			);
@@ -1563,6 +1603,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		12C355B81A280D9300B247DF /* FavoredPost.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				12C355B91A280D9300B247DF /* FavoredPost.xcdatamodel */,
+			);
+			currentVersion = 12C355B91A280D9300B247DF /* FavoredPost.xcdatamodel */;
+			path = FavoredPost.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 128185141A052CD300E941FA /* Project object */;
 }

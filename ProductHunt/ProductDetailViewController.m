@@ -10,7 +10,7 @@
 #import "NINetworkImageView.h"
 #import "AppDelegate.h"
 #import "ProductHuntSession.h"
-#import "FavorDB.h"
+#import "FavorDBiCloud.h"
 
 @interface CommentItem : NICellObject
 @property (nonatomic, readonly) ProductHuntComment *comment;
@@ -151,7 +151,7 @@
 }
 
 - (void)updateRightBarButtons {
-    NSString *favorIcon = [[FavorDB sharedDB] isPostFavored:self.post.postId] ? @"icon-favored.png": @"icon-favor.png";
+    NSString *favorIcon = [[FavorDBiCloud sharedDB] isPostFavored:self.post.postId] ? @"icon-favored.png": @"icon-favor.png";
     UIButton *favorBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
     [favorBtn setImage:[UIImage imageNamed:favorIcon] forState:UIControlStateNormal];
     [favorBtn addTarget:self action:@selector(favorPost) forControlEvents:UIControlEventTouchUpInside];
@@ -288,11 +288,13 @@
     NIDPRINT(@"%@", error);
 }
 
-- (void)resetModelState {
-    self.lastCommentId = 0;
+- (void)resetModel {
+    [super resetModel];
+    
+    
 }
 
-- (void)loadModel {
+- (void)loadModelAtPage:(NSInteger)page {
     [[ProductHuntSession sharedSession] commentsForPost:self.post.postId lastCommentId:self.lastCommentId count:5 delegate:self];
 }
 
@@ -310,9 +312,10 @@
         [self.model addObject:item];
     }];
     
-    self.lastCommentId = [comments.firstObject commentId];
+    [self.tableView reloadData];
+    [self loadMoreCompleted];
     
-    [self reloadTableView];
+    self.lastCommentId = [comments.firstObject commentId];
 }
 
 #pragma mark - webview
@@ -328,11 +331,11 @@
 }
 
 - (void)favorPost {
-    if ([[FavorDB sharedDB] isPostFavored:self.post.postId]) {
-        [[FavorDB sharedDB] unfavorPostWithId:self.post.postId];
+    if ([[FavorDBiCloud sharedDB] isPostFavored:self.post.postId]) {
+        [[FavorDBiCloud sharedDB] unfavorPostWithId:self.post.postId];
     }
     else {
-        [[FavorDB sharedDB] favorPost:self.post];
+        [[FavorDBiCloud sharedDB] favorPost:self.post];
     }
     [self updateRightBarButtons];
 }
