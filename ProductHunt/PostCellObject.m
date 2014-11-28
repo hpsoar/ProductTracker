@@ -174,6 +174,7 @@
 
 - (void)unfavorPost {
     [[FavorDBiCloud sharedDB] unfavorPostWithId:_object.post.postId];
+    
     [_object.delegate didFavorPostForCell:self favor:NO];
 }
 

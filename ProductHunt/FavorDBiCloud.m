@@ -7,6 +7,11 @@
 //
 
 #import "FavorDBiCloud.h"
+#import "FavorDB.h"
+
+@interface FavorDBiCloud () <UbiquityStoreManagerDelegate>
+
+@end
 
 @implementation FavorDBiCloud {
     NSString *_entityName;
@@ -24,22 +29,26 @@
 - (id)init {
     self = [super initWithModelName:@"FavoredPost" storeURL:[Utility filepath:@"favored_posts.sqlite"]];
     if (self) {
-        _entityName = @"FavoredPosts";
+        _entityName = @"FavoredPost";
+        self.ubiquityStoreManager.delegate = self;
+        [self.ubiquityStoreManager useiCloudStore:YES alertUser:NO];
     }
     return self;
 }
 
 - (void)favorPost:(ProductHuntPost *)post {
-    FavoredPost *favoredPost = [self insertObjectForEntityWithName:_entityName];
-    favoredPost.postId = @(post.postId);
-    favoredPost.title = post.title;
-    favoredPost.subtitle = post.subtitle;
-    favoredPost.imageURL = post.imageLink;
-    favoredPost.postURL = post.productLink;
-    favoredPost.date = post.date;
-    favoredPost.voteCount = @(post.voteCount);
-    favoredPost.commentCount = @(post.commentCount);
-    [self saveContext];
+    if (![self isPostFavored:post.postId]) {
+        FavoredPost *favoredPost = [self insertObjectForEntityWithName:_entityName];
+        favoredPost.postId = @(post.postId);
+        favoredPost.title = post.title;
+        favoredPost.subtitle = post.subtitle;
+        favoredPost.imageURL = post.imageLink;
+        favoredPost.postURL = post.productLink;
+        favoredPost.date = post.date;
+        favoredPost.voteCount = @(post.voteCount);
+        favoredPost.commentCount = @(post.commentCount);
+        [self saveContext];
+    }
 }
 
 - (void)unfavorPostWithId:(NSInteger)postId {
@@ -63,18 +72,47 @@
     NSArray *managedObjects = [self queryFromEntityWithName:_entityName withPredicate:nil];
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:managedObjects.count];
     for (FavoredPost *favoredPost in managedObjects) {
-        ProductHuntPost *post = [ProductHuntPost new];
-        post.postId = [favoredPost.postId integerValue];
-        post.title = favoredPost.title;
-        post.subtitle = favoredPost.subtitle;
-        post.imageLink = favoredPost.imageURL;
-        post.productLink = favoredPost.postURL;
-        post.date = favoredPost.date;
-        post.commentCount = [favoredPost.commentCount integerValue];
-        post.voteCount = [favoredPost.voteCount integerValue];
-        [result addObject:post];
+        [result addObject:[FavorDBiCloud convert:favoredPost]];
     }
     return result;
+}
+
+- (NSFetchRequest *)fetchRequest {
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"date" ascending:NO selector:@selector(localizedCaseInsensitiveCompare:)];
+    NSFetchRequest *fetchRequest = [self fetchRequestForEntity:_entityName predicate:nil sortDescriptor:sortDescriptor batchSize:10];
+    return fetchRequest;
+}
+
+- (NSFetchedResultsController *)fetchedResultsControllerSectioned:(BOOL)sectioned {
+    NSFetchRequest *fetchRequest = [self fetchRequest];
+    NSFetchedResultsController *controller = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:@"date" cacheName:nil];
+    return controller;
+}
+
++ (ProductHuntPost *)convert:(FavoredPost *)favoredPost {
+    ProductHuntPost *post = [ProductHuntPost new];
+    post.postId = [favoredPost.postId integerValue];
+    post.title = favoredPost.title;
+    post.subtitle = favoredPost.subtitle;
+    post.imageLink = favoredPost.imageURL;
+    post.productLink = favoredPost.postURL;
+    post.date = favoredPost.date;
+    post.commentCount = [favoredPost.commentCount integerValue];
+    post.voteCount = [favoredPost.voteCount integerValue];
+    return post;
+}
+
+#pragma mark - 
+
+- (void)ubiquityStoreManager:(UbiquityStoreManager *)manager didSwitchToiCloud:(BOOL)didSwitch {
+    NIDPRINTMETHODNAME();
+    if (didSwitch) {
+//        NSArray *favoredPosts = [[FavorDB sharedDB] favoredPosts];
+//        for (ProductHuntPost *post in favoredPosts) {
+//            [[FavorDBiCloud sharedDB] favorPost:post];
+//        }
+//        NIDPRINT(@"migrated");
+    }
 }
 
 @end

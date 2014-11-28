@@ -16,6 +16,7 @@
 #import "PostCellObject.h"
 #import "FavorDB.h"
 #import "FavoredPostsViewController.h"
+#import "FavorDBiCloud.h"
 
 @interface ProductListViewController () <PostCellObjectDelegate, UMSocialUIDelegate>
 @property (nonatomic) ENNotebook *notebook;

@@ -19,4 +19,8 @@
 
 - (NSArray *)favoredPosts;
 
+- (NSFetchedResultsController *)fetchedResultsControllerSectioned:(BOOL)sectioned;
+
++ (ProductHuntPost *)convert:(FavoredPost *)favoredPost;
+
 @end
