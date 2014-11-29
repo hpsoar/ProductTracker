@@ -151,9 +151,7 @@
 		12A040541A0A8FEB005E8F1E /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A040531A0A8FEB005E8F1E /* libz.1.2.5.dylib */; };
 		12A040561A0A9151005E8F1E /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 12A040551A0A9151005E8F1E /* libc++.dylib */; };
 		12C355761A24E63000B247DF /* OCTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355751A24E63000B247DF /* OCTableViewController.m */; };
-		12C355AE1A279A0500B247DF /* UbiquityStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355AD1A279A0500B247DF /* UbiquityStoreManager.m */; };
 		12C355B11A279A1A00B247DF /* CoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355B01A279A1A00B247DF /* CoreData.m */; };
-		12C355B41A279AC000B247DF /* iCloudCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355B31A279AC000B247DF /* iCloudCoreData.m */; };
 		12C355B71A280CC400B247DF /* FavorDBiCloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355B61A280CC400B247DF /* FavorDBiCloud.m */; };
 		12C355BA1A280D9300B247DF /* FavoredPost.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 12C355B81A280D9300B247DF /* FavoredPost.xcdatamodeld */; };
 		12C355C01A280F8900B247DF /* FavoredPost+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 12C355BF1A280F8900B247DF /* FavoredPost+Utility.m */; };
@@ -435,12 +433,8 @@
 		12A040551A0A9151005E8F1E /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		12C355741A24E63000B247DF /* OCTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCTableViewController.h; sourceTree = "<group>"; };
 		12C355751A24E63000B247DF /* OCTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCTableViewController.m; sourceTree = "<group>"; };
-		12C355AC1A279A0500B247DF /* UbiquityStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UbiquityStoreManager.h; sourceTree = "<group>"; };
-		12C355AD1A279A0500B247DF /* UbiquityStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UbiquityStoreManager.m; sourceTree = "<group>"; };
 		12C355AF1A279A1A00B247DF /* CoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreData.h; sourceTree = "<group>"; };
 		12C355B01A279A1A00B247DF /* CoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreData.m; sourceTree = "<group>"; };
-		12C355B21A279AC000B247DF /* iCloudCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCloudCoreData.h; sourceTree = "<group>"; };
-		12C355B31A279AC000B247DF /* iCloudCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCloudCoreData.m; sourceTree = "<group>"; };
 		12C355B51A280CC400B247DF /* FavorDBiCloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavorDBiCloud.h; sourceTree = "<group>"; };
 		12C355B61A280CC400B247DF /* FavorDBiCloud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavorDBiCloud.m; sourceTree = "<group>"; };
 		12C355B91A280D9300B247DF /* FavoredPost.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FavoredPost.xcdatamodel; sourceTree = "<group>"; };
@@ -849,10 +843,6 @@
 			children = (
 				12C355AF1A279A1A00B247DF /* CoreData.h */,
 				12C355B01A279A1A00B247DF /* CoreData.m */,
-				12C355AC1A279A0500B247DF /* UbiquityStoreManager.h */,
-				12C355AD1A279A0500B247DF /* UbiquityStoreManager.m */,
-				12C355B21A279AC000B247DF /* iCloudCoreData.h */,
-				12C355B31A279AC000B247DF /* iCloudCoreData.m */,
 				12C355741A24E63000B247DF /* OCTableViewController.h */,
 				12C355751A24E63000B247DF /* OCTableViewController.m */,
 				1281882D1A06586400E941FA /* RefreshTableViewController.h */,
@@ -1259,7 +1249,6 @@
 				128187561A05345E00E941FA /* NIError.m in Sources */,
 				128187CE1A0617EE00E941FA /* ProductDetailViewController.m in Sources */,
 				12C355B71A280CC400B247DF /* FavorDBiCloud.m in Sources */,
-				12C355B41A279AC000B247DF /* iCloudCoreData.m in Sources */,
 				1281877E1A05345F00E941FA /* NITableViewModel.m in Sources */,
 				121054241A1BABB400E62BCC /* FavorDB.m in Sources */,
 				128187D41A061DFC00E941FA /* TodayProductListViewController.m in Sources */,
@@ -1321,7 +1310,6 @@
 				128187761A05345E00E941FA /* NICellBackgrounds.m in Sources */,
 				128187641A05345E00E941FA /* NIViewRecycler.m in Sources */,
 				1281877B1A05345F00E941FA /* NIRadioGroup.m in Sources */,
-				12C355AE1A279A0500B247DF /* UbiquityStoreManager.m in Sources */,
 				128187861A05345F00E941FA /* NIImageResponseSerializer.m in Sources */,
 				128187781A05345E00E941FA /* NICellFactory.m in Sources */,
 			);

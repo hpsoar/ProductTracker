@@ -9,7 +9,7 @@
 #import "FavorDBiCloud.h"
 #import "FavorDB.h"
 
-@interface FavorDBiCloud () <UbiquityStoreManagerDelegate>
+@interface FavorDBiCloud ()
 
 @end
 
@@ -27,11 +27,9 @@
 }
 
 - (id)init {
-    self = [super initWithModelName:@"FavoredPost" storeURL:[Utility filepath:@"favored_posts.sqlite"]];
+    self = [super initWithModelName:@"FavoredPost" storeURL:@"favored_posts.sqlite" ubiquitousContentName:@"iCloudFavoredPostsStore"];
     if (self) {
         _entityName = @"FavoredPost";
-        self.ubiquityStoreManager.delegate = self;
-        [self.ubiquityStoreManager useiCloudStore:YES alertUser:NO];
     }
     return self;
 }
@@ -100,19 +98,6 @@
     post.commentCount = [favoredPost.commentCount integerValue];
     post.voteCount = [favoredPost.voteCount integerValue];
     return post;
-}
-
-#pragma mark - 
-
-- (void)ubiquityStoreManager:(UbiquityStoreManager *)manager didSwitchToiCloud:(BOOL)didSwitch {
-    NIDPRINTMETHODNAME();
-    if (didSwitch) {
-//        NSArray *favoredPosts = [[FavorDB sharedDB] favoredPosts];
-//        for (ProductHuntPost *post in favoredPosts) {
-//            [[FavorDBiCloud sharedDB] favorPost:post];
-//        }
-//        NIDPRINT(@"migrated");
-    }
 }
 
 @end

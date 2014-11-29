@@ -78,6 +78,11 @@
     [super viewWillAppear:animated];
     
     //[[FavorDB sharedDB] syncWithiCloud];
+    
+    //NSArray *posts = [[FavorDB sharedDB] favoredPosts];
+    //for (ProductHuntPost *post in posts) {
+    //    [[FavorDBiCloud sharedDB] favorPost:post];
+    //}
 }
 
 - (void)loadView {

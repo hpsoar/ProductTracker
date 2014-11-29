@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Beacon. All rights reserved.
 //
 
-#import "iCloudCoreData.h"
+#import "CoreData.h"
 #import "FavoredPost.h"
 
-@interface FavorDBiCloud : iCloudCoreData
+@interface FavorDBiCloud : CoreData
 
 + (instancetype)sharedDB;
 
