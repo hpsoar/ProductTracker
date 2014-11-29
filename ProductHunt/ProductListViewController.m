@@ -77,6 +77,8 @@
     [super viewWillAppear:animated];
     
     [[FavorDB sharedDB] syncWithiCloud];
+    
+    [ProductHuntPost clearExpiredImageFiles];
 }
 
 - (void)loadView {

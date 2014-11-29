@@ -23,6 +23,8 @@
 
 - (id)initWithData:(NSDictionary *)data;
 
++ (void)clearExpiredImageFiles;
+
 @end
 
 @interface ProductHuntComment : NSObject

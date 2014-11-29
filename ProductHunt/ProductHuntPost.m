@@ -73,6 +73,29 @@
     return _image;
 }
 
++ (void)clearExpiredImageFiles {
+    NSString *file;
+    NSFileManager* fm = [NSFileManager defaultManager];
+    NSDirectoryEnumerator *dirEnum = [fm enumeratorAtPath:[Utility filepath:@"image_cache"]];
+    while ((file = [dirEnum nextObject])) {
+        NSString *filepath = [Utility filepath:DefStr(@"image_cache/%@", file)];
+        NSDictionary* attrs = [fm attributesOfItemAtPath:filepath error:nil];
+        
+        if (attrs != nil) {
+            NSDate *date = (NSDate*)[attrs objectForKey:NSFileCreationDate];
+            if ([date timeIntervalSinceNow] < -7 * 24 * 3600) {
+                NSError *error;
+                if (![fm removeItemAtPath:filepath error:&error]) {
+                    NIDPRINT(@"%@", error);
+                }
+            }
+        }
+        else {
+            NSLog(@"Not found");
+        }
+    }
+}
+
 -(void) encodeWithCoder:(NSCoder *)coder {
     [coder encodeObject:self.productLink forKey:kProductLink];
     [coder encodeObject:self.title forKey:kTitle];

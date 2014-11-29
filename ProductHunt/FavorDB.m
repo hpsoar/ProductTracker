@@ -31,7 +31,7 @@
 }
 
 - (id)init {
-    self = [self initWithDBPath:[Utility filepath:[self dbFilename]]];
+    self = [self initWithDBPath:[Utility filepath:[self defaultDBFilename]]];
     if (self) {
     }
     return self;
@@ -50,13 +50,17 @@
     return self;
 }
 
-- (NSString *)dbFilename {
+- (NSString *)defaultDBFilename {
     NSString *name = @"hunt_posts.db";
     if ([self uuid]) {
         name = DefStr(@"%@_hunt_posts.db", [self uuid]);
     }
     
     return name;
+}
+
+- (NSString *)dbPath {
+    return _fmDB.databasePath;
 }
 
 - (NSString *)uuid {
@@ -146,20 +150,20 @@
     
     NSDate *now = [NSDate date];
     if (uploadTime == nil || [changeTime compare:uploadTime] == NSOrderedDescending) {
-        NSData *data = [NSData dataWithContentsOfFile:[Utility filepath:[self dbFilename]]];
-        [[iCloud sharedCloud] saveAndCloseDocumentWithName:[self dbFilename] withContent:data completion:^(UIDocument *cloudDocument, NSData *documentData, NSError *error) {
+        NSData *data = [NSData dataWithContentsOfFile:[Utility filepath:[self defaultDBFilename]]];
+        [[iCloud sharedCloud] saveAndCloseDocumentWithName:[self defaultDBFilename] withContent:data completion:^(UIDocument *cloudDocument, NSData *documentData, NSError *error) {
             if (error) {
                 NIDPRINT(@"%@", error);
             }
             else {
                 [Utility setUserDefaultObjects:@{ kUploadTimeKey: now }];
                 
-                [[iCloud sharedCloud] updateFiles];
+                [self syncDowniCloudPosts];
             }
         }];
     }
     else {
-        [[iCloud sharedCloud] updateFiles];
+        [self syncDowniCloudPosts];
     }
 }
 
@@ -230,6 +234,8 @@
     NSArray *posts = [favorDB rawFavoredPosts];
     for (NSDictionary *post in posts) {
         NSInteger postId = [post[@"post_id"] integerValue];
+        if ([self isPostFavored:postId]) continue;
+        
         NSDictionary *deletion = [self deletionMarkWithId:postId];
         BOOL shouldAdd = YES;
         if (deletion) {
@@ -280,6 +286,14 @@
     }
 }
 
+- (void)syncDowniCloudPosts {
+    NSDate *date = [Utility userDefaultObjectForKey:@"icloud_sync_down_date"];
+    if (date && [date isToday]) return;
+    [Utility setUserDefaultObjects:@{ @"icloud_sync_down_date": [NSDate date] }];
+    
+    [[iCloud sharedCloud] updateFiles];
+}
+
 - (void)iCloudFilesDidChange:(NSMutableArray *)files withNewFileNames:(NSMutableArray *)fileNames {
     // Get the query results
     NIDPRINT(@"Files: %@", fileNames);
@@ -288,12 +302,13 @@
     for (int i = 0; i < files.count; ++i) {
         NSString *filename = fileNames[i];
         
-        if ([filename isEqualToString:[self dbFilename]]) continue;
+        if ([filename isEqualToString:[self defaultDBFilename]]) continue;
         
         NSMetadataItem *metaItem = files[i];
         NIDPRINT(@"%@", metaItem.attributes);
         NSDate *updateTime = [metaItem valueForKey:@"kMDItemFSContentChangeDate"];
         NIDPRINT(@"%@", updateTime);
+        
         NSString *syncTimeKey = DefStr(@"favordb_sync_time_%@", filename);
         NSDate *syncTime = [Utility userDefaultObjectForKey:syncTimeKey];
         if (syncTime == nil || [syncTime compare:updateTime] == NSOrderedAscending) {
@@ -302,6 +317,7 @@
                 
                 FavorDB *favorDB = [[FavorDB alloc] initWithDBPath:[Utility filepath:filename]];
                 [self syncFromFavorDB:favorDB];
+                [[NSFileManager defaultManager] removeItemAtPath:[favorDB dbPath] error:nil];
                 
                 [Utility setUserDefaultObjects:@{ syncTimeKey: updateTime }];
             }];

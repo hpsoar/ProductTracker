@@ -312,7 +312,8 @@
     
     self.lastCommentId = [comments.firstObject commentId];
     
-    [self reloadTableView];
+    [self.tableView reloadData];
+    [self refreshCompleted];
 }
 
 #pragma mark - webview
