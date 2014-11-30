@@ -36,7 +36,7 @@
 
 + (CGFloat)heightForObject:(id)object atIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
     CommentItem *item = object;
-    return 16 + [Utility heightForText:item.comment.body font:[self commentFont] width:300];
+    return 16 + [Utility heightForText:item.comment.body font:[self commentFont] width:tableView.width - 40];
 }
 
 + (UIFont *)commentFont {
@@ -55,11 +55,21 @@
     return self;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    [self doLayout];
+}
+
+- (void)doLayout {
+    _bodyLabel.width = self.width - 40;
+    [_bodyLabel sizeToFit];
+}
+
 - (BOOL)shouldUpdateCellWithObject:(id)object {
     CommentItem *item = object;
     _bodyLabel.text = item.comment.body;
-    _bodyLabel.width = self.width - 40;
-    [_bodyLabel sizeToFit];
+    [self doLayout];
     return YES;
 }
 
@@ -249,6 +259,7 @@
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
 
     self.screenshotView = [[NINetworkImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 250)];
+    self.screenshotView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     self.screenshotView.contentMode = UIViewContentModeScaleAspectFill;
     if (self.post.image) {
         self.screenshotView.image = self.post.image;
@@ -258,7 +269,6 @@
         [self.screenshotView setPathToNetworkImage:self.post.imageLink];
     }
     
-    self.screenshotView.centerX = self.view.width / 2;
     [headerView addSubview:self.screenshotView];
     
     self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, self.screenshotView.bottom + 5, self.view.width - 20, 30)];
@@ -345,25 +355,23 @@
     [[ShareKit kit] sharePost:self.post inController:self];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    [self.tableView reloadData];
-    
-    CGRect bounds = [[UIScreen mainScreen] bounds]; // portrait bounds
-    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
-        bounds.size = CGSizeMake(bounds.size.height, bounds.size.width);
-    }
-    
-    CGFloat centerX;
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-        centerX = bounds.size.height / 2;
-    }
-    else {
-        centerX = bounds.size.width / 2;
-    }
-    
-    self.screenshotView.centerX = centerX;
-}
+//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+//    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+//    
+//    CGRect bounds = [[UIScreen mainScreen] bounds]; // portrait bounds
+//    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+//        bounds.size = CGSizeMake(bounds.size.height, bounds.size.width);
+//    }
+//    
+//    CGFloat centerX;
+//    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+//        centerX = bounds.size.height / 2;
+//    }
+//    else {
+//        centerX = bounds.size.width / 2;
+//    }
+//    
+//    self.screenshotView.centerX = centerX;
+//}
 
 @end

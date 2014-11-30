@@ -89,11 +89,6 @@
     [self updateTitle];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [self.tableView reloadData];
-    [self updateTitle];
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return self.fetchedResultsController.sections.count;
 }
