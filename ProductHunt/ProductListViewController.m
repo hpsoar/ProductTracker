@@ -75,9 +75,15 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [[FavorDB sharedDB] syncWithiCloud];
+    //[[FavorDB sharedDB] syncWithiCloud];
     
     [ProductHuntPost clearExpiredImageFiles];
+//    FavorDB *favorDB = [[FavorDB alloc] initWithDBPath:@"6C16DD0C2CFB4A77B9986BCE6DF2CC12_hunt_posts.db"];
+//    NSArray *posts = [favorDB favoredPosts];
+//    for (ProductHuntPost *post in posts) {
+//        [[FavorDBiCloud sharedDB] favorPost:post];
+//    }
+    [self.tableView reloadData];
 }
 
 - (void)loadView {

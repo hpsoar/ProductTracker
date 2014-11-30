@@ -31,7 +31,7 @@
 }
 
 - (id)init {
-    self = [self initWithDBPath:[Utility filepath:[self defaultDBFilename]]];
+    self = [self initWithDBPath:[self defaultDBFilename]];
     if (self) {
     }
     return self;
@@ -315,7 +315,7 @@
             [[iCloud sharedCloud] retrieveCloudDocumentWithName:filename completion:^(UIDocument *cloudDocument, NSData *documentData, NSError *error) {
                 [documentData writeToFile:[Utility filepath:filename] atomically:YES];
                 
-                FavorDB *favorDB = [[FavorDB alloc] initWithDBPath:[Utility filepath:filename]];
+                FavorDB *favorDB = [[FavorDB alloc] initWithDBPath:filename];
                 [self syncFromFavorDB:favorDB];
                 [[NSFileManager defaultManager] removeItemAtPath:[favorDB dbPath] error:nil];
                 
