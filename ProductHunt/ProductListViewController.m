@@ -70,8 +70,6 @@
     [ProductHuntSession registerWithAppKey:kProductHuntKey appSecret:kProductHuntSecret];
     
     [self refresh];
-    
-    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -79,10 +77,12 @@
     
     //[[FavorDB sharedDB] syncWithiCloud];
     
-    //NSArray *posts = [[FavorDB sharedDB] favoredPosts];
-    //for (ProductHuntPost *post in posts) {
-    //    [[FavorDBiCloud sharedDB] favorPost:post];
-    //}
+//    FavorDB *favorDB = [[FavorDB alloc] initWithDBPath:@"6C16DD0C2CFB4A77B9986BCE6DF2CC12_hunt_posts.db"];
+//    NSArray *posts = [favorDB favoredPosts];
+//    for (ProductHuntPost *post in posts) {
+//        [[FavorDBiCloud sharedDB] favorPost:post];
+//    }
+    [self.tableView reloadData];
 }
 
 - (void)loadView {

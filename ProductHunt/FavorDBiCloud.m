@@ -34,6 +34,10 @@
     return self;
 }
 
+- (void)activate {
+    
+}
+
 - (void)favorPost:(ProductHuntPost *)post {
     if (![self isPostFavored:post.postId]) {
         FavoredPost *favoredPost = [self insertObjectForEntityWithName:_entityName];

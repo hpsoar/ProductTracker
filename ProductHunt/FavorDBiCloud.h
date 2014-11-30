@@ -13,6 +13,8 @@
 
 + (instancetype)sharedDB;
 
+- (void)activate;
+
 - (void)favorPost:(ProductHuntPost *)post;
 - (void)unfavorPostWithId:(NSInteger)postId;
 - (BOOL)isPostFavored:(NSInteger)postId;
