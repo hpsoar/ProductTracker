@@ -56,26 +56,7 @@
 
 - (void)updateTitle {
     if (self.totalCount > 1) {
-        static NSInteger lastIndex = 0;
-        static NSInteger lastCount = 0;
-        NSArray *visibleIndexPathes = [self.tableView indexPathsForVisibleRows];
-        
-        NSIndexPath *indexPath = visibleIndexPathes.firstObject;
-        if (visibleIndexPathes.count > 1) {
-            CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:indexPath];
-            CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
-            
-            if (rectInSuperview.origin.y < -50) {
-                indexPath = visibleIndexPathes[1];
-            }
-        }
-        
-        if (lastIndex != indexPath.row || lastCount != self.totalCount || self.navigationItem.titleView == nil) {
-            [self updateTitleViewWithTitle:DefStr(@"Favored (%d/%d)", indexPath.row + 1, self.totalCount)];
-            
-            lastCount = self.totalCount;
-            lastIndex = indexPath.row;
-        }
+        [self updateTitleViewWithTitle:DefStr(@"Favored (%d)", self.totalCount)];
     }
     else {
         [self updateTitleViewWithTitle:@"Favored"];

@@ -130,12 +130,13 @@
     
     // use self.daysAgo to legacy(launched before resetMode) request
     if (daysAgo <= self.daysAgo) {
+        NSInteger oldSectionCount = [self.model numberOfSectionsInTableView:self.tableView];
         NSIndexSet *indexSet = [self addPosts:posts forDate:date];
-        
         if (indexSet) {
             [self.tableView reloadData];
             
-            if (indexSet.firstIndex + 1 == [self.model numberOfSectionsInTableView:self.tableView]) {
+            BOOL addedSection = oldSectionCount != [self.model numberOfSectionsInTableView:self.tableView];
+            if (addedSection) {
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:indexSet.firstIndex];
                 [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
             }
