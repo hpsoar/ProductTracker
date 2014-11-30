@@ -40,7 +40,7 @@
 - (id)initWithDBPath:(NSString *)dbPath {
     self = [super init];
     if (self) {
-        _fmDB = [FMDatabase databaseWithPath:dbPath];
+        _fmDB = [FMDatabase databaseWithPath:[Utility filepath:dbPath]];
         [_fmDB open];
         [_fmDB executeStatements:@"CREATE TABLE IF NOT EXISTS favored_posts "
          @"(post_id integer primary key, date text, title text, subtitle text, image_url text, url text, timestamp integer);"];

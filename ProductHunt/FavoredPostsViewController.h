@@ -8,6 +8,6 @@
 
 #import "OCTableViewController.h"
 
-@interface FavoredPostsViewController : OCTableViewController
+@interface FavoredPostsViewController : UITableViewController
 
 @end

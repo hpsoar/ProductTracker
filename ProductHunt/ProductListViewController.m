@@ -16,6 +16,7 @@
 #import "PostCellObject.h"
 #import "FavorDB.h"
 #import "FavoredPostsViewController.h"
+#import "FavorDBiCloud.h"
 
 @interface ProductListViewController () <PostCellObjectDelegate, UMSocialUIDelegate>
 @property (nonatomic) ENNotebook *notebook;
@@ -69,8 +70,6 @@
     [ProductHuntSession registerWithAppKey:kProductHuntKey appSecret:kProductHuntSecret];
     
     [self refresh];
-    
-    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
