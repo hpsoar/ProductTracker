@@ -207,11 +207,16 @@
 - (void)gotoPreviousSection {
     NSArray *visibleRows = [self.tableView indexPathsForVisibleRows];
     NSIndexPath *indexPath = visibleRows.firstObject;
-    NSIndexPath *toIndexPath = [NSIndexPath indexPathForRow:0 inSection:MAX(indexPath.section - 1, 0)];
+    NSIndexPath *toIndexPath;
     if (indexPath.row > 0) {
         toIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
     }
-    [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    else if (indexPath.section > 0) {
+        toIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section - 1];
+    }
+    if (toIndexPath) {
+        [self.tableView scrollToRowAtIndexPath:toIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
 }
 
 - (void)gotoNextSection {
