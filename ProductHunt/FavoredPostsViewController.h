@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Beacon. All rights reserved.
 //
 
-#import "OCTableViewController.h"
+#import "ModelTableViewController.h"
 
-@interface FavoredPostsViewController : UITableViewController
+@interface FavoredPostsViewController : ModelTableViewController
 
 @end

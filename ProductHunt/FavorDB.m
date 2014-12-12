@@ -148,6 +148,9 @@
     NSDate *uploadTime = [Utility userDefaultObjectForKey:kUploadTimeKey];
     NSDate *changeTime = [Utility userDefaultObjectForKey:kFavorChangeTimeKey];
     
+//    FavorDB *favorDB = [[FavorDB alloc] initWithDBPath:@"6C16DD0C2CFB4A77B9986BCE6DF2CC12_hunt_posts.db"];
+//    [self syncFavoredPostsFromFavorDb:favorDB];
+    
     NSDate *now = [NSDate date];
     if (uploadTime == nil || [changeTime compare:uploadTime] == NSOrderedDescending) {
         NSData *data = [NSData dataWithContentsOfFile:[Utility filepath:[self defaultDBFilename]]];

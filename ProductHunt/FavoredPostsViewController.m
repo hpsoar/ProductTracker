@@ -9,40 +9,16 @@
 #import "FavoredPostsViewController.h"
 #import "PostCellObject.h"
 #import "ProductDetailViewController.h"
-#import "FavorDBiCloud.h"
+#import "FavorDB.h"
 #import "UMSocial.h"
 #import "AppDelegate.h"
 
-@interface FavoredPostsViewController () <PostCellObjectDelegate, UMSocialUIDelegate, NSFetchedResultsControllerDelegate>
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@interface FavoredPostsViewController () <PostCellObjectDelegate, UMSocialUIDelegate>
 @property (nonatomic) NSInteger totalCount;
+@property (nonatomic, strong) NSIndexPath *selectedRow;
 @end
 
 @implementation FavoredPostsViewController
-
-- (NSFetchedResultsController *)fetchedResultsController {
-    if (_fetchedResultsController == nil) {
-        _fetchedResultsController = [[FavorDBiCloud sharedDB] fetchedResultsControllerSectioned:YES];
-        NSError *error;
-        [_fetchedResultsController performFetch:&error];
-        if (error == nil) {
-            self.totalCount = [self computeTotalCount];
-            _fetchedResultsController.delegate = self;
-        }
-        else {
-            NIDPRINT(@"%@", error);
-        }
-    }
-    return _fetchedResultsController;
-}
-
-- (NSInteger)computeTotalCount {
-    NSInteger totalCount = 0;
-    for (id<NSFetchedResultsSectionInfo> section in _fetchedResultsController.sections) {
-         totalCount += [section numberOfObjects];
-    }
-    return totalCount;
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -50,6 +26,54 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self.tableView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self.actions attachToClass:[PostCellObject class] tapBlock:^BOOL(id object, id target, NSIndexPath *indexPath) {
+        PostCellObject *postObject = object;
+        ProductDetailViewController *controller = [[ProductDetailViewController alloc] initWithPost:postObject.post];
+        [self.navigationController pushViewController:controller animated:YES];
+        self.selectedRow = indexPath;
+        return YES;
+    }];
+    
+    if ([self.model numberOfSectionsInTableView:self.tableView] == 0) {
+        [self loadModeWithPosts:[[FavorDB sharedDB] favoredPosts]];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if (self.selectedRow) {
+        PostCellObject *obj = [self.model objectAtIndexPath:self.selectedRow];
+        if (![[FavorDB sharedDB] isPostFavored:obj.post.postId]) {
+            [self didFavorPostForCell:(PostCell *)[self.tableView cellForRowAtIndexPath:self.selectedRow] favor:NO];
+        }
+        self.selectedRow = nil;
+    }
+}
+
+- (void)loadModeWithPosts:(NSArray *)posts {
+    self.totalCount = posts.count;
+    
+    NSString *date = nil;
+    NSIndexSet *sectionIndex;
+    for (ProductHuntPost *post in posts) {
+        if (date == nil) {
+            date = post.date;
+            sectionIndex = [self.model addSectionWithTitle:date];
+        }
+        else if (![date isEqualToString:post.date]) {
+            date = post.date;
+            sectionIndex = [self.model addSectionWithTitle:date];
+        }
+        PostCellObject *obj = [[PostCellObject alloc] initWithPost:post];
+        obj.delegate = self;
+        [self.model addObject:obj toSection:sectionIndex.firstIndex];
+    }
     
     [self updateTitle];
 }
@@ -72,6 +96,21 @@
 }
 
 - (void)didFavorPostForCell:(PostCell *)cell favor:(BOOL)favor {
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    [self.model removeObjectAtIndexPath:indexPath];
+    
+    NSInteger rows = [self.model tableView:self.tableView numberOfRowsInSection:indexPath.section];
+    if (rows == 0) {
+        [self.model removeSectionAtIndex:indexPath.section];
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    else {
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    
+    self.totalCount--;
+    
+    [self updateTitle];
 }
 
 - (void)showShareOptionsForCell:(PostCell *)cell {
@@ -83,82 +122,6 @@
 - (void)selectCell:(PostCell *)cell {
     NSIndexPath *indexPath =  [self.tableView indexPathForCell:cell];
     [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self updateTitle];
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.fetchedResultsController.sections.count;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    id<NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
-    return [sectionInfo numberOfObjects];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    PostCellObject *object = [self objectAtIndexPath:indexPath];
-    return [PostCell heightForObject:object atIndexPath:indexPath tableView:tableView];
-}
-
-- (PostCellObject *)objectAtIndexPath:(NSIndexPath *)indexPath {
-    ProductHuntPost *post = [FavorDBiCloud convert:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-    PostCellObject *object = [[PostCellObject alloc] initWithPost:post];
-    object.delegate = self;
-    return object;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    id<NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[section];
-    return [sectionInfo name];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *identifier = @"favored_post_cell";
-    PostCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (cell == nil) {
-        cell = [[PostCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-   
-    [cell shouldUpdateCellWithObject:[self objectAtIndexPath:indexPath]];
-    return cell;
-}
-
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    PostCellObject *object = [self objectAtIndexPath:indexPath];
-    PostCellObject *postObject = object;
-    ProductDetailViewController *controller = [[ProductDetailViewController alloc] initWithPost:postObject.post];
-    [self.navigationController pushViewController:controller animated:YES];
-    return indexPath;
-}
-
-#pragma mark -
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-    if (type == NSFetchedResultsChangeDelete) {
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        self.totalCount = [self computeTotalCount];
-        if (self.totalCount == 0) {
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-        [self updateTitle];
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-    if (type == NSFetchedResultsChangeDelete) {
-        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView endUpdates];
-}
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView beginUpdates];
 }
 
 @end

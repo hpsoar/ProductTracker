@@ -15,7 +15,6 @@
 #import "UMSocialSinaHandler.h"
 #import "UMSocialYiXinHandler.h"
 #import "UMSocialFacebookHandler.h"
-#import "FavorDBiCloud.h"
 #import <ENSDK/ENSDK.h>
 
 @interface AppDelegate ()
@@ -29,8 +28,6 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
-    
-    [[FavorDBiCloud sharedDB] activate];
     
     [self setupAppearance];
     

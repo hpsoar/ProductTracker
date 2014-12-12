@@ -8,7 +8,7 @@
 
 #import "PostCellObject.h"
 #import "NINetworkImageView.h"
-#import "FavorDBiCloud.h"
+#import "FavorDB.h"
 
 @implementation PostCellObject
 
@@ -25,7 +25,7 @@
 }
 
 - (BOOL)favored {
-    return [[FavorDBiCloud sharedDB] isPostFavored:self.post.postId];
+    return [[FavorDB sharedDB] isPostFavored:self.post.postId];
 }
 
 @end
@@ -180,13 +180,13 @@
         }
     }
     else {
-        [[FavorDBiCloud sharedDB] favorPost:_object.post];
+        [[FavorDB sharedDB] favorPost:_object.post];
         [_object.delegate didFavorPostForCell:self favor:YES];
     }
 }
 
 - (void)unfavorPost {
-    [[FavorDBiCloud sharedDB] unfavorPostWithId:_object.post.postId];
+    [[FavorDB sharedDB] unfavorPostWithId:_object.post.postId];
     
     [_object.delegate didFavorPostForCell:self favor:NO];
 }

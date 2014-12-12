@@ -10,7 +10,7 @@
 #import "NINetworkImageView.h"
 #import "AppDelegate.h"
 #import "ProductHuntSession.h"
-#import "FavorDBiCloud.h"
+#import "FavorDB.h"
 
 @interface CommentItem : NICellObject
 @property (nonatomic, readonly) ProductHuntComment *comment;
@@ -161,7 +161,7 @@
 }
 
 - (void)updateRightBarButtons {
-    NSString *favorIcon = [[FavorDBiCloud sharedDB] isPostFavored:self.post.postId] ? @"icon-favored.png": @"icon-favor.png";
+    NSString *favorIcon = [[FavorDB sharedDB] isPostFavored:self.post.postId] ? @"icon-favored.png": @"icon-favor.png";
     UIButton *favorBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 25, 25)];
     [favorBtn setImage:[UIImage imageNamed:favorIcon] forState:UIControlStateNormal];
     [favorBtn addTarget:self action:@selector(favorPost) forControlEvents:UIControlEventTouchUpInside];
@@ -342,11 +342,11 @@
 }
 
 - (void)favorPost {
-    if ([[FavorDBiCloud sharedDB] isPostFavored:self.post.postId]) {
-        [[FavorDBiCloud sharedDB] unfavorPostWithId:self.post.postId];
+    if ([[FavorDB sharedDB] isPostFavored:self.post.postId]) {
+        [[FavorDB sharedDB] unfavorPostWithId:self.post.postId];
     }
     else {
-        [[FavorDBiCloud sharedDB] favorPost:self.post];
+        [[FavorDB sharedDB] favorPost:self.post];
     }
     [self updateRightBarButtons];
 }
