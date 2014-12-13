@@ -144,16 +144,6 @@
     self.navigationItem.titleView = self.segControl;
     
     self.segControl.selectedSegmentIndex = 0;
-    
-    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft)];
-    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
-    self.tableView.userInteractionEnabled = YES;
-    [self.tableView addGestureRecognizer:swipeLeft];
-    
-    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight)];
-    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
-    self.webView.userInteractionEnabled = YES;
-    [self.webView addGestureRecognizer:swipeRight];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -206,20 +196,6 @@
     }
     else {
         [self showHomePage];
-    }
-}
-
-- (void)swipeRight {
-    if (self.segControl.selectedSegmentIndex == 0) {
-        self.segControl.selectedSegmentIndex = 1;
-        [self segValueChanged];
-    }
-}
-
-- (void)swipeLeft {
-    if (self.segControl.selectedSegmentIndex == 1) {
-        self.segControl.selectedSegmentIndex = 0;
-        [self segValueChanged];
     }
 }
 
