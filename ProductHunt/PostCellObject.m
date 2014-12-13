@@ -30,13 +30,54 @@
 
 @end
 
+@interface MyTextView : UITextView <UITextViewDelegate>
+
+@end
+
+@implementation MyTextView {
+}
+
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.delegate = self;
+        self.inputView = [[UIView alloc] initWithFrame:CGRectZero];
+        self.textContainerInset = UIEdgeInsetsZero;
+        self.scrollEnabled = NO;
+    }
+    return self;
+}
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    return YES;
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+    if (action == @selector(copy:) || action == @selector(selectAll:) || action == @selector(select:)) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)copy:(id)sender {
+    if (self.selectedRange.length == 0) {
+        [self select:nil];
+    }
+    [super copy:sender];
+}
+
+@end
+
 @interface PostCell () <UIAlertViewDelegate>
 
 @end
 
 @implementation PostCell {
-    UILabel *_titleLabel;
-    UILabel *_subtitleLabel;
+    UITextView *_titleLabel;
+    UITextView *_subtitleLabel;
     NINetworkImageView *_thumbnailView;
     PostCellObject *_object;
     
@@ -57,18 +98,18 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _titleLabel.left = 10;
+        [[UITextView appearance] setTintColor:[UIColor darkGrayColor]];
+        
+        _titleLabel = [[MyTextView alloc] initWithFrame:CGRectZero];
+        _titleLabel.left = 6;
         _titleLabel.top = 10;
         _titleLabel.font = [UIFont systemFontOfSize:20];
         _titleLabel.textColor = RGBCOLOR_HEX(0xda552f);
-        _titleLabel.numberOfLines = 0;
         [self.contentView addSubview:_titleLabel];
         
-        _subtitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        _subtitleLabel.font = [UIFont systemFontOfSize:16];
+        _subtitleLabel = [[MyTextView alloc] initWithFrame:CGRectZero];
         _subtitleLabel.left = _titleLabel.left;
-        _subtitleLabel.numberOfLines = 0;
+        _subtitleLabel.font = [UIFont systemFontOfSize:16];
         _subtitleLabel.textColor = RGBCOLOR_HEX(0x7d7d7d);
         [self.contentView addSubview:_subtitleLabel];
         
