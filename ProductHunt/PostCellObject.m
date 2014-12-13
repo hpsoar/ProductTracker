@@ -76,8 +76,6 @@
 @end
 
 @implementation PostCell {
-    UITextView *_titleLabel;
-    UITextView *_subtitleLabel;
     NINetworkImageView *_thumbnailView;
     PostCellObject *_object;
     
@@ -85,6 +83,8 @@
     
     UIButton *_favorBtn;
     UIButton *_shareBtn;
+    
+    UIWebView *_webView;
 }
 
 + (CGFloat)heightForObject:(id)object atIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
@@ -98,32 +98,27 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [[UITextView appearance] setTintColor:[UIColor darkGrayColor]];
+        self.contentView.layer.cornerRadius = 3;
+        self.contentView.layer.borderColor = RGBCOLOR_HEX(0xd7d7d7).CGColor;
+        self.contentView.layer.borderWidth = 0.5;
         
-        _titleLabel = [[MyTextView alloc] initWithFrame:CGRectZero];
-        _titleLabel.left = 6;
-        _titleLabel.top = 10;
-        _titleLabel.font = [UIFont systemFontOfSize:20];
-        _titleLabel.textColor = RGBCOLOR_HEX(0xda552f);
-        [self.contentView addSubview:_titleLabel];
-        
-        _subtitleLabel = [[MyTextView alloc] initWithFrame:CGRectZero];
-        _subtitleLabel.left = _titleLabel.left;
-        _subtitleLabel.font = [UIFont systemFontOfSize:16];
-        _subtitleLabel.textColor = RGBCOLOR_HEX(0x7d7d7d);
-        [self.contentView addSubview:_subtitleLabel];
+        _webView = [[UIWebView alloc] initWithFrame:self.bounds];
+        _webView.scrollView.scrollEnabled = NO;
+        _webView.backgroundColor = [UIColor clearColor];
+        _webView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
+        _webView.opaque = NO;
+        _webView.userInteractionEnabled = YES;
+        [self addSubview:_webView];
         
         _popularityLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _popularityLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         _popularityLabel.font = [UIFont systemFontOfSize:12];
-        _popularityLabel.left = _titleLabel.left;
+        _popularityLabel.left = 8;
         _popularityLabel.textColor = [UIColor orangeColor];
         [self.contentView addSubview:_popularityLabel];
         
         _thumbnailView = [[NINetworkImageView alloc] initWithFrame:CGRectMake(10, 0, self.width - 20, 210)];
-        self.contentView.layer.cornerRadius = 3;
-        self.contentView.layer.borderColor = RGBCOLOR_HEX(0xd7d7d7).CGColor;
-        self.contentView.layer.borderWidth = 0.5;
-        _thumbnailView.clipsToBounds = YES;
+        _thumbnailView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         _thumbnailView.contentMode = UIViewContentModeScaleAspectFit;
         _thumbnailView.initialImage = [UIImage imageNamed:@"default-image.png"];
         [self.contentView addSubview:_thumbnailView];
@@ -161,12 +156,16 @@
     [self doLayout];
 }
 
+- (NSString *)htmlWithPost:(ProductHuntPost *)post {
+    NSString *html =  @"<html><head></head><body>"
+    @"<div style='color:#da552f; font-size:20; padding-right:80px; white-space: pre-wrap;'>%@</div>"
+    @"<div style='color:#7d7d7d; font-size:16; padding-top:5px'>%@</div>"
+    @"</body></html>";
+    return DefStr(html, post.title, post.subtitle, post.imageLink);
+}
+
 - (BOOL)shouldUpdateCellWithObject:(id)object {
     _object = object;
-    
-    _titleLabel.text = self.post.title;
-    
-    _subtitleLabel.text = self.post.subtitle;
     
     _popularityLabel.text = DefStr(@"%d votes  %d comments", self.post.voteCount, self.post.commentCount);
     [_popularityLabel sizeToFit];
@@ -178,6 +177,8 @@
     else {
         [_thumbnailView setPathToNetworkImage:self.post.imageLink];
     }
+
+    [_webView loadHTMLString:[self htmlWithPost:_object.post] baseURL:nil];
     
     _favorBtn.selected = _object.favored;
     
@@ -189,18 +190,10 @@
 }
 
 - (void)doLayout {
-    _titleLabel.width = self.width - 2 * _titleLabel.left - 80;
-    [_titleLabel sizeToFit];
-    
-    _subtitleLabel.width = self.width - 2 * _subtitleLabel.left - 10;
-    [_subtitleLabel sizeToFit];
-    
-    _subtitleLabel.top = _titleLabel.bottom + 5;
-    
-    _popularityLabel.top = _subtitleLabel.bottom + 2;
-    
     _thumbnailView.centerX = self.width / 2;
-    _thumbnailView.top = _popularityLabel.bottom + 5;
+    _thumbnailView.bottom = self.height - 10;
+    
+    _popularityLabel.bottom = _thumbnailView.top - 5;
     
     _shareBtn.left = self.width - 40;
     _favorBtn.left = _shareBtn.left - 32;
