@@ -98,14 +98,10 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.contentView.layer.cornerRadius = 3;
-        self.contentView.layer.borderColor = RGBCOLOR_HEX(0xd7d7d7).CGColor;
-        self.contentView.layer.borderWidth = 0.5;
-        
         _webView = [[UIWebView alloc] initWithFrame:self.bounds];
         _webView.scrollView.scrollEnabled = NO;
-        _webView.backgroundColor = [UIColor clearColor];
         _webView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
+        _webView.backgroundColor = [UIColor clearColor];
         _webView.opaque = NO;
         [self.contentView addSubview:_webView];
         
@@ -149,6 +145,10 @@
     return self;
 }
 
+- (UIEdgeInsets)layoutMargins {
+    return UIEdgeInsetsZero;
+}
+
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     return YES;
 }
@@ -175,7 +175,7 @@
     @"<div style='color:#da552f; font-size:20; padding-right:80px; white-space: pre-wrap;'>%@</div>"
     @"<div style='color:#7d7d7d; font-size:16; padding-top:5px'>%@</div>"
     @"</body></html>";
-    return DefStr(html, post.title, post.subtitle, post.imageLink);
+    return DefStr(html, post.title, post.subtitle);
 }
 
 - (BOOL)shouldUpdateCellWithObject:(id)object {
@@ -218,7 +218,9 @@
 }
 
 - (void)selectPost {
-    [_object.delegate didSelectCell:self];
+    if ([_object.delegate respondsToSelector:@selector(didSelectCell:)]) {
+        [_object.delegate didSelectCell:self];
+    }
 }
 
 - (void)saveToEvernote {

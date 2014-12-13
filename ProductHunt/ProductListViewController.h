@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "ProductHuntSession.h"
-#import "OCTableViewController.h"
+#import "PHTableViewController.h"
 
-@interface ProductListViewController : OCTableViewController  <ProductHuntSessionDelegate>
+@interface ProductListViewController : PHTableViewController  <ProductHuntSessionDelegate>
 
 @end
 

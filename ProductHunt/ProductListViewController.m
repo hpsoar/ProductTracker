@@ -73,11 +73,6 @@
     [self.tableView reloadData];
 }
 
-- (void)loadView {
-    [super loadView];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-}
-
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
     v.backgroundColor = RGBCOLOR_HEX(0xdedede);

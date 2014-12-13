@@ -159,6 +159,7 @@
 		12CB2A001A0CFD5D002C1C45 /* PHShareKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 12CB29FF1A0CFD5D002C1C45 /* PHShareKit.m */; };
 		12DAFC3C1A3B5AAB00A9B6AB /* ModelTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DAFC3B1A3B5AAB00A9B6AB /* ModelTableViewController.m */; };
 		12DAFC3F1A3B5AC100A9B6AB /* OCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12DAFC3E1A3B5AC100A9B6AB /* OCViewController.m */; };
+		12E38A911A3C468400E96A59 /* PHTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12E38A901A3C468400E96A59 /* PHTableViewController.m */; };
 		12EF9D621A1782330074460C /* default-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D5E1A1782330074460C /* default-image.png */; };
 		12EF9D631A1782330074460C /* default-image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 12EF9D5F1A1782330074460C /* default-image@2x.png */; };
 /* End PBXBuildFile section */
@@ -450,6 +451,8 @@
 		12DAFC3B1A3B5AAB00A9B6AB /* ModelTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelTableViewController.m; sourceTree = "<group>"; };
 		12DAFC3D1A3B5AC100A9B6AB /* OCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCViewController.h; sourceTree = "<group>"; };
 		12DAFC3E1A3B5AC100A9B6AB /* OCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCViewController.m; sourceTree = "<group>"; };
+		12E38A8F1A3C468400E96A59 /* PHTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHTableViewController.h; sourceTree = "<group>"; };
+		12E38A901A3C468400E96A59 /* PHTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHTableViewController.m; sourceTree = "<group>"; };
 		12EF9D5E1A1782330074460C /* default-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-image.png"; sourceTree = "<group>"; };
 		12EF9D5F1A1782330074460C /* default-image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-image@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -595,6 +598,8 @@
 				12C355B81A280D9300B247DF /* FavoredPost.xcdatamodeld */,
 				12C355BE1A280F8900B247DF /* FavoredPost+Utility.h */,
 				12C355BF1A280F8900B247DF /* FavoredPost+Utility.m */,
+				12E38A8F1A3C468400E96A59 /* PHTableViewController.h */,
+				12E38A901A3C468400E96A59 /* PHTableViewController.m */,
 			);
 			path = ProductHunt;
 			sourceTree = "<group>";
@@ -1312,6 +1317,7 @@
 				121053FB1A1BA65400E62BCC /* ProductHuntPost.m in Sources */,
 				128187851A05345F00E941FA /* NIImageProcessing.m in Sources */,
 				1210541C1A1BAA3C00E62BCC /* FMDatabaseQueue.m in Sources */,
+				12E38A911A3C468400E96A59 /* PHTableViewController.m in Sources */,
 				128187B61A0536B200E941FA /* AFURLRequestSerialization.m in Sources */,
 				128187B31A0536B200E941FA /* AFNetworkReachabilityManager.m in Sources */,
 				12DAFC3F1A3B5AC100A9B6AB /* OCViewController.m in Sources */,

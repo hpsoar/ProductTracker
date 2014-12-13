@@ -20,14 +20,6 @@
 
 @implementation FavoredPostsViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
-    [self.tableView reloadData];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -54,6 +46,24 @@
         }
         self.selectedRow = nil;
     }
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    self.tableView.preservesSuperviewLayoutMargins = NO;
+    self.tableView.layoutMargins = UIEdgeInsetsZero;
+    self.tableView.separatorInset = UIEdgeInsetsZero;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
+    v.backgroundColor = RGBCOLOR_HEX(0xdedede);
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 320, 28)];
+    label.textColor = [UIColor whiteColor];
+    label.text = [self.model tableView:tableView titleForHeaderInSection:section];
+    [v addSubview:label];
+    return v;
 }
 
 - (void)loadModeWithPosts:(NSArray *)posts {
