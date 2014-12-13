@@ -58,14 +58,6 @@
 
     self.navigationItem.leftBarButtonItems = @[ upItem, downItem ];
     
-    WEAK_VAR(self);
-    [self.actions attachToClass:[PostCellObject class] tapBlock:^BOOL(id object, id target, NSIndexPath *indexPath) {
-        PostCellObject *postObject = object;
-        ProductDetailViewController *controller = [[ProductDetailViewController alloc] initWithPost:postObject.post];
-        [_self.navigationController pushViewController:controller animated:YES];
-        return NO;
-    }];
-    
     [ProductHuntSession registerWithAppKey:kProductHuntKey appSecret:kProductHuntSecret];
     
     [self refresh];
@@ -245,6 +237,11 @@
 - (void)didFavorPostForCell:(PostCell *)cell favor:(BOOL)favor {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)didSelectCell:(PostCell *)cell {
+    ProductDetailViewController *controller = [[ProductDetailViewController alloc] initWithPost:cell.post];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)savePostToEvernoteForCell:(PostCell *)cell {

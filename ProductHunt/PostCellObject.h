@@ -19,6 +19,9 @@
 
 - (void)didFavorPostForCell:(PostCell *)cell favor:(BOOL)favor;
 
+@optional
+- (void)didSelectCell:(PostCell *)cell;
+
 @end
 
 @interface PostCellObject : NICellObject

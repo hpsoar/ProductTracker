@@ -71,7 +71,7 @@
 
 @end
 
-@interface PostCell () <UIAlertViewDelegate>
+@interface PostCell () <UIAlertViewDelegate, UIGestureRecognizerDelegate>
 
 @end
 
@@ -107,8 +107,7 @@
         _webView.backgroundColor = [UIColor clearColor];
         _webView.autoresizingMask = UIViewAutoresizingFlexibleDimensions;
         _webView.opaque = NO;
-        _webView.userInteractionEnabled = YES;
-        [self addSubview:_webView];
+        [self.contentView addSubview:_webView];
         
         _popularityLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _popularityLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
@@ -132,6 +131,10 @@
         swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
         [self.contentView addGestureRecognizer:swipeRight];
         
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectPost)];
+        tap.delegate = self;
+        [self.contentView addGestureRecognizer:tap];
+        
         _shareBtn = [[UIButton alloc] initWithFrame:CGRectMake(self.width - 40, 5, 32, 32)];
         [_shareBtn setImage:[UIImage imageNamed:@"icon-share.png"] forState:UIControlStateNormal];
         [_shareBtn addTarget:self action:@selector(showShareView) forControlEvents:UIControlEventTouchUpInside];
@@ -144,6 +147,17 @@
         [self.contentView addSubview:_favorBtn];
     }
     return self;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    return YES;
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    if ([otherGestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        return NO;
+    }
+    return YES;
 }
 
 - (ProductHuntPost *)post {
@@ -201,6 +215,10 @@
 
 - (void)showShareView {
     [_object.delegate showShareOptionsForCell:self];
+}
+
+- (void)selectPost {
+    [_object.delegate didSelectCell:self];
 }
 
 - (void)saveToEvernote {
