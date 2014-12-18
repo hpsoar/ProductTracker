@@ -23,14 +23,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.actions attachToClass:[PostCellObject class] tapBlock:^BOOL(id object, id target, NSIndexPath *indexPath) {
-        PostCellObject *postObject = object;
-        ProductDetailViewController *controller = [[ProductDetailViewController alloc] initWithPost:postObject.post];
-        [self.navigationController pushViewController:controller animated:YES];
-        self.selectedRow = indexPath;
-        return YES;
-    }];
-    
     if ([self.model numberOfSectionsInTableView:self.tableView] == 0) {
         [self loadModeWithPosts:[[FavorDB sharedDB] favoredPosts]];
     }
@@ -51,9 +43,11 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
-    self.tableView.preservesSuperviewLayoutMargins = NO;
-    self.tableView.layoutMargins = UIEdgeInsetsZero;
-    self.tableView.separatorInset = UIEdgeInsetsZero;
+    if (iOSOver(8)) {
+        self.tableView.preservesSuperviewLayoutMargins = NO;
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+        self.tableView.separatorInset = UIEdgeInsetsZero;
+    }
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -121,6 +115,11 @@
     self.totalCount--;
     
     [self updateTitle];
+}
+
+- (void)didSelectCell:(PostCell *)cell {
+    ProductDetailViewController *controller = [[ProductDetailViewController alloc] initWithPost:cell.post];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showShareOptionsForCell:(PostCell *)cell {

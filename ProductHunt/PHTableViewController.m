@@ -13,9 +13,11 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     
-    self.tableView.preservesSuperviewLayoutMargins = NO;
-    self.tableView.layoutMargins = UIEdgeInsetsZero;
-    self.tableView.separatorInset = UIEdgeInsetsZero;
+    if (iOSOver(8)) {
+        self.tableView.preservesSuperviewLayoutMargins = NO;
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+        self.tableView.separatorInset = UIEdgeInsetsZero;
+    }
 }
 
 @end

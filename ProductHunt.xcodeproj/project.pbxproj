@@ -443,8 +443,8 @@
 		12C355B91A280D9300B247DF /* FavoredPost.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FavoredPost.xcdatamodel; sourceTree = "<group>"; };
 		12C355BE1A280F8900B247DF /* FavoredPost+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FavoredPost+Utility.h"; sourceTree = "<group>"; };
 		12C355BF1A280F8900B247DF /* FavoredPost+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FavoredPost+Utility.m"; sourceTree = "<group>"; };
-		12C355C11A281D0900B247DF /* FavoredPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoredPost.h; sourceTree = "<group>"; };
-		12C355C21A281D0900B247DF /* FavoredPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoredPost.m; sourceTree = "<group>"; };
+		12C355C11A281D0900B247DF /* FavoredPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FavoredPost.h; path = ../FavoredPost.h; sourceTree = "<group>"; };
+		12C355C21A281D0900B247DF /* FavoredPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FavoredPost.m; path = ../FavoredPost.m; sourceTree = "<group>"; };
 		12CB29FE1A0CFD5D002C1C45 /* PHShareKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PHShareKit.h; sourceTree = "<group>"; };
 		12CB29FF1A0CFD5D002C1C45 /* PHShareKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PHShareKit.m; sourceTree = "<group>"; };
 		12DAFC3A1A3B5AAB00A9B6AB /* ModelTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelTableViewController.h; sourceTree = "<group>"; };
@@ -502,6 +502,8 @@
 		121053F51A1BA5E900E62BCC /* Items */ = {
 			isa = PBXGroup;
 			children = (
+				12C355C11A281D0900B247DF /* FavoredPost.h */,
+				12C355C21A281D0900B247DF /* FavoredPost.m */,
 				121053F61A1BA60B00E62BCC /* PostCellObject.h */,
 				121053F71A1BA60B00E62BCC /* PostCellObject.m */,
 				121053F91A1BA65400E62BCC /* ProductHuntPost.h */,
@@ -532,8 +534,6 @@
 		128185131A052CD300E941FA = {
 			isa = PBXGroup;
 			children = (
-				12C355C11A281D0900B247DF /* FavoredPost.h */,
-				12C355C21A281D0900B247DF /* FavoredPost.m */,
 				121054A61A1E4A0300E62BCC /* iCloud.framework */,
 				1210541E1A1BAA5E00E62BCC /* ENSDK.framework */,
 				1210541F1A1BAA5E00E62BCC /* ENSDKResources.bundle */,
